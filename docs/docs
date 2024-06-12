@@ -1,0 +1,48 @@
+2024/06/11 (화)
+
+# 회의록-1
+
+## Review
+- 팀명: 타임스톤💎
+- 프로젝트명: Walkie Paw 🐾
+- 팀원: @MtheJ59 @chaexrin  @SejinPrk @sunjong0214 @woo-be 
+- 주제 선정: 반려견 산책 소개 플랫폼🐩🐕
+- 데이터 정의
+- ERD: ErdCloud
+- 기획 및 협업 툴: Github, Figma, Notion
+- 벤치마킹: 당근마켓🥕
+---
+
+- 주제 선정
+  - 반려견 산책 중계 플랫폼?
+  - WalkiePaw
+- 주요 기능
+  - 견주는 자신의 반려견의 산책을 시켜줄 산책인을 찾을 수 있음.
+    - 견주는 산책인을 모집하는 글을 작성하고 산책인이 신청하는 방식.
+    - 견주와 산책인 간의 채팅 기능
+  - 산책인에 대한 점수가 존재
+    - 견주의 리뷰로 결정됨
+  - 로그인/인증
+    - 소셜 로그인
+  - 결제(후순위)
+  - 위치 정보
+    - 실시간의 정보가 아닌 만남 장소를 보여주는데 사용
+- ERD 작성 시작
+- 피그마 작성 시작
+
+---
+### 내일 할 일
+- 피그마 작성 시 pc 기준으로 할지 모바일 기준으로 할지 정하기?
+- github 설정
+- ERD, 피그마 계속
+
+--- 
+
+### [ErdCloud](https://www.erdcloud.com/d/QmNJL5YCXjDpnAY6t)
+<img width="1056" alt="스크린샷 2024-06-11 오후 6 33 53" src="https://github.com/WalkiePaw/walkie-paw/assets/150787016/5a0c5b07-1fac-4c92-a8c3-57fba085ebec">
+
+### [Notion](https://www.notion.so/1ffeeae920954660b17b89721bcd702c)
+<img width="1330" alt="스크린샷 2024-06-11 오후 6 34 34" src="https://github.com/WalkiePaw/walkie-paw/assets/150787016/6800097b-a573-4383-9c68-f539c4c72b1a">
+
+### [Figma](https://www.figma.com/design/znvtpPfQgvgdzCrvoVAljQ/walkie-paw?node-id=0-1&t=eq3RxrEE5cQRjCd2-1)
+<img width="803" alt="스크린샷 2024-06-11 오후 6 53 39" src="https://github.com/WalkiePaw/walkie-paw/assets/150787016/06ec43a0-8321-4839-a5d9-b57fd63365d9">
