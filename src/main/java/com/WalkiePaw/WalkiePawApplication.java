@@ -8,6 +8,8 @@ public class WalkiePawApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WalkiePawApplication.class, args);
+
+		int a = 0;
 	}
 
 }
