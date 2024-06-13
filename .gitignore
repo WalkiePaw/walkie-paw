@@ -291,6 +291,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-.DS_store
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,intellij,eclipse,visualstudiocode,java
