@@ -30,6 +30,7 @@ public class Board extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private BoardStatus status;
     private BoardCategory category;
+    private boolean isDeleted;
 
 
     private Board(String title, String content, int price, LocalDate meetingTime) {

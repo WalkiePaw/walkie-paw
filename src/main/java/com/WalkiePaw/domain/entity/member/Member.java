@@ -23,8 +23,8 @@ public class Member extends BaseEntity {
     private String name;
     private String email;
     private String password;
-    @Column(name = "tel")
     private String phoneNumber;
+    @Column(name = "addr")
     private String address;
     private String gender;
     private LocalDate birth;
@@ -33,7 +33,7 @@ public class Member extends BaseEntity {
     private String photo;
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
-    private int reportedCount;
+    private int reportedCnt;
 
     private Member(String name, String email, String password, String phoneNumber,
                   String address, String gender, LocalDate birth, String profile, String photo) {
