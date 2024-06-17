@@ -1,11 +1,15 @@
-package com.WalkiePaw.domain.entity;
+package com.WalkiePaw.domain.entity.member;
 
+import com.WalkiePaw.domain.entity.BaseEntity;
+import com.WalkiePaw.domain.entity.board.Board;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,7 +33,6 @@ public class Member extends BaseEntity {
     private String photo;
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
-    @Column(name = "withdrawn_date")
     private int reportedCount;
 
     private Member(String name, String email, String password, String phoneNumber,
