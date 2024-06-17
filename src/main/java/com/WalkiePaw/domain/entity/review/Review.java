@@ -2,6 +2,7 @@ package com.WalkiePaw.domain.entity.review;
 
 import com.WalkiePaw.domain.entity.BaseEntity;
 import com.WalkiePaw.domain.entity.board.Board;
+import com.WalkiePaw.domain.entity.chatroom.Chatroom;
 import com.WalkiePaw.domain.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -19,10 +20,12 @@ public class Review extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
-    private Board board;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chatroom_id")
+    private Chatroom chatroom;
+    @Column(name = "review_content")
     private String content;
     private int point;
+    private boolean isDeleted;
 
 }
