@@ -1,22 +1,21 @@
 package com.WalkiePaw.domain.entity.member;
 
 import com.WalkiePaw.domain.entity.BaseEntity;
-import com.WalkiePaw.domain.entity.board.Board;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "member_id")
     private Integer id;
     @Column(name = "member_name")
@@ -29,6 +28,8 @@ public class Member extends BaseEntity {
     private String gender;
     private LocalDate birth;
     private String profile;
+    @Column(columnDefinition = "POINT")
+    private Point point;
     @Column(name = "member_photo")
     private String photo;
     @Enumerated(EnumType.STRING)

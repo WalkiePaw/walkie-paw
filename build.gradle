@@ -24,6 +24,11 @@ repositories {
 }
 
 dependencies {
+	// mysql jdbc connector
+	implementation 'mysql:mysql-connector-java:8.0.32'
+	// mysql geo point lib
+	implementation 'org.locationtech.jts:jts-io:1.19.0'
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-security'

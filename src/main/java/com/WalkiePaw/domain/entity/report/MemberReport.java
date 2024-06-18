@@ -23,12 +23,10 @@ public class MemberReport {
     private LocalDate reportedDate;
     private String reason;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    @Column(name = "reporting_member_id")
+    @JoinColumn(name = "reporting_member_id", referencedColumnName = "member_id")
     private Member reportingMember;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    @Column(name = "reported_member_id")
+    @JoinColumn(name = "reported_member_id", referencedColumnName = "member_id")
     private Member reportedMember;
 
 }

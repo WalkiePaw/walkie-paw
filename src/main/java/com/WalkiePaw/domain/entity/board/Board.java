@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDate;
 
@@ -24,6 +25,8 @@ public class Board extends BaseEntity {
     private String title;
     private String content;
     private int price;
+    @Column(columnDefinition = "POINT")
+    private Point point;
     private LocalDate meetingTime;
     private int viewCount;
     private int likeCount;
