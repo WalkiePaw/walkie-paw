@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 
@@ -25,4 +26,22 @@ public class Qna {
     private String reply;
     @Enumerated(EnumType.STRING)
     private QnaStatus status;
+
+    /**
+     *
+     */
+    private Qna(Member member, String title, String content, LocalDate createdDate) {
+        this.member = member;
+        this.title = title;
+        this.content = content;
+        this.createdDate = createdDate;
+        this.status = QnaStatus.WAITING;
+    }
+
+    /**
+     * QnA 생성 메서드
+     */
+    public Qna createQnA(Member member, String title, String content, LocalDate createdDate) {
+        return new Qna(member, title, content, createdDate);
+    }
 }

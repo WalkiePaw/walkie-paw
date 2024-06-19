@@ -21,7 +21,8 @@ public class MemberReport {
     @Column(name = "member_report_content")
     private String content;
     private LocalDate reportedDate;
-    private String reason;
+    @Enumerated(EnumType.STRING)
+    private MemberReportCategory reason;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reporting_member_id", referencedColumnName = "member_id")
     private Member reportingMember;
@@ -29,4 +30,19 @@ public class MemberReport {
     @JoinColumn(name = "reported_member_id", referencedColumnName = "member_id")
     private Member reportedMember;
 
+    private MemberReport(String title, String content, LocalDate reportedDate, MemberReportCategory reason, Member reportingMember, Member reportedMember) {
+        this.title = title;
+        this.content = content;
+        this.reportedDate = reportedDate;
+        this.reason = reason;
+        this.reportingMember = reportingMember;
+        this.reportedMember = reportedMember;
+    }
+
+    /**
+     * MemberReport 생성 메서드
+     */
+    public MemberReport createMemberReport(String title, String content, LocalDate reportedDate, MemberReportCategory reason, Member reportingMember, Member reportedMember) {
+        return new MemberReport(title, content, reportedDate, reason, reportingMember, reportedMember);
+    }
 }
