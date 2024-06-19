@@ -1,9 +1,13 @@
-package com.WalkiePaw.domain.entity;
+package com.WalkiePaw.domain.entity.board;
 
+import com.WalkiePaw.domain.entity.BaseEntity;
+import com.WalkiePaw.domain.entity.member.Member;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDate;
 
@@ -21,11 +25,15 @@ public class Board extends BaseEntity {
     private String title;
     private String content;
     private int price;
+    @Column(columnDefinition = "POINT")
+    private Point point;
     private LocalDate meetingTime;
     private int viewCount;
     private int likeCount;
     @Enumerated(EnumType.STRING)
     private BoardStatus status;
+    private BoardCategory category;
+    private boolean isDeleted;
 
 
     private Board(String title, String content, int price, LocalDate meetingTime) {
@@ -43,6 +51,15 @@ public class Board extends BaseEntity {
         Board board = new Board(title, content, price, meetingTime);
         board.member = member;
         return board;
+    }
+
+    public void updateMember(Member member) {
+        this.member = member;
+    }
+
+    public void updateTitle(@Nullable String title, @Nullable String content) {
+        this.title = title;
+        this.content = content;
     }
 
     /**

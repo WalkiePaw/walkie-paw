@@ -1,0 +1,12 @@
+package com.WalkiePaw.domain.entity.member;
+
+/**
+ * GENERAL = "일반"
+ * WITHDRAWN = "탈퇴"
+ * BANNED = "제재 또는 정지된 회원"
+ * INACTIVE = "휴면 상태"
+ */
+public enum MemberStatus {
+    GENERAL, WITHDRAWN, BANNED, INACTIVE
+
+}

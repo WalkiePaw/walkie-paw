@@ -1,9 +1,11 @@
-package com.WalkiePaw.domain.entity;
+package com.WalkiePaw.domain.entity.member;
 
+import com.WalkiePaw.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDate;
 
@@ -12,25 +14,27 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "member_id")
     private Integer id;
     @Column(name = "member_name")
     private String name;
     private String email;
     private String password;
-    @Column(name = "tel")
     private String phoneNumber;
+    @Column(name = "addr")
     private String address;
     private String gender;
     private LocalDate birth;
     private String profile;
+    @Column(columnDefinition = "POINT")
+    private Point point;
     @Column(name = "member_photo")
     private String photo;
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
-    @Column(name = "withdrawn_date")
-    private int reportedCount;
+    private int reportedCnt;
 
     private Member(String name, String email, String password, String phoneNumber,
                   String address, String gender, LocalDate birth, String profile, String photo) {
