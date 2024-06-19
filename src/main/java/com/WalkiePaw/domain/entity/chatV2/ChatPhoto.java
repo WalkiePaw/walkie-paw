@@ -1,4 +1,4 @@
-package com.WalkiePaw.domain.entity.chat;
+package com.WalkiePaw.domain.entity.chatV2;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -18,4 +18,14 @@ public class ChatPhoto {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_msg_id")
     private ChatMessage chatMessage;
+
+    private ChatPhoto(String oriName, String uuidName, ChatMessage chatMessage) {
+        this.oriName = oriName;
+        this.uuidName = uuidName;
+        this.chatMessage = chatMessage;
+    }
+
+    public ChatPhoto createChatPhoto(String oriName, String uuidName, ChatMessage chatMessage) {
+        return new ChatPhoto(oriName, uuidName, chatMessage);
+    }
 }

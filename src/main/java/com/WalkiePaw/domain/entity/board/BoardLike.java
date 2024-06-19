@@ -22,4 +22,16 @@ public class BoardLike {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
+
+    private BoardLike(Member member, Board board) {
+        this.member = member;
+        this.board = board;
+    }
+
+    /**
+     * BoardLike create 메서드
+     */
+    public BoardLike createBoardLike(Member member, Board board) {
+        return new BoardLike(member, board);
+    }
 }

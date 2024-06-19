@@ -1,6 +1,5 @@
 package com.WalkiePaw.domain.entity.board;
 
-import com.WalkiePaw.domain.entity.chat.ChatMessage;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,4 +18,17 @@ public class BoardPhoto {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
+
+    private BoardPhoto(String oriName, String uuidName, Board board) {
+        this.board = board;
+        this.oriName = oriName;
+        this.uuidName = uuidName;
+    }
+
+    /**
+     * BoardPhoto 생성 메서드
+     */
+    public BoardPhoto createBoardPhoto(String oriName, String uuidName, Board board) {
+        return new BoardPhoto(oriName, uuidName, board);
+    }
 }
