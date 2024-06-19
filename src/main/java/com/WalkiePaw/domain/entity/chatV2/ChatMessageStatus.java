@@ -1,5 +1,4 @@
-package com.WalkiePaw.domain.entity.chatV1;
-
+package com.WalkiePaw.domain.entity.chatV2;
 
 /**
  * SEND = "보낸 메시지"

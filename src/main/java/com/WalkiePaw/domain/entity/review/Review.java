@@ -28,4 +28,14 @@ public class Review extends BaseEntity {
     private int point;
     private boolean isDeleted;
 
+    private Review(int point, String content, Chatroom chatroom, Member member) {
+        this.point = point;
+        this.content = content;
+        this.chatroom = chatroom;
+        this.member = member;
+    }
+
+    public Review createReview(int point, String content, Chatroom chatroom, Member member) {
+        return new Review(point, content, chatroom, member);
+    }
 }

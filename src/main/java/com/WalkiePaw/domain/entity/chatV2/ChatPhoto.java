@@ -1,4 +1,4 @@
-package com.WalkiePaw.domain.entity.chatV1;
+package com.WalkiePaw.domain.entity.chatV2;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
