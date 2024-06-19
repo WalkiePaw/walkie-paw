@@ -25,8 +25,8 @@ public class Board extends BaseEntity {
     private String title;
     private String content;
     private int price;
-    @Column(columnDefinition = "geometry(Point, 4326)")
-    private Point location;
+    @Column(columnDefinition = "POINT")
+    private Point point;
     private LocalDate meetingTime;
     private int viewCount;
     private int likeCount;
