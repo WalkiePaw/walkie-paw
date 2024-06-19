@@ -1,4 +1,4 @@
-package com.WalkiePaw.domain.entity.chat;
+package com.WalkiePaw.domain.entity.chatV1;
 
 import com.WalkiePaw.domain.entity.BaseEntity;
 import com.WalkiePaw.domain.entity.chatroom.Chatroom;
@@ -24,7 +24,21 @@ public class ChatMessage extends BaseEntity {
     private boolean isRead;
     @Column(name = "msg_content")
     private String content;
-    @Enumerated(EnumType.STRING)
-    private ChatMessageStatus status;
+    private boolean isFromBoardWriter;
 
+    /**
+     * isRead와 isFromBoardWriter를 파라미터로 사용할지,
+     * 사용한다면 flase로 하드코딩할 지 고민하기
+     */
+    private ChatMessage(Chatroom chatroom, String content) {
+        this.chatroom = chatroom;
+        this.content = content;
+    }
+
+    /**
+     * chatMessage 생성 메서드
+     */
+    public ChatMessage createChatMessage(Chatroom chatroom, String content) {
+        return new ChatMessage(chatroom, content);
+    }
 }

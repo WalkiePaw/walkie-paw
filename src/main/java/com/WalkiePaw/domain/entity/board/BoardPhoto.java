@@ -1,6 +1,5 @@
 package com.WalkiePaw.domain.entity.board;
 
-import com.WalkiePaw.domain.entity.chat.ChatMessage;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
