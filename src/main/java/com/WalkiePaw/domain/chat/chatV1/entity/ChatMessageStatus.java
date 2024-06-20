@@ -1,4 +1,4 @@
-package com.WalkiePaw.domain.chatV1.entity;
+package com.WalkiePaw.domain.chat.chatV1.entity;
 
 
 /**
