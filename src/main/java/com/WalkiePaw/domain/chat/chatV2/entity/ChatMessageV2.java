@@ -13,9 +13,9 @@ import static jakarta.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ChatMessage extends BaseEntity {
+public class ChatMessageV2 extends BaseEntity {
     @Id @GeneratedValue
-    @Column(name = "chat_msg_id")
+    @Column(name = "chat_msg_id_v2")
     private Integer id;
 
     @ManyToOne(fetch = LAZY)
@@ -31,7 +31,7 @@ public class ChatMessage extends BaseEntity {
     @Column(name = "msg_content")
     private String content;
 
-    public ChatMessage(Chatroom chatroom, Member receiver, String content) {
+    public ChatMessageV2(Chatroom chatroom, Member receiver, String content) {
         this.chatroom = chatroom;
         this.receiver = receiver;
         this.content = content;

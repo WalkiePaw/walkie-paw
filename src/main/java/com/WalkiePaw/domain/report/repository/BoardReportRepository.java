@@ -1,6 +1,5 @@
 package com.WalkiePaw.domain.report.repository;
 
-import com.WalkiePaw.domain.chat.chatV2.entity.ChatMessage;
 import com.WalkiePaw.domain.report.entity.BoardReport;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
