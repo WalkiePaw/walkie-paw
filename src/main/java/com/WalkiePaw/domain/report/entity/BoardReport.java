@@ -5,6 +5,7 @@ import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +30,7 @@ public class BoardReport extends BaseEntity {
     @JoinColumn(name = "board_id")
     private Board board;
 
+    @Builder
     public BoardReport(String title, String content, Member member, Board board, BoardReportCategory reason) {
         this.title = title;
         this.content = content;

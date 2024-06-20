@@ -4,6 +4,7 @@ import com.WalkiePaw.domain.common.BaseEntity;
 import com.WalkiePaw.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,9 +25,6 @@ public class Qna extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private QnaStatus status;
 
-    /**
-     *
-     */
     public Qna(Member member, String title, String content) {
         this.member = member;
         this.title = title;
