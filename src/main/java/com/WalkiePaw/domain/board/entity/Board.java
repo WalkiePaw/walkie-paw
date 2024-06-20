@@ -5,6 +5,7 @@ import com.WalkiePaw.domain.member.entity.Member;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.locationtech.jts.geom.Point;
@@ -35,7 +36,9 @@ public class Board extends BaseEntity {
     private BoardCategory category;
     private boolean isDeleted;
 
-    public Board(Member member, String title, String content, int price, LocalDate meetingTime) {
+    @Builder
+    public Board(Member member, String title, String content, int price, LocalDate meetingTime, Point point) {
+        this.point = point;
         this.member = member;
         this.title = title;
         this.content = content;

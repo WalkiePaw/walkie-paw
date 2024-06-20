@@ -8,18 +8,18 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ChatPhoto {
+public class ChatPhotoV2 {
     @Id
     @GeneratedValue
-    @Column(name = "chat_photo_id")
+    @Column(name = "chat_photo_id_v2")
     private Integer id;
     private String oriName;
     private String uuidName;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_msg_id")
-    private ChatMessage chatMessage;
+    private ChatMessageV2 chatMessage;
 
-    public ChatPhoto(String oriName, String uuidName, ChatMessage chatMessage) {
+    public ChatPhotoV2(String oriName, String uuidName, ChatMessageV2 chatMessage) {
         this.oriName = oriName;
         this.uuidName = uuidName;
         this.chatMessage = chatMessage;
