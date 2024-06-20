@@ -1,4 +1,4 @@
-package com.WalkiePaw.domain.member;
+package com.WalkiePaw.domain.member.Repository;
 
 import com.WalkiePaw.domain.member.entity.Member;
 import jakarta.persistence.EntityManager;
