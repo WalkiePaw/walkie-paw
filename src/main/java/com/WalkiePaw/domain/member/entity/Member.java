@@ -3,6 +3,7 @@ package com.WalkiePaw.domain.member.entity;
 import com.WalkiePaw.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.locationtech.jts.geom.Point;
@@ -36,6 +37,7 @@ public class Member extends BaseEntity {
     private MemberStatus status;
     private int reportedCnt;
 
+    @Builder
     public Member(String name, String email, String password, String phoneNumber,
                   String address, String gender, LocalDate birth, String profile, String photo) {
         this.name = name;

@@ -3,6 +3,7 @@ package com.WalkiePaw.domain.report.entity;
 import com.WalkiePaw.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 @Entity
@@ -26,6 +27,7 @@ public class MemberReport {
     @JoinColumn(name = "reported_member_id", referencedColumnName = "member_id")
     private Member reportedMember;
 
+    @Builder
     public MemberReport(String title, String content, MemberReportCategory reason, Member reportingMember, Member reportedMember) {
         this.title = title;
         this.content = content;

@@ -5,6 +5,7 @@ import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,6 +28,7 @@ public class Review extends BaseEntity {
     private int point;
     private boolean isDeleted;
 
+    @Builder
     public Review(int point, String content, Chatroom chatroom, Member member) {
         this.point = point;
         this.content = content;
