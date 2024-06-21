@@ -1,4 +1,4 @@
-package com.WalkiePaw.web.interceptor;
+package com.WalkiePaw.presentation.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

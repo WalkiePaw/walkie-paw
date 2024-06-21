@@ -1,6 +1,6 @@
-package com.WalkiePaw.web;
+package com.WalkiePaw.presentation;
 
-import com.WalkiePaw.web.filter.AuthCheckFilter;
+import com.WalkiePaw.presentation.filter.AuthCheckFilter;
 import jakarta.servlet.Filter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

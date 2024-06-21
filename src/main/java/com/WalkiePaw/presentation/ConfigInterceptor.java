@@ -1,6 +1,6 @@
-package com.WalkiePaw.web;
+package com.WalkiePaw.presentation;
 
-import com.WalkiePaw.web.interceptor.LoginCheckInterceptor;
+import com.WalkiePaw.presentation.interceptor.LoginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
