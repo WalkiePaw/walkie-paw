@@ -24,4 +24,9 @@ public class ReviewRepository {
                 .setParameter("name", name)
                 .getResultList();
     }
+
+    public List<Review> findAll() {
+        return em.createQuery("select r from Review r", Review.class)
+                .getResultList();
+    }
 }
