@@ -39,6 +39,10 @@ public class Chatroom extends BaseEntity {
         this.status = ChatroomStatus.GENERAL;
     }
 
+    public void update() {
+
+    }
+
 //    /**
 //     * Chatroom 생성 메서드
 //     * @param board 어떤 게시물과 연결된 채팅인지, board의 작성자가 채팅을 받는 member가 된다.

@@ -37,7 +37,11 @@ public class ChatMessageV2 extends BaseEntity {
         this.content = content;
     }
 
-//    /**
+    public ChatMessageV2(final Member receiver, final String content) {
+        this.receiver = receiver;
+        this.content = content;
+    }
+    //    /**
 //     * ChatMessage 생성 메서드
 //     * @param receiver 받을 member를 가르킴
 //     */

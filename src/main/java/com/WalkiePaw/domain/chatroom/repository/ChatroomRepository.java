@@ -1,4 +1,4 @@
-package com.WalkiePaw.domain.chatroom;
+package com.WalkiePaw.domain.chatroom.repository;
 
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import jakarta.persistence.EntityManager;
@@ -16,11 +16,12 @@ public class ChatroomRepository {
     private final EntityManager em;
 
 
-    public void save(Chatroom chatroom) {
+    public Integer save(final Chatroom chatroom) {
         em.persist(chatroom);
+        return chatroom.getId();
     }
 
-    public Chatroom findOne(Integer chatroomId) {
+    public Chatroom findById(final Integer chatroomId) {
         return em.find(Chatroom.class, chatroomId);
     }
 

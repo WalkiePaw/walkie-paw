@@ -15,13 +15,23 @@ public class ReviewRepository {
     @PersistenceContext
     private final EntityManager em;
 
-    public void save(Review review) {
+    public Integer save(final Review review) {
         em.persist(review);
+        return review.getId();
     }
 
-    public List<Review> findByName(String name) {
+    public List<Review> findByName(final String name) {
         return em.createQuery("select r from Review r where r.name = :name", Review.class)
                 .setParameter("name", name)
+                .getResultList();
+    }
+
+    public Review findById(final Integer id) {
+        return em.find(Review.class, id);
+    }
+
+    public List<Review> findAll() {
+        return em.createQuery("select r from Review r", Review.class)
                 .getResultList();
     }
 }

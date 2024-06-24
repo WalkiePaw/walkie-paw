@@ -35,6 +35,7 @@ public class ChatMessage extends BaseEntity {
         this.content = content;
     }
 
+
 //    /**
 //     * chatMessage 생성 메서드
 //     */
