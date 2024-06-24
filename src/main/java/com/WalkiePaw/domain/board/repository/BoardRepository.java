@@ -30,7 +30,7 @@ public class BoardRepository {
                 .getResultList();
     }
 
-    public List<Board> getAllBoardsWithMember() {
+    public List<Board> findAllBoardAndMember() {
         return em.createQuery("select b from Board b join fetch b.member", Board.class)
                 .getResultList();
     }

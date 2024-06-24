@@ -24,8 +24,8 @@ public class BoardController {
     private static final String BOARD_URL = "/boards/";
 
     @GetMapping
-    public ResponseEntity<List<BoardListResponse>> boardList() {
-        List<BoardListResponse> boardListResponses = boardService.listBoardWithMember();
+    public ResponseEntity<List<BoardListResponse>> getBoardList() {
+        List<BoardListResponse> boardListResponses = boardService.findAllBoardAndMember();
         return ResponseEntity.ok(boardListResponses);
     }
 

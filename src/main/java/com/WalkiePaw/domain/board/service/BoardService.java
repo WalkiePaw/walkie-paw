@@ -21,8 +21,8 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    public List<BoardListResponse> listBoardWithMember() {
-        List<Board> findBoards = boardRepository.getAllBoardsWithMember();
+    public List<BoardListResponse> findAllBoardAndMember() {
+        List<Board> findBoards = boardRepository.findAllBoardAndMember();
         return findBoards.stream()
                 .map(BoardListResponse::from)
                 .toList();
