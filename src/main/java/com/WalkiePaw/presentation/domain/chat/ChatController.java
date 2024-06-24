@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -17,8 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatController {
     private final ChatService chatService;
 
-//    @GetMapping
-//    public ResponseEntity<ChatMsgListResponse> chatMsgList(@RequestParam Integer chatroomId) {
-//        chatService.listChatMsg(chatroomId);
-//    }
+    @GetMapping
+    public ResponseEntity<List<ChatMsgListResponse>> getChatListByChatroomId(@RequestParam Integer chatroomId) {
+        List<ChatMsgListResponse> chats = chatService.findChatByChatroomId(chatroomId);
+        return ResponseEntity.ok(chats);
+    }
 }
