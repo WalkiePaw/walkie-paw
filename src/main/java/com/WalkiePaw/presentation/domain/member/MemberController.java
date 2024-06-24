@@ -1,5 +1,9 @@
 package com.WalkiePaw.presentation.domain.member;
 
+import com.WalkiePaw.domain.member.service.MemberService;
+import com.WalkiePaw.presentation.domain.member.dto.MemberRequest;
+import com.WalkiePaw.presentation.domain.member.dto.MemberResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -9,44 +13,37 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/members")
+@RequiredArgsConstructor
 public class MemberController {
 
+    private final MemberService memberService;
     private static final String MEMBER_URL = "/members/";
 
     @GetMapping
-    public ResponseEntity<List<MemberResponse>> getMembers() {
-        List<MemberResponse> responses = null;
+    public ResponseEntity<List<MemberResponse>> memberList() {
         return ResponseEntity.ok()
-                .body(responses);
+                .body(memberService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MemberResponse> getMember(@PathVariable Long id) {
-        MemberResponse response = null;
-        return ResponseEntity.ok(response);
+    public ResponseEntity<MemberResponse> getMember(final @PathVariable("id") Integer memberId) {
+        return ResponseEntity.ok(memberService.findById(memberId));
     }
 
     @PostMapping
-    public ResponseEntity<MemberResponse> createMember(@Validated @RequestBody MemberRequest request) {
-        /**
-         * memberRequest를 저장하는 서비스
-         */
-        return ResponseEntity.created(URI.create(MEMBER_URL/* + memberId*/)).build();
+    public ResponseEntity<MemberResponse> addMember(final @Validated @RequestBody MemberRequest request) {
+        Integer memberId = memberService.save(request);
+        return ResponseEntity.created(URI.create(MEMBER_URL + memberId)).build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<MemberResponse> deleteMember(@PathVariable Long id) {
-        /**
-         * id에 해당하는 데이터를 삭제하는 서비스
-         */
+    @PatchMapping("/{id}")
+    public ResponseEntity<MemberResponse> updateMember(final @PathVariable("id") Integer memberId, final @RequestBody MemberRequest request) {
+        memberService.update(memberId, request);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping
-    public ResponseEntity<MemberResponse> updateMember(@Validated @RequestBody MemberRequest request) {
-        /**
-         * memberRequest로 수정하는 서비스
-         */
+    public ResponseEntity<MemberResponse> deleteMember(final @PathVariable("id") Integer memberId) {
+        memberService.delete(memberId);
         return ResponseEntity.noContent().build();
     }
 

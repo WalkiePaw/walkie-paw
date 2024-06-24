@@ -15,8 +15,9 @@ public class MemberRepository {
     @PersistenceContext
     private final EntityManager em;
 
-    public void save(Member member) {
+    public Integer save(Member member) {
         em.persist(member);
+        return member.getId();
     }
 
     public Member findById(Integer memberId) {
@@ -27,5 +28,17 @@ public class MemberRepository {
         return em.createQuery("select m from Member m where m.name = :name", Member.class)
                 .setParameter("name", name)
                 .getResultList();
+    }
+
+    public List<Member> findAll() {
+        return em.createQuery("select m from Member m", Member.class).getResultList();
+    }
+
+    public void update(Integer memberId, Member member) {
+
+    }
+
+    public void delete(Integer memberId) {
+        em.remove(em.find(Member.class, memberId));
     }
 }

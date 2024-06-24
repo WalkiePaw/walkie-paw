@@ -1,5 +1,9 @@
 package com.WalkiePaw.presentation.domain.report;
 
+import com.WalkiePaw.domain.report.service.BoardReportService;
+import com.WalkiePaw.presentation.domain.report.boardReportDto.BoardReportRequest;
+import com.WalkiePaw.presentation.domain.report.boardReportDto.BoardReportResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -9,44 +13,44 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/boardReports")
+@RequiredArgsConstructor
 public class BoardReportController {
 
+    private final BoardReportService boardReportService;
     private static final String BOARD_REPORT_URL = "/boardReports/";
 
     @GetMapping
-    public ResponseEntity<List<BoardReportResponse>> getBoardReports() {
+    public ResponseEntity<List<BoardReportResponse>> boardReportList() {
         List<BoardReportResponse> responses = null;
         return ResponseEntity.ok()
                 .body(responses);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BoardReportResponse> getBoardReport(@PathVariable Long id) {
-        BoardReportResponse response = null;
+    public ResponseEntity<BoardReportResponse> getBoardReport(final @PathVariable Integer boardReportId) {
+        BoardReportResponse response = boardReportService.findById(boardReportId);
         return ResponseEntity.ok()
                 .body(response);
     }
 
     @PostMapping
-    public ResponseEntity<BoardReportResponse> createBoardReport(@Validated @RequestBody BoardReportRequest request) {
-        /**
-         * boardReportRequest를 저장하는 서비스
-         */
+    public ResponseEntity<BoardReportResponse> addBoardReport(final @Validated @RequestBody BoardReportRequest request) {
+        Integer boardReportId = boardReportService.save(request);
         return ResponseEntity.created(URI.create(BOARD_REPORT_URL/* + boardReportId*/)).build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<BoardReportResponse> deleteBoardReport(@PathVariable Long id) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<BoardReportResponse> updateBoardReport(final @PathVariable("id") Integer boardReportId, final @Validated @RequestBody BoardReportRequest request) {
         /**
-         * id에 해당하는 데이터를 삭제하는 서비스
+         * boardReportRequest로 수정하는 서비스
          */
+        boardReportService.update(boardReportId, request);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping
-    public ResponseEntity<BoardReportResponse> updateBoardReport(@Validated @RequestBody BoardReportRequest request) {
+    public ResponseEntity<BoardReportResponse> deleteBoardReport(@PathVariable Integer boardReportId) {
         /**
-         * boardReportRequest로 수정하는 서비스
+         * id에 해당하는 데이터를 삭제하는 서비스
          */
         return ResponseEntity.noContent().build();
     }

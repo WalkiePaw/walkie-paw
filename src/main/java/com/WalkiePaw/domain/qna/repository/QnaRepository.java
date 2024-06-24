@@ -1,6 +1,7 @@
 package com.WalkiePaw.domain.qna.repository;
 
 import com.WalkiePaw.domain.qna.entity.Qna;
+import com.WalkiePaw.presentation.domain.qna.dto.QnaRequest;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +16,20 @@ public class QnaRepository {
     @PersistenceContext
     private final EntityManager em;
 
-    public void save(Qna qna) {
+    public Integer save(Qna qna) {
         em.persist(qna);
+        return qna.getId();
     }
 
     public List<Qna> findAll() {
-        return em.createQuery("select qna from Qna qna", Qna.class)
+        return em.createQuery("select qna from Qna qna join fetch qna.member m", Qna.class)
                 .getResultList();
+    }
+    public Qna findById(Integer qnaId) {
+        return em.find(Qna.class, qnaId);
+    }
+
+    public void update(Integer qnaId, QnaRequest request) {
+        Qna qna = em.find(Qna.class, qnaId);
     }
 }

@@ -1,5 +1,7 @@
 package com.WalkiePaw.presentation.domain.report;
 
+import com.WalkiePaw.presentation.domain.report.memberReportDto.MemberReportRequest;
+import com.WalkiePaw.presentation.domain.report.memberReportDto.MemberReportResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
