@@ -65,6 +65,9 @@ public class Board extends BaseEntity {
         this.content = content;
     }
 
+    public void updateBoard() {
+    }
+
     /**
      * TODO : update 메서드 만들기
      *  - validation 추가

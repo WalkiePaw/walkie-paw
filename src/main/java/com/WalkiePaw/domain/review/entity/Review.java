@@ -36,6 +36,12 @@ public class Review extends BaseEntity {
         this.member = member;
     }
 
+    /**
+     * TODO - update 메서드
+     */
+    public void update() {
+    }
+
 //    public Review createReview(int point, String content, Chatroom chatroom, Member member) {
 //        return new Review(point, content, chatroom, member);
 //    }

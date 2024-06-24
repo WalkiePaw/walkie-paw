@@ -19,7 +19,7 @@ public class MemberRepository {
         em.persist(member);
     }
 
-    public Member findOne(Integer memberId) {
+    public Member findById(Integer memberId) {
         return em.find(Member.class, memberId);
     }
 
