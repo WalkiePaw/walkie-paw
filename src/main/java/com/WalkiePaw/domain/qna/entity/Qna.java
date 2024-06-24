@@ -25,6 +25,7 @@ public class Qna extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private QnaStatus status;
 
+    @Builder
     public Qna(Member member, String title, String content) {
         this.member = member;
         this.title = title;
