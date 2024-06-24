@@ -1,4 +1,4 @@
-package com.WalkiePaw.presentation.domain.review;
+package com.WalkiePaw.presentation.domain.review.dto;
 
 import com.WalkiePaw.domain.review.entity.Review;
 import lombok.AllArgsConstructor;

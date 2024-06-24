@@ -22,9 +22,9 @@ public class ChatMsgRepository {
 //        return em.find(ChatMessage.class, chatMsgId);
 //    }
 //
-////    public List<ChatMessage> findChatMsgWithChatroom(final Integer chatroomId) {
-////        return em.createQuery("select cm from ChatMessage cm where cm.chatroom.id = :chatroomId\", ChatMessage.class)\n" +
-////                        "                .setParameter(\"chatroomId\", chatroomId)\n" +
-////                        "                .getResultList();join fetch cm.chatroom
-//    }
+    public List<ChatMessage> findByChatroomId(final Integer chatroomId) {
+        return em.createQuery("select cm from ChatMessage cm where cm.Chatroom.id = :chatroomId", ChatMessage.class)
+                .setParameter("chatroomId", chatroomId)
+                .getResultList();
+    }
 }

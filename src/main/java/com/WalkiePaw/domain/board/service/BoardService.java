@@ -30,12 +30,12 @@ public class BoardService {
 
     @Transactional
     public Integer save(final BoardAddRequest request) {
-        Board entity = request.toEntity();
+        Board entity = BoardAddRequest.toEntity();
         return boardRepository.save(entity);
     }
 
     public BoardGetResponse getBoard(Integer boardId) {
-        Board board = boardRepository.findOne(boardId);
+        Board board = boardRepository.findById(boardId);
         return BoardGetResponse.from(board);
     }
 

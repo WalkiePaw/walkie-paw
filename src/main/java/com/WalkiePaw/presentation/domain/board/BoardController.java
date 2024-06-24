@@ -13,11 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
-///api/v1/{domain}-> get : 목록
-///api/v1/{domain} -> post : 등록
-///api/v1/{domain}/{id} -> get : 조회
-///api/v1/{domain}/{id} -> patch  : 수정
-///api/v1/{domain}/{id} -> delete : 삭제
 
 @RestController
 @RequiredArgsConstructor

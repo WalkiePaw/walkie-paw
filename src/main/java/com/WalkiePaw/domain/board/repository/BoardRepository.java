@@ -21,7 +21,7 @@ public class BoardRepository {
         return board.getId();
     }
 
-    public Board findOne(Integer boardId) {
+    public Board findById(Integer boardId) {
         return em.find(Board.class, boardId);
     }
 
