@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.locationtech.jts.geom.Point;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -26,9 +26,13 @@ public class Board extends BaseEntity {
     private String title;
     private String content;
     private int price;
-    @Column(columnDefinition = "POINT")
-    private Point point;
-    private LocalDate meetingTime;
+    @Enumerated(EnumType.STRING)
+    private PriceType priceType;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+//    @Column(columnDefinition = "POINT")
+//    private Point point;
+    private LocalDateTime meetingTime;
     private int viewCount;
     private int likeCount;
     @Enumerated(EnumType.STRING)
@@ -37,13 +41,16 @@ public class Board extends BaseEntity {
     private boolean isDeleted;
 
     @Builder
-    public Board(Member member, String title, String content, int price, LocalDate meetingTime, Point point) {
-        this.point = point;
+    public Board(Member member, String title, String content, int price, LocalDateTime meetingTime, LocalDateTime startTime, LocalDateTime endTime, PriceType priceType, Point point) {
+        this.priceType = priceType;
+//        this.point = point;
         this.member = member;
         this.title = title;
         this.content = content;
         this.price = price;
         this.meetingTime = meetingTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
         status = BoardStatus.RECRUITING;
     }
 
@@ -65,7 +72,14 @@ public class Board extends BaseEntity {
         this.content = content;
     }
 
-    public void updateBoard() {
+    public void updateBoard(final String content, final String title, final int price, final LocalDateTime meetingTime, final LocalDateTime startTime, final LocalDateTime endTime, final PriceType priceType) {
+        this.content = content;
+        this.title = title;
+        this.price = price;
+        this.meetingTime = meetingTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.priceType = priceType;
     }
 
     /**

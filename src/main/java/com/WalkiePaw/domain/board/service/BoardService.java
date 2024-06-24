@@ -2,6 +2,8 @@ package com.WalkiePaw.domain.board.service;
 
 import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.board.repository.BoardRepository;
+import com.WalkiePaw.domain.member.Repository.MemberRepository;
+import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.presentation.domain.board.dto.BoardAddRequest;
 import com.WalkiePaw.presentation.domain.board.dto.BoardGetResponse;
 import com.WalkiePaw.presentation.domain.board.dto.BoardListResponse;
@@ -20,6 +22,7 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
 
     public List<BoardListResponse> findAllBoardAndMember() {
         List<Board> findBoards = boardRepository.findAllBoardAndMember();
@@ -30,7 +33,8 @@ public class BoardService {
 
     @Transactional
     public Integer save(final BoardAddRequest request) {
-        Board entity = BoardAddRequest.toEntity();
+        Member member = memberRepository.findById(request.getMemberId());
+        Board entity = BoardAddRequest.toEntity(request, member);
         return boardRepository.save(entity);
     }
 
