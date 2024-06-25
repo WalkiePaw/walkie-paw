@@ -21,7 +21,7 @@ public class BoardReportController {
 
     @GetMapping
     public ResponseEntity<List<BoardReportResponse>> boardReportList() {
-        List<BoardReportResponse> responses = null;
+        List<BoardReportResponse> responses = boardReportService.findAll();
         return ResponseEntity.ok()
                 .body(responses);
     }

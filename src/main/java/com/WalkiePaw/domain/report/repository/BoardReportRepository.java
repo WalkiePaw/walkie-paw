@@ -16,12 +16,12 @@ public class BoardReportRepository {
 
     private final EntityManager em;
 
-    public Integer save(BoardReport boardReport) {
+    public Integer save(final BoardReport boardReport) {
         em.persist(boardReport);
         return boardReport.getId();
     }
 
-    public BoardReport findById(Integer brId) {
+    public BoardReport findById(final Integer brId) {
         return em.find(BoardReport.class, brId);
     }
 
@@ -30,7 +30,7 @@ public class BoardReportRepository {
                 .getResultList();
     }
 
-    public void update(Integer boardReportId, BoardReportRequest request) {
+    public void update(final Integer boardReportId, final BoardReportRequest request) {
         BoardReport boardReport = em.find(BoardReport.class, boardReportId);
     }
 }
