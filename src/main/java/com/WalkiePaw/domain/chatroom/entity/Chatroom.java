@@ -17,7 +17,7 @@ import static jakarta.persistence.FetchType.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Chatroom extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chatroom_id")
     private Integer id;
 
@@ -30,10 +30,12 @@ public class Chatroom extends BaseEntity {
     private Member member;
     @Enumerated(EnumType.STRING)
     private ChatroomStatus status;
+    private ChatroomCategory category;
     private String latestMessage;
     private LocalDateTime latestMessageTime;
 
-    public Chatroom(Board board, Member member) {
+    public Chatroom(Board board, Member member, ChatroomCategory category) {
+        this.category = category;
         this.board = board;
         this.member = member;
         this.status = ChatroomStatus.GENERAL;

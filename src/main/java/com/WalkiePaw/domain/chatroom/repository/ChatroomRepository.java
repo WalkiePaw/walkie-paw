@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,8 +22,17 @@ public class ChatroomRepository {
         return chatroom.getId();
     }
 
-    public Chatroom findById(final Integer chatroomId) {
-        return em.find(Chatroom.class, chatroomId);
+    public Optional<Chatroom> findById(final Integer chatroomId) {
+        return Optional.ofNullable(em.find(Chatroom.class, chatroomId));
+    }
+
+    public Optional<Chatroom> findChatroomWithMemberAndBoardById(final Integer chatroomId) {
+        return (Optional<Chatroom>) em.createQuery("select cr from Chatroom cr" +
+                        " join fetch cr.member m" +
+                        " join fetch cr.board b" +
+                        " where cr.id = :id")
+                .setParameter("id", chatroomId)
+                .getSingleResult();
     }
 
     public List<Chatroom> findAll() {

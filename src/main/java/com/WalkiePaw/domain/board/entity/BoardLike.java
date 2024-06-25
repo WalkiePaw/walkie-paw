@@ -13,7 +13,7 @@ import static jakarta.persistence.FetchType.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardLike {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_like_id")
     private Integer id;
     @ManyToOne(fetch = LAZY)

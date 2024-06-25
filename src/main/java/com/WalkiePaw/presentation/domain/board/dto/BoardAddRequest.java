@@ -3,7 +3,9 @@ package com.WalkiePaw.presentation.domain.board.dto;
 import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.board.entity.PriceType;
 import com.WalkiePaw.domain.member.entity.Member;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 

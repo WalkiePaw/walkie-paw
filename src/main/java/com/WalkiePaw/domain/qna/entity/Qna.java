@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Qna extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qna_id")
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)

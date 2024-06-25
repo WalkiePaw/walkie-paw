@@ -14,12 +14,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member reviewee;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member reviewer;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatroom_id")
     private Chatroom chatroom;
@@ -29,17 +32,20 @@ public class Review extends BaseEntity {
     private boolean isDeleted;
 
     @Builder
-    public Review(int point, String content, Chatroom chatroom, Member member) {
+    public Review(int point, String content, Chatroom chatroom, Member reviewee, Member reviewer) {
         this.point = point;
         this.content = content;
         this.chatroom = chatroom;
-        this.member = member;
+        this.reviewee = reviewee;
+        this.reviewer = reviewer;
     }
 
     /**
      * TODO - update 메서드
      */
-    public void update() {
+    public void update(final String content, final int point) {
+        this.content = content;
+        this.point = point;
     }
 
 //    public Review createReview(int point, String content, Chatroom chatroom, Member member) {

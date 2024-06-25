@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,20 +30,18 @@ public class Board extends BaseEntity {
     private PriceType priceType;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-//    @Column(columnDefinition = "POINT")
-//    private Point point;
     private LocalDateTime meetingTime;
     private int viewCount;
     private int likeCount;
+    private String location;
     @Enumerated(EnumType.STRING)
     private BoardStatus status;
     private BoardCategory category;
     private boolean isDeleted;
 
     @Builder
-    public Board(Member member, String title, String content, int price, LocalDateTime meetingTime, LocalDateTime startTime, LocalDateTime endTime, PriceType priceType, Point point) {
+    public Board(Member member, String title, String content, int price, LocalDateTime meetingTime, LocalDateTime startTime, LocalDateTime endTime, PriceType priceType, String location) {
         this.priceType = priceType;
-//        this.point = point;
         this.member = member;
         this.title = title;
         this.content = content;
@@ -67,7 +65,7 @@ public class Board extends BaseEntity {
         this.member = member;
     }
 
-    public void updateTitle(@Nullable String title, @Nullable String content) {
+    public void updateTitle(String title, String content) {
         this.title = title;
         this.content = content;
     }
