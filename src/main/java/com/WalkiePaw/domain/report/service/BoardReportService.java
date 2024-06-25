@@ -22,23 +22,25 @@ public class BoardReportService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
-    public BoardReportResponse findById(Integer boardReportId) {
+    @Transactional(readOnly = true)
+    public BoardReportResponse findById(final Integer boardReportId) {
         return BoardReportResponse.from(boardReportRepository.findById(boardReportId));
     }
 
+    @Transactional(readOnly = true)
     public List<BoardReportResponse> findAll() {
         return boardReportRepository.findAll().stream()
                 .map(BoardReportResponse::from)
                 .toList();
     }
 
-    public Integer save(BoardReportRequest request) {
+    public Integer save(final BoardReportRequest request) {
         Member member = memberRepository.findById(request.getMemberId());
         Board board = boardRepository.findById(request.getBoardId());
         return boardReportRepository.save(request.toEntity(member, board));
     }
 
-    public void update(Integer boardReportId, BoardReportRequest request) {
+    public void update(final Integer boardReportId, final BoardReportRequest request) {
         boardReportRepository.update(boardReportId, request);
     }
 }

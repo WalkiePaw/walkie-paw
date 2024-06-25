@@ -20,22 +20,24 @@ public class QnaService {
     private final QnaRepository qnaRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional(readOnly = true)
     public List<QnaResponse> findAll() {
         return qnaRepository.findAll().stream()
                 .map(QnaResponse::from)
                 .toList();
     }
 
-    public QnaResponse findById(Integer qnaId) {
+    @Transactional(readOnly = true)
+    public QnaResponse findById(final Integer qnaId) {
         return QnaResponse.from(qnaRepository.findById(qnaId));
     }
 
-    public Integer save(QnaRequest request) {
+    public Integer save(final QnaRequest request) {
         Member member = memberRepository.findById(request.getMemberId());
         return qnaRepository.save(request.toEntity(member));
     }
 
-    public void update(Integer qnaId, QnaRequest request) {
+    public void update(final Integer qnaId, final QnaRequest request) {
         qnaRepository.update(qnaId, request);
     }
 }

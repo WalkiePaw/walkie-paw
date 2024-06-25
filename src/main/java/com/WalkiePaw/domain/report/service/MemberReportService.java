@@ -19,23 +19,24 @@ public class MemberReportService {
     private final MemberReportRepository memberReportRepository;
     private final MemberRepository memberRepository;
 
-    public MemberReportResponse findById(Integer memberReportId) {
+    @Transactional(readOnly = true)
+    public MemberReportResponse findById(final Integer memberReportId) {
         return MemberReportResponse.from(memberReportRepository.findById(memberReportId));
     }
-
+    @Transactional(readOnly = true)
     public List<MemberReportResponse> findAll() {
         return memberReportRepository.findAll().stream()
                 .map(MemberReportResponse::from)
                 .toList();
     }
 
-    public Integer save(MemberReportRequest request) {
+    public Integer save(final MemberReportRequest request) {
         Member reportingMember = memberRepository.findById(request.getReportedMemberId());
         Member reportedMember = memberRepository.findById(request.getReportedMemberId());
         return memberReportRepository.save(request.toEntity(reportingMember, reportedMember));
     }
 
-    public void update(Integer memberReportId, MemberReportRequest request) {
+    public void update(final Integer memberReportId, final MemberReportRequest request) {
         memberReportRepository.update(memberReportId, request);
     }
 }
