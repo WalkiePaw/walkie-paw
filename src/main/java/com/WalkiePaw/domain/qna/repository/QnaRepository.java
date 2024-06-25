@@ -16,7 +16,7 @@ public class QnaRepository {
     @PersistenceContext
     private final EntityManager em;
 
-    public Integer save(Qna qna) {
+    public Integer save(final Qna qna) {
         em.persist(qna);
         return qna.getId();
     }
@@ -25,11 +25,11 @@ public class QnaRepository {
         return em.createQuery("select qna from Qna qna join fetch qna.member m", Qna.class)
                 .getResultList();
     }
-    public Qna findById(Integer qnaId) {
+    public Qna findById(final Integer qnaId) {
         return em.find(Qna.class, qnaId);
     }
 
-    public void update(Integer qnaId, QnaRequest request) {
+    public void update(final Integer qnaId, final QnaRequest request) {
         Qna qna = em.find(Qna.class, qnaId);
     }
 }

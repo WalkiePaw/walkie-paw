@@ -17,12 +17,12 @@ public class MemberReportRepository {
 
     private final EntityManager em;
 
-    public Integer save(MemberReport memberReport) {
+    public Integer save(final MemberReport memberReport) {
         em.persist(memberReport);
         return memberReport.getId();
     }
 
-    public MemberReport findOne(Integer mrId) {
+    public MemberReport findOne(final Integer mrId) {
         return em.find(MemberReport.class, mrId);
     }
 
@@ -31,11 +31,11 @@ public class MemberReportRepository {
                 .getResultList();
     }
 
-    public MemberReport findById(Integer memberReportId) {
+    public MemberReport findById(final Integer memberReportId) {
         return em.find(MemberReport.class, memberReportId);
     }
 
-    public void update(Integer memberReportId, MemberReportRequest request) {
+    public void update(final Integer memberReportId, final MemberReportRequest request) {
         MemberReport memberReport = em.find(MemberReport.class, memberReportId);
     }
 }
