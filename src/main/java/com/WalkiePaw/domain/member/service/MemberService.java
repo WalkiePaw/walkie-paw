@@ -4,15 +4,19 @@ import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.presentation.domain.member.dto.MemberRequest;
 import com.WalkiePaw.presentation.domain.member.dto.MemberResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class MemberService {
 
-    MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     public List<MemberResponse> findAll() {
         List<Member> memberList = memberRepository.findAll();

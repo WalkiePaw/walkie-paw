@@ -13,16 +13,16 @@ public class BoardReportRequest {
     private String title;
     private String content;
     private BoardReportCategory reason;
-    private MemberRequest member;
-    private BoardAddRequest board;
+    private Integer memberId;
+    private Integer boardId;
 
-    public BoardReport toEntity() {
+    public BoardReport toEntity(Member member, Board board) {
         return BoardReport.builder()
                 .title(this.title)
                 .content(this.content)
                 .reason(this.reason)
-                .member(this.member.toEntity())
-                .board(this.board.toEntity())
+                .member(member)
+                .board(board)
                 .build();
     }
 }
