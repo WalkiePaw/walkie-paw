@@ -35,14 +35,14 @@ public class BoardRepository {
                 .getResultList();
     }
 
-    /**
-     * TODO
-     *  - update 데이터에 따라 추가 예정
-     * @param boardId
-     * @param request
-     */
     public void updateBoard(final Integer boardId, final BoardUpdateRequest request) {
         Board board = em.find(Board.class, boardId);
-        board.updateBoard();
+        board.updateBoard(request.getContent(),
+                request.getTitle(),
+                request.getPrice(),
+                request.getMeetingTime(),
+                request.getStartTime(),
+                request.getEndTime(),
+                request.getPriceType());
     }
 }

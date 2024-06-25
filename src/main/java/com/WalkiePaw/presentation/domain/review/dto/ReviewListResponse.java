@@ -7,8 +7,14 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ReviewListResponse {
+    private final Integer id;
+    private final String content;
+    private final int point;
+    private final String reviewer;
+
 
     public static ReviewListResponse from(Review review) {
-        return new ReviewListResponse();
+        return new ReviewListResponse(review.getId(), review.getContent(), review.getPoint(), review.getReviewer().getNickname());
     }
+
 }

@@ -6,4 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ReviewUpdateRequest {
+    private final String content;
+    private final int point;
+
 }

@@ -14,7 +14,8 @@ import static jakarta.persistence.FetchType.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChatMessageV2 extends BaseEntity {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chat_msg_id_v2")
     private Integer id;
 

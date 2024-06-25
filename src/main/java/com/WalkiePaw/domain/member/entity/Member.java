@@ -16,11 +16,12 @@ import java.time.LocalDate;
 public class Member extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Integer id;
     @Column(name = "member_name")
     private String name;
+    private String nickname;
     private String email;
     private String password;
     private String phoneNumber;
@@ -29,6 +30,7 @@ public class Member extends BaseEntity {
     private String gender;
     private LocalDate birth;
     private String profile;
+    private double rating;
     @Column(columnDefinition = "POINT")
     private Point point;
     @Column(name = "member_photo")
@@ -38,10 +40,11 @@ public class Member extends BaseEntity {
     private int reportedCnt;
 
     @Builder
-    public Member(String name, String email, String password, String phoneNumber,
+    public Member(String name, String nickname, String email, String password, String phoneNumber,
                   String address, String gender, LocalDate birth, String profile, String photo) {
         this.name = name;
         this.email = email;
+        this.nickname = nickname;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.address = address;

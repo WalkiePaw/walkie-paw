@@ -10,14 +10,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.locationtech.jts.geom.Point;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,24 +26,29 @@ public class Board extends BaseEntity {
     private String title;
     private String content;
     private int price;
-    @Column(columnDefinition = "POINT")
-    private Point point;
-    private LocalDate meetingTime;
+    @Enumerated(EnumType.STRING)
+    private PriceType priceType;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private LocalDateTime meetingTime;
     private int viewCount;
     private int likeCount;
+    private String location;
     @Enumerated(EnumType.STRING)
     private BoardStatus status;
     private BoardCategory category;
     private boolean isDeleted;
 
     @Builder
-    public Board(Member member, String title, String content, int price, LocalDate meetingTime, Point point) {
-        this.point = point;
+    public Board(Member member, String title, String content, int price, LocalDateTime meetingTime, LocalDateTime startTime, LocalDateTime endTime, PriceType priceType, String location) {
+        this.priceType = priceType;
         this.member = member;
         this.title = title;
         this.content = content;
         this.price = price;
         this.meetingTime = meetingTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
         status = BoardStatus.RECRUITING;
     }
 
@@ -60,12 +65,19 @@ public class Board extends BaseEntity {
         this.member = member;
     }
 
-    public void updateTitle(@Nullable String title, @Nullable String content) {
+    public void updateTitle(String title, String content) {
         this.title = title;
         this.content = content;
     }
 
-    public void updateBoard() {
+    public void updateBoard(final String content, final String title, final int price, final LocalDateTime meetingTime, final LocalDateTime startTime, final LocalDateTime endTime, final PriceType priceType) {
+        this.content = content;
+        this.title = title;
+        this.price = price;
+        this.meetingTime = meetingTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.priceType = priceType;
     }
 
     /**

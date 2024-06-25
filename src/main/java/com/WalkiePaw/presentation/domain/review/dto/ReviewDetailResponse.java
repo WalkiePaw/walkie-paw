@@ -6,8 +6,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ReviewResponse {
-    public static ReviewResponse from(final Review review) {
-        return new ReviewResponse();
+public class ReviewDetailResponse {
+    public static ReviewDetailResponse from(final Review review) {
+        return new ReviewDetailResponse();
     }
 }

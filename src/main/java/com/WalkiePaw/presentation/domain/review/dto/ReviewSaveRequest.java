@@ -9,12 +9,13 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ReviewSaveRequest {
-    private int point;
-    private String content;
+    private final int point;
+    private final String content;
     private final Integer chatroomId;
-    private final Integer memberId;
+    private final Integer revieweeId;
+    private final Integer reviewerId;
 
-    public static Review toEntity(final ReviewSaveRequest request, Chatroom chatroom, Member member) {
-        return new Review(request.point, request.content, chatroom, member);
+    public static Review toEntity(final ReviewSaveRequest request, Chatroom chatroom, Member reviewee, Member reviewer) {
+        return new Review(request.point, request.content, chatroom, reviewee, reviewer);
     }
 }

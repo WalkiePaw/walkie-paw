@@ -30,8 +30,10 @@ public class ReviewRepository {
         return em.find(Review.class, id);
     }
 
-    public List<Review> findAll() {
-        return em.createQuery("select r from Review r", Review.class)
+    public List<Review> findByRevieweeId(final Integer revieweeId) {
+        return em.createQuery("select r from Review r where r.reviewee = :id", Review.class)
+                .setParameter("id", revieweeId)
                 .getResultList();
     }
+
 }
