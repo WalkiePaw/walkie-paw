@@ -35,11 +35,11 @@ public class ReviewController {
         return ResponseEntity.created(URI.create(REVIEWS_URI + id)).build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ReviewDetailResponse> getReview(final @PathVariable Integer id) {
-        ReviewDetailResponse response = reviewService.findById(id);
-        return ResponseEntity.ok(response);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ReviewDetailResponse> getReview(final @PathVariable Integer id) {
+//        ReviewDetailResponse response = reviewService.findById(id);
+//        return ResponseEntity.ok(response);
+//    }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateReview(final @PathVariable Integer id, final ReviewUpdateRequest request) {
