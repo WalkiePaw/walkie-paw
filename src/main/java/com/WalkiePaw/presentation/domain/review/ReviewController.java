@@ -30,7 +30,7 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> saveReview(final ReviewSaveRequest request) {
+    public ResponseEntity<Void> saveReview(final @RequestBody ReviewSaveRequest request) {
         Integer id = reviewService.addReview(request);
         return ResponseEntity.created(URI.create(REVIEWS_URI + id)).build();
     }
@@ -42,7 +42,7 @@ public class ReviewController {
 //    }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateReview(final @PathVariable Integer id, final ReviewUpdateRequest request) {
+    public ResponseEntity<Void> updateReview(final @PathVariable Integer id, final @RequestBody ReviewUpdateRequest request) {
         reviewService.updateReview(id, request);
         return ResponseEntity.noContent().build();
     }

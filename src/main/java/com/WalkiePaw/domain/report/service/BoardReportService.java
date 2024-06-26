@@ -36,7 +36,8 @@ public class BoardReportService {
 
     public Integer save(final BoardReportRequest request) {
         Member member = memberRepository.findById(request.getMemberId());
-        Board board = boardRepository.findById(request.getBoardId());
+        Board board = boardRepository.findById(request.getBoardId())
+                .orElseThrow();
         return boardReportRepository.save(request.toEntity(member, board));
     }
 

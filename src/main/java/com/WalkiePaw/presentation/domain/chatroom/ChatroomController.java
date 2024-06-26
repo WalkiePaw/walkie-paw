@@ -35,7 +35,7 @@ public class ChatroomController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addChatroom(final ChatroomAddRequest request) {
+    public ResponseEntity<Void> addChatroom(final @RequestBody ChatroomAddRequest request) {
         Integer id = chatroomService.saveChatroom(request);
         return ResponseEntity.created(URI.create(CHATROOM_URI + id)).build();
     }
@@ -47,7 +47,7 @@ public class ChatroomController {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<Void> updateChatroom(final @PathVariable Integer id, final ChatroomUpdateRequest request) {
+    public ResponseEntity<Void> updateChatroom(final @PathVariable Integer id, final @RequestBody ChatroomUpdateRequest request) {
         chatroomService.updateChatroom(id, request);
         return ResponseEntity.noContent().build();
     }

@@ -36,21 +36,24 @@ public class ReviewService {
 
     @Transactional
     public Integer addReview(final ReviewSaveRequest request) {
-        Chatroom chatroom = chatroomRepository.findById(request.getChatroomId());
+        Chatroom chatroom = chatroomRepository.findById(request.getChatroomId())
+                .orElseThrow(() -> new IllegalStateException("잘못된 채팅방 번호입니다."));
         Member reviewee = memberRepository.findById(request.getRevieweeId());
         Member reviewer = memberRepository.findById(request.getReviewerId());
         Review review = ReviewSaveRequest.toEntity(request, chatroom, reviewee, reviewer);
-        return reviewRepository.save(review);
+        return reviewRepository.save(review).getId();
     }
 
-    public ReviewDetailResponse findById(final Integer id) {
-        Review review = reviewRepository.findById(id);
+    public ReviewDetailResponse findById(final Integer reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new IllegalStateException("잘못된 리뷰 번호입니다."));
         return ReviewDetailResponse.from(review);
     }
 
     @Transactional
-    public void updateReview(final Integer id, final ReviewUpdateRequest request) {
-        Review review = reviewRepository.findById(id);
+    public void updateReview(final Integer reviewId, final ReviewUpdateRequest request) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new IllegalStateException("잘못된 리뷰 번호입니다."));
         review.update(request.getContent(), request.getPoint());
     }
 }

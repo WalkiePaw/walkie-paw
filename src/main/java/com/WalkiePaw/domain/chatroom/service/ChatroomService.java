@@ -35,20 +35,23 @@ public class ChatroomService {
 
     @Transactional
     public Integer saveChatroom(final ChatroomAddRequest request) {
-        Board board = boardRepository.findById(request.getBoardId());
-        Member member = memberRepository.findById(request.getMemberId());
+        Board board = boardRepository.findById(request.getBoardId())
+                .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
+        Member member = memberRepository.findById   (request.getMemberId());
         Chatroom chatroom = ChatroomAddRequest.toEntity(board, member, request);
-        return chatroomRepository.save(chatroom);
+        return chatroomRepository.save(chatroom).getId();
     }
 
-    public ChatroomRespnose findChatroomById(final Integer id) {
-        Chatroom chatroom = chatroomRepository.findById(id);
+    public ChatroomRespnose findChatroomById(final Integer chatroomId) {
+        Chatroom chatroom = chatroomRepository.findById(chatroomId)
+                .orElseThrow(() -> new IllegalStateException("잘못된 채팅방 번호입니다."));
         return ChatroomRespnose.toEntity(chatroom);
     }
 
     @Transactional
-    public void updateChatroom(final Integer id, final ChatroomUpdateRequest request) {
-        Chatroom chatroom = chatroomRepository.findById(id);
+    public void updateChatroom(final Integer chatroomId, final ChatroomUpdateRequest request) {
+        Chatroom chatroom = chatroomRepository.findById(chatroomId)
+                .orElseThrow(() -> new IllegalStateException("잘못된 채팅방 번호입니다."));;
         chatroom.update();
     }
 }
