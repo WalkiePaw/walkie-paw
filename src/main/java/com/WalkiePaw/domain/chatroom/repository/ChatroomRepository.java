@@ -22,8 +22,8 @@ public class ChatroomRepository {
         return chatroom.getId();
     }
 
-    public Optional<Chatroom> findById(final Integer chatroomId) {
-        return Optional.ofNullable(em.find(Chatroom.class, chatroomId));
+    public Chatroom findById(final Integer chatroomId) {
+        return em.find(Chatroom.class, chatroomId);
     }
 
     public Optional<Chatroom> findChatroomWithMemberAndBoardById(final Integer chatroomId) {

@@ -30,6 +30,7 @@ public class Chatroom extends BaseEntity {
     private Member member;
     @Enumerated(EnumType.STRING)
     private ChatroomStatus status;
+    @Enumerated(EnumType.STRING)
     private ChatroomCategory category;
     private String latestMessage;
     private LocalDateTime latestMessageTime;

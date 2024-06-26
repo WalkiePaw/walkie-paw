@@ -18,10 +18,10 @@ public class Review extends BaseEntity {
     @Column(name = "review_id")
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "reviewee_member_id", referencedColumnName = "member_id")
     private Member reviewee;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "reviewer_member_id", referencedColumnName = "member_id")
     private Member reviewer;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatroom_id")
