@@ -2,6 +2,7 @@ package com.WalkiePaw.domain.board.entity;
 
 import com.WalkiePaw.domain.common.BaseEntity;
 import com.WalkiePaw.domain.member.entity.Member;
+import com.WalkiePaw.presentation.domain.board.dto.BoardUpdateRequest;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -70,14 +71,14 @@ public class Board extends BaseEntity {
         this.content = content;
     }
 
-    public void updateBoard(final String content, final String title, final int price, final LocalDateTime meetingTime, final LocalDateTime startTime, final LocalDateTime endTime, final PriceType priceType) {
-        this.content = content;
-        this.title = title;
-        this.price = price;
-        this.meetingTime = meetingTime;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.priceType = priceType;
+    public void updateBoard(final BoardUpdateRequest request) {
+        this.content = request.getContent();
+        this.title = request.getTitle();
+        this.price = request.getPrice();
+        this.meetingTime = request.getMeetingTime();
+        this.startTime = request.getStartTime();
+        this.endTime = request.getEndTime();
+        this.priceType = request.getPriceType();
     }
 
     /**

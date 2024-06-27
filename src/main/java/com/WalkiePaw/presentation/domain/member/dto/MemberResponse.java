@@ -34,7 +34,6 @@ public class MemberResponse {
         memberResponse.gender = member.getGender();
         memberResponse.birth = member.getBirth();
         memberResponse.profile = member.getProfile();
-        memberResponse.point = member.getPoint();
         memberResponse.status = member.getStatus();
         memberResponse.reportedCnt = member.getReportedCnt();
         return memberResponse;

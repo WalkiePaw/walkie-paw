@@ -23,26 +23,32 @@ public class ReviewController {
     public static final String REVIEWS_URI = "/reviews/";
     private final ReviewService reviewService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/reviews")
     public ResponseEntity<List<ReviewListResponse>> getReviewsByRevieweeId(@PathVariable("id") final Integer revieweeId) {
         List<ReviewListResponse> reviews = reviewService.findByRevieweeId(revieweeId);
         return ResponseEntity.ok(reviews);
     }
 
+    @GetMapping("/{id}/my-reviews")
+    public ResponseEntity<List<ReviewListResponse>> getReviewsByReviewerId(@PathVariable("id") final Integer reviewerId) {
+        List<ReviewListResponse> reviews = reviewService.findByReviewerId(reviewerId);
+        return ResponseEntity.ok(reviews);
+    }
+
     @PostMapping
-    public ResponseEntity<Void> saveReview(final ReviewSaveRequest request) {
+    public ResponseEntity<Void> saveReview(final @RequestBody ReviewSaveRequest request) {
         Integer id = reviewService.addReview(request);
         return ResponseEntity.created(URI.create(REVIEWS_URI + id)).build();
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ReviewDetailResponse> getReview(final @PathVariable Integer id) {
-//        ReviewDetailResponse response = reviewService.findById(id);
-//        return ResponseEntity.ok(response);
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<ReviewDetailResponse> getReview(final @PathVariable Integer id) {
+        ReviewDetailResponse response = reviewService.findById(id);
+        return ResponseEntity.ok(response);
+    }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateReview(final @PathVariable Integer id, final ReviewUpdateRequest request) {
+    public ResponseEntity<Void> updateReview(final @PathVariable Integer id, final @RequestBody ReviewUpdateRequest request) {
         reviewService.updateReview(id, request);
         return ResponseEntity.noContent().build();
     }

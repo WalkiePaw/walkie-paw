@@ -10,10 +10,12 @@ import com.WalkiePaw.presentation.domain.board.dto.BoardListResponse;
 import com.WalkiePaw.presentation.domain.board.dto.BoardUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +27,7 @@ public class BoardService {
     private final MemberRepository memberRepository;
 
     public List<BoardListResponse> findAllBoardAndMember() {
-        List<Board> findBoards = boardRepository.findAllBoardAndMember();
+        List<Board> findBoards = boardRepository.findAll();
         return findBoards.stream()
                 .map(BoardListResponse::from)
                 .toList();
@@ -35,16 +37,19 @@ public class BoardService {
     public Integer save(final BoardAddRequest request) {
         Member member = memberRepository.findById(request.getMemberId());
         Board entity = BoardAddRequest.toEntity(request, member);
-        return boardRepository.save(entity);
+        return boardRepository.save(entity).getId();
     }
 
     public BoardGetResponse getBoard(Integer boardId) {
-        Board board = boardRepository.findById(boardId);
+        Board board = boardRepository.getBoardDetail(boardId)
+                .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
         return BoardGetResponse.from(board);
     }
 
     @Transactional
     public void updateBoard(final Integer boardId, final BoardUpdateRequest request) {
-        boardRepository.updateBoard(boardId, request);
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
+        board.updateBoard(request);
     }
 }

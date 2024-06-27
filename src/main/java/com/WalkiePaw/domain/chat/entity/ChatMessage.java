@@ -1,7 +1,8 @@
-package com.WalkiePaw.domain.chat.chatV1.entity;
+package com.WalkiePaw.domain.chat.entity;
 
 import com.WalkiePaw.domain.common.BaseEntity;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
+import com.WalkiePaw.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,25 +22,31 @@ public class ChatMessage extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "chatroom_id")
     private Chatroom chatroom;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private Member writer;
+
     private boolean isRead;
+
     @Column(name = "msg_content")
     private String content;
-    private boolean isFromBoardWriter;
 
-    /**
-     * isRead와 isFromBoardWriter를 파라미터로 사용할지,
-     * 사용한다면 flase로 하드코딩할 지 고민하기
-     */
-    public ChatMessage(Chatroom chatroom, String content) {
+    public ChatMessage(Chatroom chatroom, Member writer, String content) {
         this.chatroom = chatroom;
+        this.writer = writer;
         this.content = content;
     }
 
-
-//    /**
-//     * chatMessage 생성 메서드
+    public ChatMessage(final Member writer, final String content) {
+        this.writer = writer;
+        this.content = content;
+    }
+    //    /**
+//     * ChatMessage 생성 메서드
+//     * @param receiver 받을 member를 가르킴
 //     */
-//    public ChatMessage createChatMessage(Chatroom chatroom, String content) {
-//        return new ChatMessage(chatroom, content);
+//    public ChatMessage createChatMessage(Chatroom chatroom, Member receiver, String content) {
+//        return new ChatMessage(chatroom, receiver, content);
 //    }
 }

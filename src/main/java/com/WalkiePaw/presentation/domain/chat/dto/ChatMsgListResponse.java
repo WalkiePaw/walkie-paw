@@ -1,6 +1,6 @@
 package com.WalkiePaw.presentation.domain.chat.dto;
 
-import com.WalkiePaw.domain.chat.chatV1.entity.ChatMessage;
+import com.WalkiePaw.domain.chat.entity.ChatMessage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
