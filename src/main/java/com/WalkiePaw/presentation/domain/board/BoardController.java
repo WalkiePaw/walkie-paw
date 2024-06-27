@@ -43,7 +43,7 @@ public class BoardController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateBoard(final @PathVariable("id") Integer boardId, final @RequestBody BoardUpdateRequest request) {
-//        boardService.updateBoard(boardId, request);
+        boardService.updateBoard(boardId, request);
         return ResponseEntity.noContent().build();
     }
 }

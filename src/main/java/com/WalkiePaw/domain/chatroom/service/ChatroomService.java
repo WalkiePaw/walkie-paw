@@ -9,7 +9,6 @@ import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomAddRequest;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomListResponse;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomRespnose;
-import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,8 +25,8 @@ public class ChatroomService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
-    public List<ChatroomListResponse> findAll() {
-        List<Chatroom> chatrooms = chatroomRepository.findAll();
+    public List<ChatroomListResponse> findAllByMemberId(final Integer memberId) {
+        List<Chatroom> chatrooms = chatroomRepository.findAllByMemberId(memberId);
         return chatrooms.stream()
                 .map(ChatroomListResponse::from)
                 .toList();
@@ -37,7 +36,7 @@ public class ChatroomService {
     public Integer saveChatroom(final ChatroomAddRequest request) {
         Board board = boardRepository.findById(request.getBoardId())
                 .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
-        Member member = memberRepository.findById   (request.getMemberId());
+        Member member = memberRepository.findById(request.getMemberId());
         Chatroom chatroom = ChatroomAddRequest.toEntity(board, member, request);
         return chatroomRepository.save(chatroom).getId();
     }
@@ -46,12 +45,5 @@ public class ChatroomService {
         Chatroom chatroom = chatroomRepository.findById(chatroomId)
                 .orElseThrow(() -> new IllegalStateException("잘못된 채팅방 번호입니다."));
         return ChatroomRespnose.toEntity(chatroom);
-    }
-
-    @Transactional
-    public void updateChatroom(final Integer chatroomId, final ChatroomUpdateRequest request) {
-        Chatroom chatroom = chatroomRepository.findById(chatroomId)
-                .orElseThrow(() -> new IllegalStateException("잘못된 채팅방 번호입니다."));;
-        chatroom.update();
     }
 }

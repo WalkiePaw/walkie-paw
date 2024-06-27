@@ -10,11 +10,11 @@ public interface BoardRepository {
 
     List<Board> findAll();
 
-//    List<Board> findByBoardAndMember();
+    List<Board> findBoardAndMemberBy();
 
     Board save(Board board);
 
     Optional<Board> findById(Integer id);
 
-//    void updateBoard(Integer boardId, BoardUpdateRequest request);
+    Optional<Board> getBoardDetail(Integer boardId);
 }

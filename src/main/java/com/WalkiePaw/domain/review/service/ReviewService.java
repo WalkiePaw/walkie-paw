@@ -56,4 +56,11 @@ public class ReviewService {
                 .orElseThrow(() -> new IllegalStateException("잘못된 리뷰 번호입니다."));
         review.update(request.getContent(), request.getPoint());
     }
+
+    public List<ReviewListResponse> findByReviewerId(final Integer reviewerId) {
+        List<Review> reviews = reviewRepository.findByReviewerId(reviewerId);
+        return reviews.stream()
+                .map(ReviewListResponse::from)
+                .toList();
+    }
 }

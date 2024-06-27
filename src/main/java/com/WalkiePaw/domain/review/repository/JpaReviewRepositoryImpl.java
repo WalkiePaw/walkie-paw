@@ -42,4 +42,9 @@ public class JpaReviewRepositoryImpl implements ReviewRepository{
                 .getResultList();
     }
 
+    @Override
+    public List<Review> findByReviewerId(final Integer reviewerId) {
+        return List.of();
+    }
+
 }

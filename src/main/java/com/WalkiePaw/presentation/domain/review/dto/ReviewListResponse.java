@@ -10,7 +10,7 @@ public class ReviewListResponse {
     private final Integer id;
     private final String content;
     private final int point;
-    private final String reviewer;
+    private final String memberName;
 
 
     public static ReviewListResponse from(Review review) {

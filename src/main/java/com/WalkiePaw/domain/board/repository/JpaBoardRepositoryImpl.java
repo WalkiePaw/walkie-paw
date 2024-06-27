@@ -30,26 +30,20 @@ public class JpaBoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
+    public Optional<Board> getBoardDetail(final Integer boardId) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<Board> findAll() {
         return em.createQuery("select b from Board b", Board.class)
                 .getResultList();
     }
 
-//    @Override
-    public List<Board> findByBoardAndMember() {
+    @Override
+    public List<Board> findBoardAndMemberBy() {
         return em.createQuery("select b from Board b join fetch b.member", Board.class)
                 .getResultList();
     }
 
-//    @Override
-    public void updateBoard(final Integer boardId, final BoardUpdateRequest request) {
-        Board board = em.find(Board.class, boardId);
-        board.updateBoard(request.getContent(),
-                request.getTitle(),
-                request.getPrice(),
-                request.getMeetingTime(),
-                request.getStartTime(),
-                request.getEndTime(),
-                request.getPriceType());
-    }
 }

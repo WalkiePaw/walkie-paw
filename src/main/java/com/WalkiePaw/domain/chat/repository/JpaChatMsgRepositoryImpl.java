@@ -1,6 +1,6 @@
 package com.WalkiePaw.domain.chat.repository;
 
-import com.WalkiePaw.domain.chat.chatV1.entity.ChatMessage;
+import com.WalkiePaw.domain.chat.entity.ChatMessage;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +16,7 @@ import java.util.List;
 public class JpaChatMsgRepositoryImpl implements ChatMsgRepository {
     private final EntityManager em;
 
-    public Integer save(ChatMessage chatMessage) {
-        em.persist(chatMessage);
-        return chatMessage.getId();
-    }
+
 
 //    public ChatMessage findOne(Integer chatMsgId) {
 //        return em.find(ChatMessage.class, chatMsgId);
@@ -30,5 +27,10 @@ public class JpaChatMsgRepositoryImpl implements ChatMsgRepository {
         return em.createQuery("select cm from ChatMessage cm where cm.chatroom.id = :chatroomId", ChatMessage.class)
                 .setParameter("chatroomId", chatroomId)
                 .getResultList();
+    }
+
+    @Override
+    public ChatMessage save(final ChatMessage message) {
+        return null;
     }
 }

@@ -41,13 +41,15 @@ public class BoardService {
     }
 
     public BoardGetResponse getBoard(Integer boardId) {
-        Board board = boardRepository.findById(boardId)
+        Board board = boardRepository.getBoardDetail(boardId)
                 .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
         return BoardGetResponse.from(board);
     }
 
-//    @Transactional
-//    public void updateBoard(final Integer boardId, final BoardUpdateRequest request) {
-//        boardRepository.updateBoard(boardId, request);
-//    }
+    @Transactional
+    public void updateBoard(final Integer boardId, final BoardUpdateRequest request) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
+        board.updateBoard(request);
+    }
 }

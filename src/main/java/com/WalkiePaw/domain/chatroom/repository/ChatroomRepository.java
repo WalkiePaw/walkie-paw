@@ -10,7 +10,7 @@ public interface ChatroomRepository {
 
     Optional<Chatroom> findById(Integer chatroomId);
 
-    Optional<Chatroom> findChatroomWithMemberAndBoardById(Integer chatroomId);
+    Optional<Chatroom> findChatroomById(Integer chatroomId);
 
-    List<Chatroom> findAll();
+    List<Chatroom> findAllByMemberId(Integer memberId);
 }

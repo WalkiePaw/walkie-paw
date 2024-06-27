@@ -14,4 +14,6 @@ public interface ReviewRepository {
     Optional<Review> findById(Integer reviewId);
 
     List<Review> findByRevieweeId(Integer revieweeId);
+
+    List<Review> findByReviewerId(Integer reviewerId);
 }

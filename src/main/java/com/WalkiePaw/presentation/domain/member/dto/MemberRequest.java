@@ -20,7 +20,6 @@ public class MemberRequest {
     private String gender;
     private LocalDate birth;
     private String profile;
-    private Point point;
     private String photo;
     private MemberStatus status;
     private int reportedCnt;
@@ -44,6 +43,6 @@ public class MemberRequest {
 
     public static MemberRequest from(Member member) {
         return new MemberRequest(member.getName(), member.getEmail(), member.getPassword(), member.getPhoneNumber(), member.getAddress(), member.getGender(),
-                member.getBirth(), member.getProfile(), member.getPoint(), member.getPhoto(), member.getStatus(), member.getReportedCnt());
+                member.getBirth(), member.getProfile(), member.getPhoto(), member.getStatus(), member.getReportedCnt());
     }
 }

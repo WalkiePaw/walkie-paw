@@ -31,8 +31,6 @@ public class Member extends BaseEntity {
     private LocalDate birth;
     private String profile;
     private double rating;
-    @Column(columnDefinition = "POINT")
-    private Point point;
     @Column(name = "member_photo")
     private String photo;
     @Enumerated(EnumType.STRING)

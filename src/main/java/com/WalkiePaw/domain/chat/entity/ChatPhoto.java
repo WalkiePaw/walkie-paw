@@ -1,4 +1,4 @@
-package com.WalkiePaw.domain.chat.chatV2.entity;
+package com.WalkiePaw.domain.chat.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ChatPhotoV2 {
+public class ChatPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chat_photo_id_v2")
@@ -17,9 +17,9 @@ public class ChatPhotoV2 {
     private String uuidName;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_msg_id")
-    private ChatMessageV2 chatMessage;
+    private ChatMessage chatMessage;
 
-    public ChatPhotoV2(String oriName, String uuidName, ChatMessageV2 chatMessage) {
+    public ChatPhoto(String oriName, String uuidName, ChatMessage chatMessage) {
         this.oriName = oriName;
         this.uuidName = uuidName;
         this.chatMessage = chatMessage;
