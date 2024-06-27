@@ -37,13 +37,13 @@ public class BoardReportService {
 
     public Integer save(final BoardReportAddRequest request) {
         Member member = memberRepository.findById(request.getMemberId()).orElseThrow();
-        Board board = boardRepository.findById(request.getBoardId());
+        Board board = boardRepository.findById(request.getBoardId()).orElseThrow();
         return boardReportRepository.save(request.toEntity(member, board)).getId();
     }
 
     public void update(final Integer boardReportId, final BoardReportUpdateRequest request) {
         Member member = memberRepository.findById(request.getMemberId()).orElseThrow();
-        Board board = boardRepository.findById(request.getBoardId());
+        Board board = boardRepository.findById(request.getBoardId()).orElseThrow();
         BoardReport boardReport = boardReportRepository.findById(boardReportId).orElseThrow();
         boardReport.update(request, member, board);
     }

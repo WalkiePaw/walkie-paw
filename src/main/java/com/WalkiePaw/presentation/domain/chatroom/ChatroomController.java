@@ -29,13 +29,13 @@ public class ChatroomController {
 ///api/v1/{domain}/{id} -> delete : 삭제
 
     @GetMapping
-    public ResponseEntity<List<ChatroomListResponse>> getChatroomList() {
-        List<ChatroomListResponse> chatrooms = chatroomService.findAll();
+    public ResponseEntity<List<ChatroomListResponse>> getChatroomList(@RequestParam("id") final Integer memberId) {
+        List<ChatroomListResponse> chatrooms = chatroomService.findAllByMemberId(memberId);
         return ResponseEntity.ok(chatrooms);
     }
 
     @PostMapping
-    public ResponseEntity<Void> addChatroom(final ChatroomAddRequest request) {
+    public ResponseEntity<Void> addChatroom(final @RequestBody ChatroomAddRequest request) {
         Integer id = chatroomService.saveChatroom(request);
         return ResponseEntity.created(URI.create(CHATROOM_URI + id)).build();
     }
@@ -44,11 +44,5 @@ public class ChatroomController {
     public ResponseEntity<ChatroomRespnose> getChatroom(final @PathVariable Integer id) {
         ChatroomRespnose chatroomById = chatroomService.findChatroomById(id);
         return ResponseEntity.ok(chatroomById);
-    }
-
-    @PatchMapping("{id}")
-    public ResponseEntity<Void> updateChatroom(final @PathVariable Integer id, final ChatroomUpdateRequest request) {
-        chatroomService.updateChatroom(id, request);
-        return ResponseEntity.noContent().build();
     }
 }

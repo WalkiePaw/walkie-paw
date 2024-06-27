@@ -3,6 +3,7 @@ package com.WalkiePaw.domain.chatroom.entity;
 import com.WalkiePaw.domain.common.BaseEntity;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.domain.board.entity.Board;
+import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomUpdateRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -42,7 +43,7 @@ public class Chatroom extends BaseEntity {
         this.status = ChatroomStatus.GENERAL;
     }
 
-    public void update() {
+    public void update(final ChatroomUpdateRequest request) {
 
     }
 
