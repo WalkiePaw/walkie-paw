@@ -3,6 +3,7 @@ package com.WalkiePaw.domain.report.entity;
 import com.WalkiePaw.domain.common.BaseEntity;
 import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.member.entity.Member;
+import com.WalkiePaw.presentation.domain.report.boardReportDto.BoardReportUpdateRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -17,8 +18,6 @@ public class BoardReport extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_report_id")
     private Integer id;
-    @Column(name = "board_report_title")
-    private String title;
     @Column(name = "board_report_content")
     private String content;
     @Enumerated(EnumType.STRING)
@@ -31,12 +30,18 @@ public class BoardReport extends BaseEntity {
     private Board board;
 
     @Builder
-    public BoardReport(String title, String content, Member member, Board board, BoardReportCategory reason) {
-        this.title = title;
+    public BoardReport(String content, Member member, Board board, BoardReportCategory reason) {
         this.content = content;
         this.member = member;
         this.board = board;
         this.reason = reason;
+    }
+
+    public void update(BoardReportUpdateRequest request, Member member, Board board) {
+        this.reason = request.getReason();
+        this.content = request.getContent();
+        this.member = member;
+        this.board = board;
     }
 //    /**
 //     * BoardReport 생성 메서드

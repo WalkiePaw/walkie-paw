@@ -2,6 +2,7 @@ package com.WalkiePaw.domain.qna.entity;
 
 import com.WalkiePaw.domain.common.BaseEntity;
 import com.WalkiePaw.domain.member.entity.Member;
+import com.WalkiePaw.presentation.domain.qna.dto.QnaUpdateRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -31,6 +32,13 @@ public class Qna extends BaseEntity {
         this.title = title;
         this.content = content;
         this.status = QnaStatus.WAITING;
+    }
+
+    public void update(QnaUpdateRequest request) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.reply = request.getReply();
+        this.status = request.getStatus();
     }
 
 //    /**

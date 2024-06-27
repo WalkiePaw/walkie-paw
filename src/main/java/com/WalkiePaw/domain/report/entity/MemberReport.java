@@ -1,6 +1,7 @@
 package com.WalkiePaw.domain.report.entity;
 
 import com.WalkiePaw.domain.member.entity.Member;
+import com.WalkiePaw.presentation.domain.report.memberReportDto.MemberReportUpdateRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -32,6 +33,13 @@ public class MemberReport {
         this.title = title;
         this.content = content;
         this.reason = reason;
+        this.reportingMember = reportingMember;
+        this.reportedMember = reportedMember;
+    }
+
+    public void update(MemberReportUpdateRequest request, Member reportingMember, Member reportedMember) {
+        this.content = request.getContent();
+        this.reason = request.getReason();
         this.reportingMember = reportingMember;
         this.reportedMember = reportedMember;
     }

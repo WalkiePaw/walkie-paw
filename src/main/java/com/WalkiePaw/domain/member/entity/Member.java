@@ -1,6 +1,7 @@
 package com.WalkiePaw.domain.member.entity;
 
 import com.WalkiePaw.domain.common.BaseEntity;
+import com.WalkiePaw.presentation.domain.member.dto.MemberUpdateRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -27,7 +28,6 @@ public class Member extends BaseEntity {
     private String phoneNumber;
     @Column(name = "addr")
     private String address;
-    private String gender;
     private LocalDate birth;
     private String profile;
     private double rating;
@@ -39,21 +39,37 @@ public class Member extends BaseEntity {
 
     @Builder
     public Member(String name, String nickname, String email, String password, String phoneNumber,
-                  String address, String gender, LocalDate birth, String profile, String photo) {
+                  String address, LocalDate birth, String profile, double rating, Point point,
+                  String photo) {
         this.name = name;
-        this.email = email;
         this.nickname = nickname;
+        this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.gender = gender;
         this.birth = birth;
         this.profile = profile;
+        this.rating = rating;
         this.photo = photo;
-        status = MemberStatus.GENERAL;
+        this.status = MemberStatus.GENERAL;
+        this.reportedCnt = 0;
     }
 
-//    /**
+    public void updateMember(MemberUpdateRequest request) {
+        this.name = request.getName();
+        this.nickname = request.getNickname();
+        this.password = request.getPassword();
+        this.phoneNumber = request.getPhoneNumber();
+        this.address = request.getAddress();
+        this.birth = request.getBirth();
+        this.profile = request.getProfile();
+        this.rating = request.getRating();
+        this.photo = request.getPhoto();
+        this.status = request.getStatus();
+        this.reportedCnt = request.getReportedCnt();
+    }
+
+    //    /**
 //     * Member 생성 메서드
 //     */
 //    public static Member createMember(String name, String email, String password, String phoneNumber,

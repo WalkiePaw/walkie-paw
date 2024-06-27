@@ -36,7 +36,8 @@ public class ChatService {
     public Integer saveChatMsg(final ChatAddRequest request) {
         Chatroom chatroom = chatroomRepository.findById(request.getChatroomId())
                 .orElseThrow(() -> new IllegalStateException("잘못된 채팅방 번호입니다."));
-        Member member = memberRepository.findById(request.getWriterId());
+        Member member = memberRepository.findById(request.getWriterId())
+                .orElseThrow();
         ChatMessage chatMsg = request.toEntity(request, member, chatroom);
         return chatMsgRepository.save(chatMsg).getId();
     }

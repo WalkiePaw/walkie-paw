@@ -38,8 +38,10 @@ public class ReviewService {
     public Integer addReview(final ReviewSaveRequest request) {
         Chatroom chatroom = chatroomRepository.findById(request.getChatroomId())
                 .orElseThrow(() -> new IllegalStateException("잘못된 채팅방 번호입니다."));
-        Member reviewee = memberRepository.findById(request.getRevieweeId());
-        Member reviewer = memberRepository.findById(request.getReviewerId());
+        Member reviewee = memberRepository.findById(request.getRevieweeId())
+                .orElseThrow(() -> new IllegalStateException("잘못된 회원 번호입니다."));
+        Member reviewer = memberRepository.findById(request.getReviewerId())
+                .orElseThrow(() -> new IllegalStateException("잘못된 회원 번호입니다."));
         Review review = ReviewSaveRequest.toEntity(request, chatroom, reviewee, reviewer);
         return reviewRepository.save(review).getId();
     }

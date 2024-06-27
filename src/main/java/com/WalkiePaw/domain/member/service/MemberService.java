@@ -2,8 +2,7 @@ package com.WalkiePaw.domain.member.service;
 
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
-import com.WalkiePaw.presentation.domain.member.dto.MemberRequest;
-import com.WalkiePaw.presentation.domain.member.dto.MemberResponse;
+import com.WalkiePaw.presentation.domain.member.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,28 +18,29 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
-    public List<MemberResponse> findAll() {
+    public List<MemberListResponse> findAll() {
         List<Member> memberList = memberRepository.findAll();
         return memberList.stream()
-                .map(MemberResponse::from)
+                .map(MemberListResponse::from)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public MemberResponse findById(final Integer memberId) {
-        return MemberResponse.from(memberRepository.findById(memberId));
+    public MemberGetResponse findById(final Integer memberId) {
+        return MemberGetResponse.from(memberRepository.findById(memberId).orElseThrow());
     }
 
-    public Integer save(final MemberRequest request) {
+    public Integer save(final MemberAddRequest request) {
         Member member = request.toEntity();
-        return memberRepository.save(member);
+        return memberRepository.save(member).getId();
     }
 
-    public void update(final Integer id, final MemberRequest request) {
-        memberRepository.update(id, request.toEntity());
+    public void update(final Integer id, final MemberUpdateRequest request) {
+        Member member = memberRepository.findById(id).orElseThrow();
+        member.updateMember(request);
     }
 
-    public void delete(final Integer id) {
-        memberRepository.delete(id);
-    }
+//    public void delete(final Integer id) {
+//        memberRepository.delete(id);
+//    }
 }
