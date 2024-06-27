@@ -37,8 +37,8 @@ public class ReviewService {
     @Transactional
     public Integer addReview(final ReviewSaveRequest request) {
         Chatroom chatroom = chatroomRepository.findById(request.getChatroomId());
-        Member reviewee = memberRepository.findById(request.getRevieweeId());
-        Member reviewer = memberRepository.findById(request.getReviewerId());
+        Member reviewee = memberRepository.findById(request.getRevieweeId()).orElseThrow();
+        Member reviewer = memberRepository.findById(request.getReviewerId()).orElseThrow();
         Review review = ReviewSaveRequest.toEntity(request, chatroom, reviewee, reviewer);
         return reviewRepository.save(review);
     }

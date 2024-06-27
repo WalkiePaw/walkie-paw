@@ -10,17 +10,17 @@ import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
-public class MemberRequest {
+public class MemberUpdateRequest {
 
     private String name;
+    private String nickname;
     private String email;
     private String password;
     private String phoneNumber;
     private String address;
-    private String gender;
     private LocalDate birth;
     private String profile;
-    private Point point;
+    private double rating;
     private String photo;
     private MemberStatus status;
     private int reportedCnt;
@@ -31,19 +31,31 @@ public class MemberRequest {
     public Member toEntity() {
         return Member.builder()
                 .name(this.name)
+                .nickname(this.nickname)
                 .email(this.email)
                 .password(this.password)
                 .phoneNumber(this.phoneNumber)
                 .address(this.address)
-                .gender(this.gender)
                 .birth(this.birth)
                 .profile(this.profile)
+                .rating(this.rating)
                 .photo(this.photo)
                 .build();
     }
 
-    public static MemberRequest from(Member member) {
-        return new MemberRequest(member.getName(), member.getEmail(), member.getPassword(), member.getPhoneNumber(), member.getAddress(), member.getGender(),
-                member.getBirth(), member.getProfile(), member.getPoint(), member.getPhoto(), member.getStatus(), member.getReportedCnt());
+    public static MemberUpdateRequest from(Member member) {
+        return new MemberUpdateRequest(
+                member.getName(),
+                member.getNickname(),
+                member.getEmail(),
+                member.getPassword(),
+                member.getPhoneNumber(),
+                member.getAddress(),
+                member.getBirth(),
+                member.getProfile(),
+                member.getRating(),
+                member.getPhoto(),
+                member.getStatus(),
+                member.getReportedCnt());
     }
 }

@@ -33,7 +33,7 @@ public class BoardService {
 
     @Transactional
     public Integer save(final BoardAddRequest request) {
-        Member member = memberRepository.findById(request.getMemberId());
+        Member member = memberRepository.findById(request.getMemberId()).orElseThrow();
         Board entity = BoardAddRequest.toEntity(request, member);
         return boardRepository.save(entity);
     }

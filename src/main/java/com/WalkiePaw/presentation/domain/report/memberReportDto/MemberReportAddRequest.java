@@ -6,8 +6,7 @@ import com.WalkiePaw.domain.report.entity.MemberReportCategory;
 import lombok.Getter;
 
 @Getter
-public class MemberReportRequest {
-    private String title;
+public class MemberReportAddRequest {
     private String content;
     private MemberReportCategory reason;
     private Integer reportingMemberId;
@@ -18,7 +17,6 @@ public class MemberReportRequest {
      */
     public MemberReport toEntity(Member reportingMember, Member reportedMember) {
         return MemberReport.builder()
-                .title(this.title)
                 .content(this.content)
                 .reason(this.reason)
                 .reportingMember(reportingMember)

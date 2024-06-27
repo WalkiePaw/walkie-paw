@@ -1,35 +1,17 @@
 package com.WalkiePaw.domain.qna.repository;
 
 import com.WalkiePaw.domain.qna.entity.Qna;
-import com.WalkiePaw.presentation.domain.qna.dto.QnaRequest;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-@RequiredArgsConstructor
-public class QnaRepository {
+public interface QnaRepository {
 
-    @PersistenceContext
-    private final EntityManager em;
+    Qna save(final Qna qna);
 
-    public Integer save(final Qna qna) {
-        em.persist(qna);
-        return qna.getId();
-    }
+    List<Qna> findAll();
 
-    public List<Qna> findAll() {
-        return em.createQuery("select qna from Qna qna join fetch qna.member m", Qna.class)
-                .getResultList();
-    }
-    public Qna findById(final Integer qnaId) {
-        return em.find(Qna.class, qnaId);
-    }
-
-    public void update(final Integer qnaId, final QnaRequest request) {
-        Qna qna = em.find(Qna.class, qnaId);
-    }
+    Optional<Qna> findById(final Integer qnaId);
 }

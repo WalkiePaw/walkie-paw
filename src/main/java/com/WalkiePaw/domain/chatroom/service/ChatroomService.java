@@ -36,7 +36,7 @@ public class ChatroomService {
     @Transactional
     public Integer saveChatroom(final ChatroomAddRequest request) {
         Board board = boardRepository.findById(request.getBoardId());
-        Member member = memberRepository.findById(request.getMemberId());
+        Member member = memberRepository.findById(request.getMemberId()).orElseThrow();
         Chatroom chatroom = ChatroomAddRequest.toEntity(board, member, request);
         return chatroomRepository.save(chatroom);
     }

@@ -7,38 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-@RequiredArgsConstructor
-public class MemberRepository {
+public interface MemberRepository {
 
-    @PersistenceContext
-    private final EntityManager em;
+    Member save(final Member member);
 
-    public Integer save(final Member member) {
-        em.persist(member);
-        return member.getId();
-    }
+    Optional<Member> findById(final Integer memberId);
 
-    public Member findById(final Integer memberId) {
-        return em.find(Member.class, memberId);
-    }
+    List<Member> findByName(final String name);
 
-    public List<Member> findByName(final String name) {
-        return em.createQuery("select m from Member m where m.name = :name", Member.class)
-                .setParameter("name", name)
-                .getResultList();
-    }
-
-    public List<Member> findAll() {
-        return em.createQuery("select m from Member m", Member.class).getResultList();
-    }
-
-    public void update(final Integer memberId, final Member member) {
-
-    }
-
-    public void delete(final Integer memberId) {
-        em.remove(em.find(Member.class, memberId));
-    }
+    List<Member> findAll();
 }
