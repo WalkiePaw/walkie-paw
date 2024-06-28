@@ -26,8 +26,14 @@ public class ChatController {
 
     @PostMapping
     public ResponseEntity<Void> addChat(final @RequestBody ChatAddRequest request) {
-        System.out.println("request = " + request);
         Integer id = chatService.saveChatMsg(request);
         return ResponseEntity.created(URI.create(CHAT_URI + id)).build();
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> chatMsgUpdateIsRead(@PathVariable("id") Integer chatroomId) {
+        chatService.bulkUpdateIsRead(chatroomId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

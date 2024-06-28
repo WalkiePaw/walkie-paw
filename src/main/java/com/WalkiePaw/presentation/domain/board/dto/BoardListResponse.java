@@ -1,6 +1,7 @@
 package com.WalkiePaw.presentation.domain.board.dto;
 
 import com.WalkiePaw.domain.board.entity.Board;
+import com.WalkiePaw.domain.board.entity.BoardStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,8 +15,9 @@ public class BoardListResponse {
     private final String content;
     private final String location;
     private final String memberNickName;
+    private final BoardStatus status;
 
     public static BoardListResponse from(final Board board) {
-        return new BoardListResponse(board.getId(), board.getTitle(), board.getContent(), board.getLocation(), board.getMember().getNickname());
+        return new BoardListResponse(board.getId(), board.getTitle(), board.getContent(), board.getLocation(), board.getMember().getNickname(), board.getStatus());
     }
 }
