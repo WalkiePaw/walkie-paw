@@ -39,7 +39,7 @@ public class Board extends BaseEntity {
     private boolean isDeleted;
 
     @Builder
-    public Board(Member member, String title, String content, int price, LocalDateTime meetingTime, LocalDateTime startTime, LocalDateTime endTime, PriceType priceType, String location) {
+    public Board(Member member, String title, String content, int price, LocalDateTime meetingTime, LocalDateTime startTime, LocalDateTime endTime, PriceType priceType, String location, BoardCategory category) {
         this.priceType = priceType;
         this.member = member;
         this.title = title;
@@ -48,6 +48,7 @@ public class Board extends BaseEntity {
         this.meetingTime = meetingTime;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.category = category;
         status = BoardStatus.RECRUITING;
     }
 
