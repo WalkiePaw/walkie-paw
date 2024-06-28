@@ -1,6 +1,7 @@
 package com.WalkiePaw.presentation.domain.board.dto;
 
 import com.WalkiePaw.domain.board.entity.Board;
+import com.WalkiePaw.domain.board.entity.BoardCategory;
 import com.WalkiePaw.domain.board.entity.PriceType;
 import com.WalkiePaw.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ public class BoardAddRequest {
     private final String title;
     private final String content;
     private final int price;
+    private final BoardCategory category;
     private final LocalDateTime meetingTime;
     private final PriceType priceType;
     private final LocalDateTime startTime;
@@ -31,6 +33,7 @@ public class BoardAddRequest {
                 .content(request.getContent())
                 .title(request.getTitle())
                 .price(request.getPrice())
+                .category(request.getCategory())
                 .meetingTime(request.getMeetingTime())
                 .startTime(request.getStartTime())
                 .endTime(request.getEndTime())
