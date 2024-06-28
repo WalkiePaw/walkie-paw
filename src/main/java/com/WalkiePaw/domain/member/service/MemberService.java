@@ -1,5 +1,6 @@
 package com.WalkiePaw.domain.member.service;
 
+import com.WalkiePaw.domain.board.repository.BoardRepository;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.presentation.domain.member.dto.*;
@@ -44,4 +45,7 @@ public class MemberService {
         return MemberScoreResponse.from(memberRepository.findById(memberId).orElseThrow());
     }
 
+    public MemberRRCountResponse getMemberRRCount(final Integer memberId) {
+        return MemberRRCountResponse.from(memberRepository.findById(memberId).orElseThrow());
+    }
 }

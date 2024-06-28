@@ -7,7 +7,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDate;
 
@@ -36,10 +35,12 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
     private int reportedCnt;
+    private int recruitCnt;
+    private int researchCnt;
 
     @Builder
     public Member(String name, String nickname, String email, String password, String phoneNumber,
-                  String address, LocalDate birth, String profile, double rating, Point point,
+                  String address, LocalDate birth, String profile, double rating,
                   String photo) {
         this.name = name;
         this.nickname = nickname;
@@ -53,6 +54,8 @@ public class Member extends BaseEntity {
         this.photo = photo;
         this.status = MemberStatus.GENERAL;
         this.reportedCnt = 0;
+        this.recruitCnt = 0;
+        this.researchCnt = 0;
     }
 
     public void updateMember(MemberUpdateRequest request) {

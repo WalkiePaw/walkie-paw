@@ -54,8 +54,15 @@ public class MemberController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "멤버 리뷰 평점 조회")
     @GetMapping("/{id}/score")
     public ResponseEntity<MemberScoreResponse> getMemberScore(@PathVariable("id") final Integer memberId) {
         return ResponseEntity.ok(memberService.getMemberScore(memberId));
+    }
+
+    @Operation(summary = "멤버 구인 구직 횟수 조회")
+    @GetMapping("/{id}/RRCount")
+    public ResponseEntity<MemberRRCountResponse> getMemberRRCount(@PathVariable("id") final Integer memberId) {
+        return ResponseEntity.ok(memberService.getMemberRRCount(memberId));
     }
 }
