@@ -40,7 +40,8 @@ public class MemberService {
         member.updateMember(request);
     }
 
-//    public void delete(final Integer id) {
-//        memberRepository.delete(id);
-//    }
+    public MemberScoreResponse getMemberScore(final Integer memberId) {
+        return MemberScoreResponse.from(memberRepository.findById(memberId).orElseThrow());
+    }
+
 }
