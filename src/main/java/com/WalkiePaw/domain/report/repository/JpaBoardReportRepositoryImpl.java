@@ -24,11 +24,13 @@ public class JpaBoardReportRepositoryImpl implements BoardReportRepository {
     }
 
     public Optional<BoardReport> findById(final Integer brId) {
-        return Optional.ofNullable(em.find(BoardReport.class, brId));
+        return Optional.ofNullable((BoardReport) em.createQuery("select br from BoardReport br join fetch br.member join fetch br.board where br.id = :id")
+                .setParameter("id", brId)
+                .getSingleResult());
     }
 
     public List<BoardReport> findAll() {
-        return em.createQuery("select br from BoardReport br", BoardReport.class)
+        return em.createQuery("select br from BoardReport br join fetch br.member join fetch br.board", BoardReport.class)
                 .getResultList();
     }
 }
