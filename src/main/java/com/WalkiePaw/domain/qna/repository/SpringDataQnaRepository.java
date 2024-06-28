@@ -15,7 +15,7 @@ public interface SpringDataQnaRepository extends JpaRepository<Qna, Integer>, Qn
 
     @Override
     @EntityGraph(attributePaths = "member")
-    Optional<Qna> findById(@Param("id") final Integer qnaId);
+    Optional<Qna> findById(final Integer qnaId);
 
     @Override
     @EntityGraph(attributePaths = "member")
