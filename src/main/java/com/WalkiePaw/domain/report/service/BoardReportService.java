@@ -8,15 +8,16 @@ import com.WalkiePaw.domain.report.entity.BoardReport;
 import com.WalkiePaw.domain.report.repository.BoardReportRepository;
 import com.WalkiePaw.presentation.domain.report.boardReportDto.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class BoardReportService {
 
     private final BoardReportRepository boardReportRepository;

@@ -3,13 +3,11 @@ package com.WalkiePaw.domain.board.entity;
 import com.WalkiePaw.domain.common.BaseEntity;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.presentation.domain.board.dto.BoardUpdateRequest;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
 
