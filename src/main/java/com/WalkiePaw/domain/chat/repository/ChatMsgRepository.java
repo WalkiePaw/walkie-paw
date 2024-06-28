@@ -10,4 +10,7 @@ public interface ChatMsgRepository {
     List<ChatMessage> findByChatroomId(Integer chatroomId);
 
     ChatMessage save(ChatMessage message);
+
+    void bulkIsRead(Integer chatroomId);
+
 }

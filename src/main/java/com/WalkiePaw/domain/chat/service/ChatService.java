@@ -41,4 +41,8 @@ public class ChatService {
         ChatMessage chatMsg = request.toEntity(request, member, chatroom);
         return chatMsgRepository.save(chatMsg).getId();
     }
+
+    public void bulkUpdateIsRead(final Integer chatroomId) {
+        chatMsgRepository.bulkIsRead(chatroomId);
+    }
 }
