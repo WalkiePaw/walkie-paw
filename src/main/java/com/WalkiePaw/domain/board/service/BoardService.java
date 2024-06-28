@@ -60,4 +60,11 @@ public class BoardService {
                 .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
         board.updateStatus(request.getStatus());
     }
+
+    @Transactional
+    public void deleteBoard(final Integer boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
+        board.delete();
+    }
 }

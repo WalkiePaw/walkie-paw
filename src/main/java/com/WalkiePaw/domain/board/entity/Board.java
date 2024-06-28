@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends BaseEntity {
+    public static final String DELETED_MSG = "삭제된 게시글입니다."; // msg 처리 필요
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
@@ -35,8 +37,8 @@ public class Board extends BaseEntity {
     private String location;
     @Enumerated(EnumType.STRING)
     private BoardStatus status;
+    @Enumerated(EnumType.STRING)
     private BoardCategory category;
-    private boolean isDeleted;
 
     @Builder
     public Board(Member member, String title, String content, int price, LocalDateTime meetingTime, LocalDateTime startTime, LocalDateTime endTime, PriceType priceType, String location, BoardCategory category) {
@@ -78,6 +80,12 @@ public class Board extends BaseEntity {
         this.startTime = request.getStartTime();
         this.endTime = request.getEndTime();
         this.priceType = request.getPriceType();
+    }
+
+    public void delete() {
+        this.content = DELETED_MSG;
+        this.title = DELETED_MSG;
+        this.status = BoardStatus.DELETED;
     }
 
     public void updateStatus(final BoardStatus status) {
