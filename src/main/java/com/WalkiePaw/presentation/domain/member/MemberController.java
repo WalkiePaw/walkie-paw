@@ -54,10 +54,8 @@ public class MemberController {
         return ResponseEntity.noContent().build();
     }
 
-//    public ResponseEntity<MemberResponse> deleteMember(final @PathVariable("id") Integer memberId) {
-//        memberService.delete(memberId);
-//        return ResponseEntity.noContent().build();
-//    }
-
-
+    @GetMapping("/{id}/score")
+    public ResponseEntity<MemberScoreResponse> getMemberScore(@PathVariable("id") final Integer memberId) {
+        return ResponseEntity.ok(memberService.getMemberScore(memberId));
+    }
 }
