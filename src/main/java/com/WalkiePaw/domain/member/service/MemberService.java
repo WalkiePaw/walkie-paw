@@ -48,4 +48,9 @@ public class MemberService {
     public MemberRRCountResponse getMemberRRCount(final Integer memberId) {
         return MemberRRCountResponse.from(memberRepository.findById(memberId).orElseThrow());
     }
+
+    public void updatePasswd(final Integer memberId, final MemberPasswdUpdateRequest request) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        member.updateMemberPasswd(request);
+    }
 }
