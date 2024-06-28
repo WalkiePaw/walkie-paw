@@ -6,6 +6,7 @@ import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,10 +27,14 @@ public class JpaQnaRepositoryImpl implements QnaRepository {
     }
 
     public List<Qna> findAll() {
-        return em.createQuery("select qna from Qna qna join fetch qna.member m", Qna.class)
+        return em.createQuery("select q from Qna q join fetch q.member m", Qna.class)
                 .getResultList();
     }
+
     public Optional<Qna> findById(final Integer qnaId) {
-        return Optional.ofNullable(em.find(Qna.class, qnaId));
+        Qna qna = (Qna) em.createQuery("select q from Qna q join fetch q.member where q.id = :id")
+                .setParameter("id", qnaId)
+                .getSingleResult();
+        return Optional.ofNullable(qna);
     }
 }
