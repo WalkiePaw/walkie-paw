@@ -28,11 +28,13 @@ public class JpaMemberReportRepositoryImpl implements MemberReportRepository {
     }
 
     public List<MemberReport> findAll() {
-        return em.createQuery("select mr from MemberReport mr", MemberReport.class)
+        return em.createQuery("select mr from MemberReport mr join fetch mr.reportingMember join fetch mr.reportedMember", MemberReport.class)
                 .getResultList();
     }
 
     public Optional<MemberReport> findById(final Integer memberReportId) {
-        return Optional.ofNullable(em.find(MemberReport.class, memberReportId));
+        return Optional.ofNullable((MemberReport) em.createQuery("select mr from MemberReport mr join fetch mr.reportingMember join fetch mr.reportedMember where mr.id = :id")
+                .setParameter("id", memberReportId)
+                .getSingleResult());
     }
 }
