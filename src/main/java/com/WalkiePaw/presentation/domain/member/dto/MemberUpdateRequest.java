@@ -15,7 +15,6 @@ public class MemberUpdateRequest {
     private String name;
     private String nickname;
     private String email;
-    private String password;
     private String phoneNumber;
     private String address;
     private LocalDate birth;
@@ -33,7 +32,6 @@ public class MemberUpdateRequest {
                 .name(this.name)
                 .nickname(this.nickname)
                 .email(this.email)
-                .password(this.password)
                 .phoneNumber(this.phoneNumber)
                 .address(this.address)
                 .birth(this.birth)
@@ -48,7 +46,6 @@ public class MemberUpdateRequest {
                 member.getName(),
                 member.getNickname(),
                 member.getEmail(),
-                member.getPassword(),
                 member.getPhoneNumber(),
                 member.getAddress(),
                 member.getBirth(),

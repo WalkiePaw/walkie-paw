@@ -65,4 +65,11 @@ public class MemberController {
     public ResponseEntity<MemberRRCountResponse> getMemberRRCount(@PathVariable("id") final Integer memberId) {
         return ResponseEntity.ok(memberService.getMemberRRCount(memberId));
     }
+
+    @Operation(summary = "멤버 비밀번호 수정")
+    @PatchMapping("/{id}/passwordUpdate")
+    public ResponseEntity<Void> updateMemberPasswd(@PathVariable("id") final Integer memberId, @RequestBody final MemberPasswdUpdateRequest request) {
+        memberService.updatePasswd(memberId, request);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -1,6 +1,7 @@
 package com.WalkiePaw.domain.member.entity;
 
 import com.WalkiePaw.domain.common.BaseEntity;
+import com.WalkiePaw.presentation.domain.member.dto.MemberPasswdUpdateRequest;
 import com.WalkiePaw.presentation.domain.member.dto.MemberUpdateRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -61,7 +62,6 @@ public class Member extends BaseEntity {
     public void updateMember(MemberUpdateRequest request) {
         this.name = request.getName();
         this.nickname = request.getNickname();
-        this.password = request.getPassword();
         this.phoneNumber = request.getPhoneNumber();
         this.address = request.getAddress();
         this.birth = request.getBirth();
@@ -70,6 +70,10 @@ public class Member extends BaseEntity {
         this.photo = request.getPhoto();
         this.status = request.getStatus();
         this.reportedCnt = request.getReportedCnt();
+    }
+
+    public void updateMemberPasswd(MemberPasswdUpdateRequest request) {
+        this.password = request.getPassword();
     }
 
     //    /**
