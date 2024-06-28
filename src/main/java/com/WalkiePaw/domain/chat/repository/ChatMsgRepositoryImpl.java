@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("jpa")
-public class JpaChatMsgRepositoryImpl implements ChatMsgRepository {
+public class ChatMsgRepositoryImpl implements ChatMsgRepository {
     private final EntityManager em;
 
 
@@ -32,5 +32,9 @@ public class JpaChatMsgRepositoryImpl implements ChatMsgRepository {
     @Override
     public ChatMessage save(final ChatMessage message) {
         return null;
+    }
+
+    public void bulkIsRead(final Integer chatroomId) {
+
     }
 }
