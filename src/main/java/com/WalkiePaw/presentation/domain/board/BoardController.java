@@ -1,5 +1,6 @@
 package com.WalkiePaw.presentation.domain.board;
 
+import com.WalkiePaw.domain.board.entity.BoardStatus;
 import com.WalkiePaw.domain.board.service.BoardService;
 import com.WalkiePaw.presentation.domain.board.dto.BoardAddRequest;
 import com.WalkiePaw.presentation.domain.board.dto.BoardGetResponse;
@@ -44,6 +45,12 @@ public class BoardController {
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateBoard(final @PathVariable("id") Integer boardId, final @RequestBody BoardUpdateRequest request) {
         boardService.updateBoard(boardId, request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/status")
+    public ResponseEntity<Void> updateBoardStatus(final BoardStatusUpdateRequest request) {
+        boardService.updateBoardStatus(request);
         return ResponseEntity.noContent().build();
     }
 }

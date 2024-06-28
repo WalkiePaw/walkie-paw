@@ -4,6 +4,7 @@ import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.board.repository.BoardRepository;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
+import com.WalkiePaw.presentation.domain.board.BoardStatusUpdateRequest;
 import com.WalkiePaw.presentation.domain.board.dto.BoardAddRequest;
 import com.WalkiePaw.presentation.domain.board.dto.BoardGetResponse;
 import com.WalkiePaw.presentation.domain.board.dto.BoardListResponse;
@@ -51,5 +52,12 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
         board.updateBoard(request);
+    }
+
+    @Transactional
+    public void updateBoardStatus(final BoardStatusUpdateRequest request) {
+        Board board = boardRepository.findById(request.getBoardId())
+                .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
+        board.updateStatus(request.getStatus());
     }
 }

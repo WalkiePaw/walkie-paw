@@ -31,7 +31,7 @@ public class ChatController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> chatMsgUpdateIsRead(@PathVariable("id") Integer chatroomId) {
+    public ResponseEntity<Void> chatMsgUpdateIsRead(final @PathVariable("id") Integer chatroomId) {
         chatService.bulkUpdateIsRead(chatroomId);
         return ResponseEntity.noContent().build();
     }

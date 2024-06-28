@@ -79,6 +79,10 @@ public class Board extends BaseEntity {
         this.priceType = request.getPriceType();
     }
 
+    public void updateStatus(final BoardStatus status) {
+        this.status = status;
+    }
+
     /**
      * TODO : update 메서드 만들기
      *  - validation 추가
