@@ -49,7 +49,7 @@ public class BoardController {
     }
 
     @PatchMapping("/status")
-    public ResponseEntity<Void> updateBoardStatus(final BoardStatusUpdateRequest request) {
+    public ResponseEntity<Void> updateBoardStatus(final @RequestBody BoardStatusUpdateRequest request) {
         boardService.updateBoardStatus(request);
         return ResponseEntity.noContent().build();
     }
