@@ -4,6 +4,8 @@ import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.board.repository.BoardRepository;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
+import com.WalkiePaw.global.exception.BadRequestException;
+import com.WalkiePaw.global.exception.ExceptionCode;
 import com.WalkiePaw.presentation.domain.board.BoardStatusUpdateRequest;
 import com.WalkiePaw.presentation.domain.board.dto.BoardAddRequest;
 import com.WalkiePaw.presentation.domain.board.dto.BoardGetResponse;
@@ -11,12 +13,13 @@ import com.WalkiePaw.presentation.domain.board.dto.BoardListResponse;
 import com.WalkiePaw.presentation.domain.board.dto.BoardUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.WalkiePaw.global.exception.ExceptionCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -43,28 +46,28 @@ public class BoardService {
 
     public BoardGetResponse getBoard(Integer boardId) {
         Board board = boardRepository.getBoardDetail(boardId)
-                .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
         return BoardGetResponse.from(board);
     }
 
     @Transactional
     public void updateBoard(final Integer boardId, final BoardUpdateRequest request) {
         Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
         board.updateBoard(request);
     }
 
     @Transactional
     public void updateBoardStatus(final BoardStatusUpdateRequest request) {
         Board board = boardRepository.findById(request.getBoardId())
-                .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
         board.updateStatus(request.getStatus());
     }
 
     @Transactional
     public void deleteBoard(final Integer boardId) {
         Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
         board.delete();
     }
 }
