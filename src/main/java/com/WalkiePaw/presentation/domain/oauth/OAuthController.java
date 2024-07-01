@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Optional;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 public class OAuthController {
@@ -23,62 +25,71 @@ public class OAuthController {
     private final String clientSecret;
     private final String redirectUri;
     private final String userinfoUri;
+    private final RestTemplate restTemplate;
 
     public OAuthController(
-        @Value("${kakao.auth.userinfo-uri}") final String userinfoUri,
-        @Value("${kakao.auth.token-uri}") final String tokenUri,
-        @Value("${kakao.auth.client-id}") final String clientId,
-        @Value("${kakao.auth.client-secret}") final String clientSecret,
-        @Value("${kakao.auth.redirect-uri}") final String redirectUri) {
+            @Value("${kakao.auth.userinfo-uri}") final String userinfoUri,
+            @Value("${kakao.auth.token-uri}") final String tokenUri,
+            @Value("${kakao.auth.client-id}") final String clientId,
+            @Value("${kakao.auth.client-secret}") final String clientSecret,
+            @Value("${kakao.auth.redirect-uri}") final String redirectUri,
+            final RestTemplate restTemplate) {
         this.tokenUri = tokenUri;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.redirectUri = redirectUri;
         this.userinfoUri = userinfoUri;
+        this.restTemplate = restTemplate;
     }
 
 
     @PostMapping("/api/v1/user-info")
-    public ResponseEntity<KakaoInfoResponse> getAccessToken(@RequestBody CodeRequest code) {
+    public ResponseEntity<KakaoUserInfoResponse> getKakaoUserInfo(@RequestBody CodeRequest code) {
 
-        System.out.println("code = " + code);
-        final HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setBasicAuth(clientId, clientSecret);
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        final LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("code", code.getCode());
-        params.add("client_id", clientId);
-        params.add("client_secret", clientSecret);
-        params.add("redirect_uri", redirectUri);
-        params.add("grant_type", "authorization_code");
 
-        HttpEntity<LinkedMultiValueMap<String, String>> linkedMultiValueMapHttpEntity = new HttpEntity<>(params, httpHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<OauthAccessToken> token = restTemplate.exchange(
-            tokenUri,
-            HttpMethod.POST,
-            linkedMultiValueMapHttpEntity,
-            OauthAccessToken.class
-        );
-        String accessToken = token.getBody().getAccessToken();
-        System.out.println("accessToken = " + accessToken);
+        // 예외 핸들리 필요
+        String accessToken = getAccessToken(code.getCode())
+                .orElseThrow().getAccessToken();
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
 
         HttpEntity<MultiValueMap<String, String>> userInfoRequest = new HttpEntity<>(headers);
-        ResponseEntity<KakaoUserInfoResponse> userInfo = restTemplate.exchange(
+        return restTemplate.exchange(
             userinfoUri,
             HttpMethod.GET,
             userInfoRequest,
             KakaoUserInfoResponse.class
         );
-        String email = userInfo.getBody().kakaoAccount.getEmail();
-        String name = userInfo.getBody().kakaoAccount.getName();
+    }
+
+    private Optional<OauthAccessToken> getAccessToken(final String code) {
+
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setBasicAuth(clientId, clientSecret);
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        final LinkedMultiValueMap<String, String> params = setParams(code);
+
+        HttpEntity<LinkedMultiValueMap<String, String>> linkedMultiValueMapHttpEntity = new HttpEntity<>(params, httpHeaders);
 
 
+        ResponseEntity<OauthAccessToken> token = restTemplate.exchange(
+                tokenUri,
+                HttpMethod.POST,
+                linkedMultiValueMapHttpEntity,
+                OauthAccessToken.class
+        );
+        return Optional.ofNullable(token.getBody());
+    }
 
-        return ResponseEntity.ok(new KakaoInfoResponse(email, name));
+    private LinkedMultiValueMap<String, String> setParams(String code) {
+        final LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("code", code);
+        params.add("client_id", clientId);
+        params.add("client_secret", clientSecret);
+        params.add("redirect_uri", redirectUri);
+        params.add("grant_type", "authorization_code");
+        return params;
     }
 }
