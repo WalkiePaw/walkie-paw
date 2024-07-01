@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -32,11 +34,11 @@ public class OAuthController {
     }
 
 
-    @GetMapping("api/v1/user-info/{code}")
-    public String getUserInfo(@PathVariable String code) {
+    @PostMapping("api/v1/user-info")
+    public String getUserInfo(@RequestBody CodeRequest code) {
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("code", code);
+        params.add("code", code.getCode());
         params.add("client_id", clientId);
         params.add("client_secret", clientSecret);
         params.add("redirect_uri", redirectUri);
