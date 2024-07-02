@@ -54,7 +54,8 @@ public class BoardService {
     public void updateBoard(final Integer boardId, final BoardUpdateRequest request) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
-        board.updateBoard(request);
+        board.updateBoard(request.getTitle(), request.getContent(), request.getPrice(), request.getStartTime(),
+                request.getEndTime(), request.getPriceType());
     }
 
     @Transactional

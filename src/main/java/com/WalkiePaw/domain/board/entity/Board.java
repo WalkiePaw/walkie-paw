@@ -31,7 +31,6 @@ public class Board extends BaseEntity {
     private PriceType priceType;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private LocalDateTime meetingTime;
     private int viewCount;
     private int likeCount;
     private String location;
@@ -51,7 +50,6 @@ public class Board extends BaseEntity {
         this.title = title;
         this.content = content;
         this.price = price;
-        this.meetingTime = meetingTime;
         this.startTime = startTime;
         this.endTime = endTime;
         this.category = category;
@@ -69,14 +67,13 @@ public class Board extends BaseEntity {
         this.content = content;
     }
 
-    public void update(final String title, final String content, final int price,
-                       final LocalDateTime meetingTime, final LocalDateTime startTime,
+    public void updateBoard(final String title, final String content, final int price,
+                       final LocalDateTime startTime,
                        final LocalDateTime endTime, final PriceType priceType) {
 
         this.title = title;
         this.content = content;
         this.price = price;
-        this.meetingTime = meetingTime;
         this.startTime = startTime;
         this.endTime = endTime;
         this.priceType = priceType;
