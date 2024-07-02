@@ -13,7 +13,6 @@ import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class KakaoUserInfoResponse {
 
     //회원 번호
@@ -27,7 +26,6 @@ public class KakaoUserInfoResponse {
 
     @Getter
     @NoArgsConstructor
-    @JsonIgnoreProperties(ignoreUnknown = true)
     public class KakaoAccount {
 
         //카카오계정 이름
