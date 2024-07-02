@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,6 +40,8 @@ public class Member extends BaseEntity {
     private int reportedCnt;
     private int recruitCnt;
     private int researchCnt;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
     @Builder
     public Member(String name, String nickname, String email, String password, String phoneNumber,

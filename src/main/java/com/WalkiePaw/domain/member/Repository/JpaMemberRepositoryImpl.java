@@ -39,8 +39,20 @@ public class JpaMemberRepositoryImpl implements MemberRepository {
         return em.createQuery("select m from Member m", Member.class).getResultList();
     }
 
+    @Override
+    public Optional<Member> findByUsername(final String name) {
+        return Optional.ofNullable(em.find(Member.class, name));
+    }
 
-//    public void delete(final Integer memberId) {
+    @Override
+    public boolean existsByUsername(final String name) {
+        if (em.find(Member.class, name) != null) {
+            return  true;
+        }
+        return false;
+    }
+
+    //    public void delete(final Integer memberId) {
 //        em.remove(em.find(Member.class, memberId));
 //    }
 }

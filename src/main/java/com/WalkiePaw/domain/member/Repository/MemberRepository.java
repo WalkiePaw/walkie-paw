@@ -18,4 +18,8 @@ public interface MemberRepository {
     List<Member> findByName(final String name);
 
     List<Member> findAll();
+
+    Optional<Member> findByUsername(String name);
+
+    boolean existsByUsername(String name);
 }

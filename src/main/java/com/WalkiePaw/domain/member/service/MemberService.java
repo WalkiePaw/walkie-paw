@@ -3,8 +3,14 @@ package com.WalkiePaw.domain.member.service;
 import com.WalkiePaw.domain.board.repository.BoardRepository;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
+import com.WalkiePaw.presentation.domain.auth.dto.SignUpRequest;
 import com.WalkiePaw.presentation.domain.member.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +20,10 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public List<MemberListResponse> findAll() {
@@ -52,5 +59,25 @@ public class MemberService {
     public void updatePasswd(final Integer memberId, final MemberPasswdUpdateRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow();
         member.updateMemberPasswd(request);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(final String name) throws UsernameNotFoundException {
+        Member member = memberRepository.findByUsername(name)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        return new org.springframework.security.core.userdetails.User(
+                member.getName(),
+                member.getPassword(),
+                member.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
+        );
+    }
+
+    public Member registerNewMember(SignUpRequest request) {
+        if (memberRepository.existsByUsername(request.getName())) {
+            throw new RuntimeException("Username already exists");
+        }
+        request.setPassword(passwordEncoder.encode(request.getPassword()));
+        return memberRepository.save(request.toEntity());
     }
 }
