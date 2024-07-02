@@ -18,10 +18,11 @@ public class BoardAddRequest {
     private final String content;
     private final int price;
     private final BoardCategory category;
-    private final LocalDateTime meetingTime;
     private final PriceType priceType;
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
+    private final String location;
+    private final String detailedLocation;
 
     /**
      * BoardAddResponse -> Board 객체로 만드는 toEntity 메서드 필요
@@ -34,10 +35,11 @@ public class BoardAddRequest {
                 .title(request.getTitle())
                 .price(request.getPrice())
                 .category(request.getCategory())
-                .meetingTime(request.getMeetingTime())
                 .startTime(request.getStartTime())
                 .endTime(request.getEndTime())
                 .priceType(request.getPriceType())
+                .location(request.getLocation())
+                .detailedLocation(request.getDetailedLocation())
                 .build();
     }
 }

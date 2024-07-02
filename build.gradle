@@ -50,6 +50,9 @@ dependencies {
 
 	// AWS S3
 	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.750'
+
+	// https://mvnrepository.com/artifact/org.springframework/spring-webflux
+	implementation 'org.springframework:spring-webflux:6.1.10'
 }
 
 tasks.named('test') {

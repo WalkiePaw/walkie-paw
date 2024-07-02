@@ -35,13 +35,17 @@ public class Board extends BaseEntity {
     private int viewCount;
     private int likeCount;
     private String location;
+    private String detailedLocation;
     @Enumerated(EnumType.STRING)
     private BoardStatus status;
     @Enumerated(EnumType.STRING)
     private BoardCategory category;
 
     @Builder
-    public Board(Member member, String title, String content, int price, LocalDateTime meetingTime, LocalDateTime startTime, LocalDateTime endTime, PriceType priceType, String location, BoardCategory category) {
+    public Board(
+            Member member, String title, String content, int price, LocalDateTime meetingTime,
+            LocalDateTime startTime, LocalDateTime endTime, PriceType priceType,
+            String location, String detailedLocation, BoardCategory category) {
         this.priceType = priceType;
         this.member = member;
         this.title = title;
@@ -51,17 +55,10 @@ public class Board extends BaseEntity {
         this.startTime = startTime;
         this.endTime = endTime;
         this.category = category;
+        this.detailedLocation = detailedLocation;
+        this.location = location;
         status = BoardStatus.RECRUITING;
     }
-
-//    /**
-//     * Board 생성 메서드
-//     */
-//    public static Board createBoard(Member member, String title, String content, int price, LocalDate meetingTime) {
-//        Board board = new Board(title, content, price, meetingTime);
-//        board.member = member;
-//        return board;
-//    }
 
     public void updateMember(Member member) {
         this.member = member;
@@ -72,14 +69,17 @@ public class Board extends BaseEntity {
         this.content = content;
     }
 
-    public void updateBoard(final BoardUpdateRequest request) {
-        this.content = request.getContent();
-        this.title = request.getTitle();
-        this.price = request.getPrice();
-        this.meetingTime = request.getMeetingTime();
-        this.startTime = request.getStartTime();
-        this.endTime = request.getEndTime();
-        this.priceType = request.getPriceType();
+    public void update(final String title, final String content, final int price,
+                       final LocalDateTime meetingTime, final LocalDateTime startTime,
+                       final LocalDateTime endTime, final PriceType priceType) {
+
+        this.title = title;
+        this.content = content;
+        this.price = price;
+        this.meetingTime = meetingTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.priceType = priceType;
     }
 
     public void delete() {
