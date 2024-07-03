@@ -1,7 +1,7 @@
 package com.WalkiePaw.domain.report.service;
 
 import com.WalkiePaw.domain.board.entity.Board;
-import com.WalkiePaw.domain.board.repository.BoardRepository;
+import com.WalkiePaw.domain.board.repository.BoardRepositoryOverride;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.domain.report.entity.BoardReport;
@@ -21,7 +21,7 @@ import java.util.List;
 public class BoardReportService {
 
     private final BoardReportRepository boardReportRepository;
-    private final BoardRepository boardRepository;
+    private final BoardRepositoryOverride boardRepository;
     private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)

@@ -1,7 +1,7 @@
 package com.WalkiePaw.domain.chatroom.service;
 
 import com.WalkiePaw.domain.board.entity.Board;
-import com.WalkiePaw.domain.board.repository.BoardRepository;
+import com.WalkiePaw.domain.board.repository.BoardRepositoryOverride;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.domain.chatroom.repository.ChatroomRepository;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
@@ -22,7 +22,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ChatroomService {
     private final ChatroomRepository chatroomRepository;
-    private final BoardRepository boardRepository;
+    private final BoardRepositoryOverride boardRepository;
     private final MemberRepository memberRepository;
 
     public List<ChatroomListResponse> findAllByMemberId(final Integer memberId) {

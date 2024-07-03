@@ -3,6 +3,7 @@ package com.WalkiePaw.domain.board.entity;
 import com.WalkiePaw.domain.common.BaseEntity;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.presentation.domain.board.dto.BoardUpdateRequest;
+import com.querydsl.core.annotations.QueryEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

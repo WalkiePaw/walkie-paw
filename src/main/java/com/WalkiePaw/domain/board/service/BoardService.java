@@ -5,7 +5,6 @@ import com.WalkiePaw.domain.board.repository.BoardRepository;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.global.exception.BadRequestException;
-import com.WalkiePaw.global.exception.ExceptionCode;
 import com.WalkiePaw.presentation.domain.board.BoardStatusUpdateRequest;
 import com.WalkiePaw.presentation.domain.board.dto.BoardAddRequest;
 import com.WalkiePaw.presentation.domain.board.dto.BoardGetResponse;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.WalkiePaw.global.exception.ExceptionCode.*;
 
@@ -63,6 +61,8 @@ public class BoardService {
         Board board = boardRepository.findById(request.getBoardId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
         board.updateStatus(request.getStatus());
+
+
     }
 
     @Transactional

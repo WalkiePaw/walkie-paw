@@ -1,20 +1,18 @@
 package com.WalkiePaw.domain.board.repository;
 
 import com.WalkiePaw.domain.board.entity.Board;
-import com.WalkiePaw.presentation.domain.board.dto.BoardUpdateRequest;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface BoardRepository {
+@Profile("spring-data-jpa")
+public interface BoardRepository extends JpaRepository<Board, Integer>{
 
-    List<Board> findAll();
+    @Query("select b from Board b join fetch b.member m where b.id = :id")
+    Optional<Board> getBoardDetail(@Param("id") Integer boardId);
 
-    List<Board> findBoardAndMemberBy();
-
-    Board save(Board board);
-
-    Optional<Board> findById(Integer id);
-
-    Optional<Board> getBoardDetail(Integer boardId);
 }
