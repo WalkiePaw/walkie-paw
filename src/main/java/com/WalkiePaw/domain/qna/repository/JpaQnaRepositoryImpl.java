@@ -32,9 +32,9 @@ public class JpaQnaRepositoryImpl implements QnaRepository {
     }
 
     public Optional<Qna> findById(final Integer qnaId) {
-        Qna qna = (Qna) em.createQuery("select q from Qna q join fetch q.member where q.id = :id")
+        return Optional.ofNullable(em.createQuery("select q from Qna q join fetch q.member where q.id = :id"
+                    ,Qna.class)
                 .setParameter("id", qnaId)
-                .getSingleResult();
-        return Optional.ofNullable(qna);
+                .getSingleResult());
     }
 }

@@ -1,5 +1,6 @@
 package com.WalkiePaw.domain.report.repository;
 
+import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.report.entity.BoardReport;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,9 @@ public class JpaBoardReportRepositoryImpl implements BoardReportRepository {
     }
 
     public Optional<BoardReport> findById(final Integer brId) {
-        return Optional.ofNullable((BoardReport) em.createQuery("select br from BoardReport br join fetch br.member join fetch br.board where br.id = :id")
+        return Optional.ofNullable(em.createQuery(
+                    "select br from BoardReport br join fetch br.member join fetch br.board where br.id = :id"
+                    , BoardReport.class)
                 .setParameter("id", brId)
                 .getSingleResult());
     }

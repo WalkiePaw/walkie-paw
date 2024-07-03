@@ -24,8 +24,8 @@ public class JpaReviewRepositoryImpl implements ReviewRepository{
     }
 
 //    @Override
-    public List<Review> findByName(final String name) {
-        return em.createQuery("select r from Review r where r.name = :name", Review.class)
+    public List<Review> findByReviewerName(final String name) {
+        return em.createQuery("select r from Review r where r.reviewer.name = :name", Review.class)
                 .setParameter("name", name)
                 .getResultList();
     }

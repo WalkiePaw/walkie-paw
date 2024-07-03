@@ -33,7 +33,9 @@ public class JpaMemberReportRepositoryImpl implements MemberReportRepository {
     }
 
     public Optional<MemberReport> findById(final Integer memberReportId) {
-        return Optional.ofNullable((MemberReport) em.createQuery("select mr from MemberReport mr join fetch mr.reportingMember join fetch mr.reportedMember where mr.id = :id")
+        return Optional.ofNullable(em.createQuery(
+                    "select mr from MemberReport mr join fetch mr.reportingMember " +
+                            "join fetch mr.reportedMember where mr.id = :id", MemberReport.class)
                 .setParameter("id", memberReportId)
                 .getSingleResult());
     }

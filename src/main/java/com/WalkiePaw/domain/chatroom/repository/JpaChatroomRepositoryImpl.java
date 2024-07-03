@@ -30,13 +30,12 @@ public class JpaChatroomRepositoryImpl implements ChatroomRepository{
 
     @Override
     public Optional<Chatroom> findChatroomById(final Integer chatroomId) {
-        Chatroom chatroom  = (Chatroom) em.createQuery("select cr from Chatroom cr" +
+        return Optional.ofNullable(em.createQuery("select cr from Chatroom cr" +
                         " join fetch cr.member m" +
                         " join fetch cr.board b" +
-                        " where cr.id = :id")
+                        " where cr.id = :id", Chatroom.class)
                 .setParameter("id", chatroomId)
-                .getSingleResult();
-        return Optional.ofNullable(chatroom);
+                .getSingleResult());
     }
 
     @Override
