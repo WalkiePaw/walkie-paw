@@ -1,15 +1,8 @@
-package com.WalkiePaw.presentation.domain.oauth;
+package com.WalkiePaw.presentation.domain.oauth.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import lombok.ToString;
 
 @Getter
 @NoArgsConstructor

@@ -1,5 +1,7 @@
 package com.WalkiePaw.presentation.domain.oauth;
 
+import com.WalkiePaw.presentation.domain.oauth.dto.CodeRequest;
+import com.WalkiePaw.presentation.domain.oauth.dto.OAuthUserinfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,15 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OAuthController {
 
-    private final KakaoOAuthProvider kakaoOAuthProvider;
+    private final OAuthProviderMappingHandler handler;
 
     @PostMapping("/api/v1/login/oauth")
     public ResponseEntity<OAuthUserinfoResponse> getUserInfo(@RequestBody CodeRequest code) {
-        KakaoUserInfoResponse kakaoUserInfoResponse = kakaoOAuthProvider.getUserInfo(code.getCode()).orElseThrow();
-        return ResponseEntity.ok(
-                new OAuthUserinfoResponse(
-                        kakaoUserInfoResponse.getKakaoAccount().getEmail(),
-                        kakaoUserInfoResponse.getKakaoAccount().getName()));
+        return ResponseEntity.ok(handler.getUserinfoByProvider(code));
     }
 
 }
