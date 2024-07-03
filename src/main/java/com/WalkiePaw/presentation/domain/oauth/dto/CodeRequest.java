@@ -1,4 +1,4 @@
-package com.WalkiePaw.presentation.domain.oauth;
+package com.WalkiePaw.presentation.domain.oauth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

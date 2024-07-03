@@ -1,5 +1,8 @@
-package com.WalkiePaw.presentation.domain.oauth;
+package com.WalkiePaw.presentation.domain.oauth.provider;
 
+import com.WalkiePaw.presentation.domain.oauth.dto.KakaoUserInfoResponse;
+import com.WalkiePaw.presentation.domain.oauth.dto.OAuthUserinfoResponse;
+import com.WalkiePaw.presentation.domain.oauth.dto.OauthAccessToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -10,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Optional;
 
 @Component
-public class KakaoOAuthProvider {
+public class KakaoOAuthProvider implements OAuthProvider {
 
     private final String tokenUri;
     private final String clientId;
@@ -34,19 +37,20 @@ public class KakaoOAuthProvider {
         this.restTemplate = restTemplate;
     }
 
-    public Optional<KakaoUserInfoResponse> getUserInfo(final String code) {
+    public OAuthUserinfoResponse getUserInfo(final String code) {
         String accessToken = getAccessToken(code).orElseThrow().getAccessToken();
         final HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
 
         HttpEntity<MultiValueMap<String, String>> userInfoRequest = new HttpEntity<>(headers);
-        ResponseEntity<KakaoUserInfoResponse> userInfo = restTemplate.exchange(
+        KakaoUserInfoResponse userInfo = Optional.ofNullable(restTemplate.exchange(
                 userinfoUri,
                 HttpMethod.GET,
                 userInfoRequest,
                 KakaoUserInfoResponse.class
-        );
-        return Optional.ofNullable(userInfo.getBody());
+        ).getBody()).orElseThrow();
+
+        return new OAuthUserinfoResponse(userInfo.getKakaoAccount().getEmail(), userInfo.getKakaoAccount().getName());
     }
 
     private Optional<OauthAccessToken> getAccessToken(final String code) {
