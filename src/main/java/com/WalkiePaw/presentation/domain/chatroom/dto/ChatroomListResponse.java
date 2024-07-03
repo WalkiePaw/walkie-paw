@@ -9,8 +9,11 @@ import lombok.Data;
 public class ChatroomListResponse {
     private final Integer id;
     private final String location;
+    private final String nickname;
+    private final String lastMessage;
 
     public static ChatroomListResponse from(final Chatroom chatroom) {
-        return new ChatroomListResponse(chatroom.getId(), chatroom.getBoard().getLocation());
+        return new ChatroomListResponse(chatroom.getId(), chatroom.getBoard().getLocation(),
+                 chatroom.getMember().getNickname(), chatroom.getLatestMessage());
     }
 }
