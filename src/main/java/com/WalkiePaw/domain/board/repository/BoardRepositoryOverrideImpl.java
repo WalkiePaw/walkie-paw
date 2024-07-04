@@ -1,6 +1,7 @@
 package com.WalkiePaw.domain.board.repository;
 
 import com.WalkiePaw.domain.board.entity.Board;
+import com.WalkiePaw.domain.board.entity.BoardCategory;
 import com.WalkiePaw.domain.board.entity.BoardStatus;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,11 +19,11 @@ public class BoardRepositoryOverrideImpl implements BoardRepositoryOverride {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Board> findAllNotDeleted() {
+    public List<Board> findAllNotDeleted(final BoardCategory category) {
         return jpaQueryFactory
                 .selectFrom(board)
                 .join(board.member).fetchJoin()
-                .where(board.status.ne(BoardStatus.DELETED))
+                .where(board.status.ne(BoardStatus.DELETED).and(board.category.eq(category)))
                 .fetch();
     }
 
