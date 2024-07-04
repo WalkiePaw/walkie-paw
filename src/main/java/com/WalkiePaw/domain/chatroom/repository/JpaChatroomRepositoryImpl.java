@@ -14,7 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("jpa")
-public class JpaChatroomRepositoryImpl implements ChatroomRepository{
+public class JpaChatroomRepositoryImpl{
 
     private final EntityManager em;
 
@@ -23,12 +23,10 @@ public class JpaChatroomRepositoryImpl implements ChatroomRepository{
         return chatroom;
     }
 
-    @Override
     public Optional<Chatroom> findById(final Integer chatroomId) {
         return Optional.ofNullable(em.find(Chatroom.class, chatroomId));
     }
 
-    @Override
     public Optional<Chatroom> findChatroomById(final Integer chatroomId) {
         return Optional.ofNullable(em.createQuery("select cr from Chatroom cr" +
                         " join fetch cr.member m" +
@@ -38,7 +36,6 @@ public class JpaChatroomRepositoryImpl implements ChatroomRepository{
                 .getSingleResult());
     }
 
-    @Override
     public List<Chatroom> findAllByMemberId(Integer memberId) {
         return em.createQuery("select cr from Chatroom cr", Chatroom.class)
                 .getResultList();

@@ -33,6 +33,7 @@ public class Chatroom extends BaseEntity {
     private ChatroomStatus status;
     @Enumerated(EnumType.STRING)
     private ChatroomCategory category;
+    private int unreadCount;
     private String latestMessage;
     private LocalDateTime latestMessageTime;
 
@@ -43,8 +44,9 @@ public class Chatroom extends BaseEntity {
         this.status = ChatroomStatus.GENERAL;
     }
 
-    public void update(final ChatroomUpdateRequest request) {
-
+    public void updateLatestMessage(final String latestMessage) {
+        this.latestMessage = latestMessage;
+        unreadCount++;
     }
 
 //    /**
