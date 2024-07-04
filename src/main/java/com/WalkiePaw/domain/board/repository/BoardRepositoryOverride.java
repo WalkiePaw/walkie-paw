@@ -7,4 +7,6 @@ import java.util.List;
 public interface BoardRepositoryOverride {
 
     List<Board> findAllNotDeleted();
+
+    List<Board> findBySearchCond(String title, String content);
 }
