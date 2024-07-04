@@ -15,6 +15,7 @@ public class BoardGetResponse {
     /**
      * TODO - Member 정보 뭐 넘길지
      */
+    private final String detailedLocation;
     private final String location;
     private final String title;
     private final BoardCategory category;
@@ -26,7 +27,7 @@ public class BoardGetResponse {
      * @return BoardGetResponse
      */
     public static BoardGetResponse from(final Board board) {
-        return new BoardGetResponse(board.getId(), board.getStatus(), board.getLocation(), board.getTitle(), board.getCategory(), board.getContent());
+        return new BoardGetResponse(board.getId(), board.getStatus(), board.getDetailedLocation(), board.getLocation(), board.getTitle(), board.getCategory(), board.getContent());
     }
 
 }
