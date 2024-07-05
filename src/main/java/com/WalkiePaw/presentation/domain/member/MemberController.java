@@ -42,6 +42,7 @@ public class MemberController {
     @Operation(summary = "멤버 추가")
     @PostMapping
     public ResponseEntity<Void> addMember(final @Validated @RequestBody MemberAddRequest request) {
+        System.out.println("request = " + request);
         Integer memberId = memberService.save(request);
         return ResponseEntity.created(URI.create(MEMBER_URL + memberId)).build();
     }

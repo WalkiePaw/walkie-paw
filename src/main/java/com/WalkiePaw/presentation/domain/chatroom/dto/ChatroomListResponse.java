@@ -6,16 +6,18 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ChatroomListResponse {
-    private final Integer id;
-    private final String location;
-    private final String nickname;
-    private final String latestMessage;
-    private final LocalTime latestTime;
-    private final int unreadCount;
+    private Integer id;
+    private String location;
+    private String nickname;
+    private String latestMessage;
+    private LocalTime latestTime;
+    private int unreadCount;
 
     public static ChatroomListResponse from(final Chatroom chatroom) {
         return new ChatroomListResponse(chatroom.getId(), chatroom.getBoard().getLocation(),
