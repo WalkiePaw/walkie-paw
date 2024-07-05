@@ -1,6 +1,7 @@
 package com.WalkiePaw.domain.board.service;
 
 import com.WalkiePaw.domain.board.entity.Board;
+import com.WalkiePaw.domain.board.entity.BoardCategory;
 import com.WalkiePaw.domain.board.repository.BoardRepository;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
@@ -24,8 +25,8 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
-    public List<BoardListResponse> findAllBoardAndMember() {
-        List<Board> findBoards = boardRepository.findAllNotDeleted();
+    public List<BoardListResponse> findAllBoardAndMember(final BoardCategory category) {
+        List<Board> findBoards = boardRepository.findAllNotDeleted(category);
         return findBoards.stream()
                 .map(BoardListResponse::from)
                 .toList();
@@ -49,7 +50,7 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
         board.updateBoard(request.getTitle(), request.getContent(), request.getPrice(), request.getStartTime(),
-                request.getEndTime(), request.getPriceType());
+                request.getEndTime(), request.getPriceType(), request.getLocation(), request.getDetailedLocation());
     }
 
     @Transactional
@@ -57,8 +58,6 @@ public class BoardService {
         Board board = boardRepository.findById(request.getBoardId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
         board.updateStatus(request.getStatus());
-
-
     }
 
     @Transactional

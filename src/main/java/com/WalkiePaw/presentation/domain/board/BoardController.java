@@ -1,5 +1,6 @@
 package com.WalkiePaw.presentation.domain.board;
 
+import com.WalkiePaw.domain.board.entity.BoardCategory;
 import com.WalkiePaw.domain.board.service.BoardService;
 import com.WalkiePaw.presentation.domain.board.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +21,9 @@ public class BoardController {
     private final BoardService boardService;
     private static final String BOARD_URL = "/boards/";
 
-    @GetMapping
-    public ResponseEntity<List<BoardListResponse>> getBoardList() {
-        List<BoardListResponse> boardListResponses = boardService.findAllBoardAndMember();
+    @GetMapping("/list/{category}")
+    public ResponseEntity<List<BoardListResponse>> getBoardList(final @PathVariable BoardCategory category) {
+        List<BoardListResponse> boardListResponses = boardService.findAllBoardAndMember(category);
         return ResponseEntity.ok(boardListResponses);
     }
 
