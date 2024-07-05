@@ -57,4 +57,9 @@ public class MemberService {
     public Optional<Member> findByEmail(final String email) {
         return memberRepository.findByEmail(email);
     }
+
+    public void draw(final Integer memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        member.withdraw();
+    }
 }

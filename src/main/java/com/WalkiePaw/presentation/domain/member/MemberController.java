@@ -72,4 +72,11 @@ public class MemberController {
         memberService.updatePasswd(memberId, request);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "멤버 탈퇴")
+    @PatchMapping("/{id}/draw")
+    public ResponseEntity<Void> withDraw(@PathVariable("id") final Integer memberId) {
+        memberService.draw(memberId);
+        return ResponseEntity.noContent().build();
+    }
 }
