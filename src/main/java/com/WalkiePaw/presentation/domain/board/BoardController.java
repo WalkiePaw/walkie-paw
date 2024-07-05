@@ -31,6 +31,7 @@ public class BoardController {
     public ResponseEntity<List<BoardMypageListResponse>> mypageList(@PathVariable Integer memberId, @PathVariable BoardCategory category
     ) {
         List<BoardMypageListResponse> boards = boardService.findMyBoardsBy(memberId, category);
+        return ResponseEntity.ok(boards);
     }
 
     @PostMapping
