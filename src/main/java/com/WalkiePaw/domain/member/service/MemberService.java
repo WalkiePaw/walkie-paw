@@ -4,6 +4,7 @@ import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.presentation.domain.member.EmailVerifyRequest;
 import com.WalkiePaw.presentation.domain.member.dto.*;
+import com.WalkiePaw.security.CustomPasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final CustomPasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public List<MemberListResponse> findAll() {
@@ -34,6 +36,7 @@ public class MemberService {
 
     public Integer save(final MemberAddRequest request) {
         Member member = request.toEntity();
+        passwordEncoder.encodePassword(member);
         return memberRepository.save(member).getId();
     }
 
@@ -52,7 +55,8 @@ public class MemberService {
 
     public void updatePasswd(final Integer memberId, final MemberPasswdUpdateRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow();
-        member.updateMemberPasswd(request);
+        member.updatePasswd(request.getPassword());
+        passwordEncoder.encodePassword(member);
     }
 
     public Optional<Member> findByEmail(final String email) {
