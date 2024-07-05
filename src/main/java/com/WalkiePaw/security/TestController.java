@@ -33,8 +33,6 @@ public class TestController {
                 "\n" +
                 "password: " + principal.getPassword() +
                 "\n" +
-                "username: " + principal.getUsername() +
-                "\n" +
                 "authorities: " + principal.getAuthorities();
     }
 }
