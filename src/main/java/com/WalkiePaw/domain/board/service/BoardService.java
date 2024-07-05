@@ -6,6 +6,7 @@ import com.WalkiePaw.domain.board.repository.BoardRepository;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.global.exception.BadRequestException;
+import com.WalkiePaw.presentation.domain.board.dto.BoardMypageListResponse;
 import com.WalkiePaw.presentation.domain.board.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,5 +73,9 @@ public class BoardService {
         return bySearchCond.stream()
                 .map(BoardListResponse::from)
                 .toList();
+    }
+
+    public List<BoardMypageListResponse> findMyBoardsBy(final Integer memberId, final BoardCategory category) {
+        return boardRepository.findMyBoardsBy(memberId, category);
     }
 }
