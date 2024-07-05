@@ -24,8 +24,6 @@ public class ChatroomRepositoryOverrideImpl implements ChatroomRepositoryOverrid
                         , chatroom.latestMessage, chatroom.unreadCount
                 ))
                 .from(chatroom)
-                .join(chatroom.board).fetchJoin()
-                .join(chatroom.member).fetchJoin()
                 .where(chatroom.board.id.eq(memberId).or(chatroom.member.id.eq(memberId)))
                 .fetch();
     }
