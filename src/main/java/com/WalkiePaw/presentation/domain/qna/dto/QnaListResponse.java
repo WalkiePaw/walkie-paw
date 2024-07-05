@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class QnaListResponse {
 
+    private Integer qnaId;
+    private Integer memberId;
     private String writerName;
     private String title;
     private QnaStatus status;
@@ -22,6 +24,8 @@ public class QnaListResponse {
      */
     public static QnaListResponse from(Qna qna) {
         return new QnaListResponse(
+                qna.getId(),
+                qna.getMember().getId(),
                 qna.getMember().getName(),
                 qna.getTitle(),
                 qna.getStatus(),
