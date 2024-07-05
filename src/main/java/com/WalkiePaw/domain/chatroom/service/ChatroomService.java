@@ -27,10 +27,7 @@ public class ChatroomService {
     private final MemberRepository memberRepository;
 
     public List<ChatroomListResponse> findAllByMemberId(final Integer memberId) {
-        List<Chatroom> chatrooms = chatroomRepository.findAllByMemberId(memberId);
-        return chatrooms.stream()
-                .map(ChatroomListResponse::from)
-                .toList();
+        return chatroomRepository.findByMemberId(memberId);
     }
 
     @Transactional

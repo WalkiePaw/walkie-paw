@@ -1,4 +1,4 @@
-package com.WalkiePaw.presentation.domain.chat;
+package com.WalkiePaw.presentation.domain.chat.dto;
 
 import com.WalkiePaw.domain.chat.entity.ChatMessage;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;

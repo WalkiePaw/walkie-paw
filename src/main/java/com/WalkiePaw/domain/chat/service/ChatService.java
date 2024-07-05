@@ -6,7 +6,7 @@ import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.domain.chatroom.repository.ChatroomRepository;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
-import com.WalkiePaw.presentation.domain.chat.ChatAddRequest;
+import com.WalkiePaw.presentation.domain.chat.dto.ChatAddRequest;
 import com.WalkiePaw.presentation.domain.chat.dto.ChatMsgListResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +38,7 @@ public class ChatService {
                 .orElseThrow(() -> new IllegalStateException("잘못된 채팅방 번호입니다."));
         Member member = memberRepository.findById(request.getWriterId())
                 .orElseThrow();
+        chatroom.updateLatestMessage(request.getContent());
         ChatMessage chatMsg = request.toEntity(request, member, chatroom);
         return chatMsgRepository.save(chatMsg).getId();
     }
