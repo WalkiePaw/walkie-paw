@@ -79,4 +79,10 @@ public class MemberController {
         memberService.draw(memberId);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "이메일 검증")
+    @GetMapping("/verifyEmail")
+    public ResponseEntity<EmailVerifyResponse> verifyEmail(@RequestBody final EmailVerifyRequest request) {
+        return ResponseEntity.ok(memberService.verifyEmail(request));
+    }
 }
