@@ -4,16 +4,15 @@ import com.WalkiePaw.domain.common.BaseEntity;
 import com.WalkiePaw.presentation.domain.member.dto.MemberPasswdUpdateRequest;
 import com.WalkiePaw.presentation.domain.member.dto.MemberUpdateRequest;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.LocalDate;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Member extends BaseEntity {
 
     @Id
@@ -24,6 +23,7 @@ public class Member extends BaseEntity {
     private String name;
     private String nickname;
     private String email;
+    @JsonIgnore
     private String password;
     private String phoneNumber;
     @Column(name = "addr")
@@ -38,6 +38,7 @@ public class Member extends BaseEntity {
     private int reportedCnt;
     private int recruitCnt;
     private int researchCnt;
+    private String role;
 
     @Builder
     public Member(String name, String nickname, String email, String password, String phoneNumber,
@@ -57,6 +58,7 @@ public class Member extends BaseEntity {
         this.reportedCnt = 0;
         this.recruitCnt = 0;
         this.researchCnt = 0;
+        this.role = "USER";
     }
 
     public void updateMember(MemberUpdateRequest request) {

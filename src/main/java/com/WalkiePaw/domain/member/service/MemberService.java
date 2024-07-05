@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,5 +52,9 @@ public class MemberService {
     public void updatePasswd(final Integer memberId, final MemberPasswdUpdateRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow();
         member.updateMemberPasswd(request);
+    }
+
+    public Optional<Member> findByEmail(final String email) {
+        return memberRepository.findByEmail(email);
     }
 }
