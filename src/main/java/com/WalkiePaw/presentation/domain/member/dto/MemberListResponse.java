@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -16,6 +17,7 @@ public class MemberListResponse {
     private String email;
     private MemberStatus status;
     private int reportedCnt;
+    private LocalDateTime createdDate;
 
     public static MemberListResponse from(Member member) {
         return new MemberListResponse(
@@ -23,7 +25,8 @@ public class MemberListResponse {
                 member.getNickname(),
                 member.getEmail(),
                 member.getStatus(),
-                member.getReportedCnt()
+                member.getReportedCnt(),
+                member.getCreatedDate()
         );
     }
 }
