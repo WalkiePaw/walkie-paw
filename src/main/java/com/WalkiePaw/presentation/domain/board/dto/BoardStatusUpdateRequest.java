@@ -1,4 +1,4 @@
-package com.WalkiePaw.presentation.domain.board;
+package com.WalkiePaw.presentation.domain.board.dto;
 
 import com.WalkiePaw.domain.board.entity.BoardStatus;
 import lombok.Data;

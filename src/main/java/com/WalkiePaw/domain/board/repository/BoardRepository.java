@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Profile("spring-data-jpa")
-public interface BoardRepository extends JpaRepository<Board, Integer>{
+public interface BoardRepository extends JpaRepository<Board, Integer>, BoardRepositoryOverride {
 
     @Query("select b from Board b join fetch b.member m where b.id = :id")
     Optional<Board> getBoardDetail(@Param("id") Integer boardId);

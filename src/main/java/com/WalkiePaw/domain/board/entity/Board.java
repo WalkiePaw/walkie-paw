@@ -70,7 +70,9 @@ public class Board extends BaseEntity {
 
     public void updateBoard(final String title, final String content, final int price,
                        final LocalDateTime startTime,
-                       final LocalDateTime endTime, final PriceType priceType) {
+                       final LocalDateTime endTime, final PriceType priceType,
+                            final String location, final String detailedLocation
+    ) {
 
         this.title = title;
         this.content = content;
@@ -78,6 +80,8 @@ public class Board extends BaseEntity {
         this.startTime = startTime;
         this.endTime = endTime;
         this.priceType = priceType;
+        this.location = location;
+        this.detailedLocation = detailedLocation;
     }
 
     public void delete() {

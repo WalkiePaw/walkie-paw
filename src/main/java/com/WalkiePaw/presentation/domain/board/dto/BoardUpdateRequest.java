@@ -17,5 +17,6 @@ public class BoardUpdateRequest {
     private final PriceType priceType;
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
-
+    private final String location;
+    private final String detailedLocation;
 }

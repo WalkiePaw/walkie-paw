@@ -50,4 +50,29 @@ class QuerydslBoardRepositoryTest {
 //        assertThat(allNotDeleted.size()).isEqualTo(3);
 //        assertThat(allNotDeleted.contains(board2)).isFalse();
 //    }
+    @Test
+    void 쿼리dsl_게시글_리스트_테스트() {
+        Member member1 = Member.builder().name("member1").build();
+        em.persist(member1);
+
+        Board board1 = Board.builder().member(member1).build();
+        Board board2 = Board.builder().member(member1).build();
+        Board board3 = Board.builder().member(member1).build();
+        Board board4 = Board.builder().member(member1).build();
+
+        em.persist(board1);
+        em.persist(board2);
+        em.persist(board3);
+        em.persist(board4);
+
+        board2.delete();
+
+        em.flush();
+        em.clear();
+
+//        List<Board> allNotDeleted = querydslBoardRepository.findAllNotDeleted();
+
+//        assertThat(allNotDeleted.size()).isEqualTo(3);
+//        assertThat(allNotDeleted.contains(board2)).isFalse();
+    }
 }
