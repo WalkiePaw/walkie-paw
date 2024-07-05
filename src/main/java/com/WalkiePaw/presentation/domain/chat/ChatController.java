@@ -1,6 +1,7 @@
 package com.WalkiePaw.presentation.domain.chat;
 
 import com.WalkiePaw.domain.chat.service.ChatService;
+import com.WalkiePaw.presentation.domain.chat.dto.ChatAddRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.WalkiePaw.presentation.domain.chat.dto.ChatMsgListResponse;
@@ -19,7 +20,7 @@ public class ChatController {
     private final ChatService chatService;
 
     @GetMapping
-    public ResponseEntity<List<ChatMsgListResponse>> getChatListByChatroomId(@RequestParam Integer chatroomId) {
+    public ResponseEntity<List<ChatMsgListResponse>> getChatListByChatroomId(final @RequestParam Integer chatroomId) {
         List<ChatMsgListResponse> chats = chatService.findChatsByChatroomId(chatroomId);
         return ResponseEntity.ok(chats);
     }

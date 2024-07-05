@@ -1,16 +1,9 @@
 package com.WalkiePaw.domain.chatroom.repository;
 
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface ChatroomRepository {
-    Chatroom save(Chatroom chatroom);
-
-    Optional<Chatroom> findById(Integer chatroomId);
-
-    Optional<Chatroom> findChatroomById(Integer chatroomId);
-
-    List<Chatroom> findAllByMemberId(Integer memberId);
+@Profile("spring-data-jpa")
+public interface ChatroomRepository extends JpaRepository<Chatroom, Integer>, ChatroomRepositoryOverride {
 }

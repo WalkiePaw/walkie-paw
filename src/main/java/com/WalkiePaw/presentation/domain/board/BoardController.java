@@ -27,6 +27,12 @@ public class BoardController {
         return ResponseEntity.ok(boardListResponses);
     }
 
+    @GetMapping("/mypage/{memberId}/{category}")
+    public ResponseEntity<List<BoardMypageListResponse>> mypageList(@PathVariable Integer memberId, @PathVariable BoardCategory category
+    ) {
+        List<BoardMypageListResponse> boards = boardService.findMyBoardsBy(memberId, category);
+    }
+
     @PostMapping
     public ResponseEntity<Void> addBoard(final @RequestBody BoardAddRequest request) {
         Integer saveId = boardService.save(request);
