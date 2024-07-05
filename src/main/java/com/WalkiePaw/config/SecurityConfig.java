@@ -1,5 +1,6 @@
 package com.WalkiePaw.config;
 
+import com.WalkiePaw.security.CustomPasswordEncoder;
 import com.WalkiePaw.security.CustomUserDetailService;
 import com.WalkiePaw.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new CustomPasswordEncoder();
     }
 
     @Bean

@@ -74,8 +74,8 @@ public class Member extends BaseEntity {
         this.reportedCnt = request.getReportedCnt();
     }
 
-    public void updateMemberPasswd(MemberPasswdUpdateRequest request) {
-        this.password = request.getPassword();
+    public void updatePasswd(String password) {
+        this.password = password;
     }
 
     //    /**
@@ -96,8 +96,8 @@ public class Member extends BaseEntity {
 
     /**
      * TODO
-     *  - 비밀번호 암호화 메서드 구현
-     *  - 회원 정지 로직 추가
+     *  - 비밀번호 암호화 메서드 구현 => 서비스단에서 암호화 처리함.
+     *  - 회원 정지 로직 추가 => 완료
      *  - update 메서드 추가
      *  - validation 추가
      */
