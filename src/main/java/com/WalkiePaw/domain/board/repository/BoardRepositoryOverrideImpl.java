@@ -1,8 +1,6 @@
 package com.WalkiePaw.domain.board.repository;
 
-import com.WalkiePaw.domain.board.entity.Board;
-import com.WalkiePaw.domain.board.entity.BoardCategory;
-import com.WalkiePaw.domain.board.entity.BoardStatus;
+import com.WalkiePaw.domain.board.entity.*;
 import com.WalkiePaw.presentation.domain.board.dto.BoardListResponse;
 import com.WalkiePaw.presentation.domain.board.dto.BoardMypageListResponse;
 import com.querydsl.core.types.Projections;
@@ -17,6 +15,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.WalkiePaw.domain.board.entity.QBoard.*;
+import static com.WalkiePaw.domain.board.entity.QBoardLike.*;
+import static com.WalkiePaw.domain.member.entity.QMember.member;
 import static org.springframework.util.StringUtils.*;
 
 @Repository
@@ -67,18 +67,20 @@ public class BoardRepositoryOverrideImpl implements BoardRepositoryOverride {
     public Slice<BoardListResponse> findLikeBoardList(final Integer memberId, final Pageable pageable) {
         List<Board> result = jpaQueryFactory
                 .select(board)
-                .from(board)
-                .join(board.member).fetchJoin()
-                .where(board.member.id.eq(memberId).and(board.status.eq(BoardStatus.DELETED)))
+                .from(boardLike)
+                .join(boardLike.board, board)
+                .join(boardLike.member, member)
+                .where(member.id.eq(memberId).and(board.status.ne(BoardStatus.DELETED)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
         List<BoardListResponse> boardListResponses = result.stream().map(BoardListResponse::from).toList();
-        boolean hasNext = isHasNext(pageable, boardListResponses);
+        boolean hasNext = true;
+        if (result.size() > pageable.getPageSize()) {
+            hasNext = false;
+            result.remove(pageable.getPageSize());
+        }
         return new SliceImpl<>(boardListResponses, pageable, hasNext);
     }
 
-    private static boolean isHasNext(final Pageable pageable, final List<BoardListResponse> result) {
-        return result.size() >= pageable.getPageSize();
-    }
 }
