@@ -18,4 +18,6 @@ public interface MemberRepository {
     List<Member> findByName(final String name);
 
     List<Member> findAll();
+
+    Optional<Member> findByEmail(String email);
 }
