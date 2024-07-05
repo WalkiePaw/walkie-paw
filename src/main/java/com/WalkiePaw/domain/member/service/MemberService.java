@@ -2,6 +2,7 @@ package com.WalkiePaw.domain.member.service;
 
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
+import com.WalkiePaw.presentation.domain.member.EmailVerifyRequest;
 import com.WalkiePaw.presentation.domain.member.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -61,5 +62,13 @@ public class MemberService {
     public void draw(final Integer memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow();
         member.withdraw();
+    }
+
+    public EmailVerifyResponse verifyEmail(final EmailVerifyRequest request) {
+        if (memberRepository.findByEmail(request.getEmail()).isPresent()) {
+            return new EmailVerifyResponse(true);
+        } else {
+            return new EmailVerifyResponse(false);
+        }
     }
 }
