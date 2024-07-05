@@ -4,6 +4,8 @@ import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 public class ChatroomListResponse {
@@ -11,10 +13,11 @@ public class ChatroomListResponse {
     private final String location;
     private final String nickname;
     private final String latestMessage;
+    private final LocalDateTime latestTime;
     private final int unreadCount;
 
     public static ChatroomListResponse from(final Chatroom chatroom) {
         return new ChatroomListResponse(chatroom.getId(), chatroom.getBoard().getLocation(),
-                 chatroom.getMember().getNickname(), chatroom.getLatestMessage(), chatroom.getUnreadCount());
+                 chatroom.getMember().getNickname(), chatroom.getLatestMessage(), chatroom.getModifiedDate(), chatroom.getUnreadCount());
     }
 }

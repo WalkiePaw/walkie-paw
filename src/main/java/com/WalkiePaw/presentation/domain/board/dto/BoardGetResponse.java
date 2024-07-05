@@ -20,6 +20,7 @@ public class BoardGetResponse {
     private final String title;
     private final BoardCategory category;
     private final String content;
+    private final boolean priceProposal;
 
     /**
      * BoardGetResponse 생성 메서드
@@ -27,7 +28,7 @@ public class BoardGetResponse {
      * @return BoardGetResponse
      */
     public static BoardGetResponse from(final Board board) {
-        return new BoardGetResponse(board.getId(), board.getStatus(), board.getDetailedLocation(), board.getLocation(), board.getTitle(), board.getCategory(), board.getContent());
+        return new BoardGetResponse(board.getId(), board.getStatus(), board.getDetailedLocation(), board.getLocation(), board.getTitle(), board.getCategory(), board.getContent(), board.isPriceProposal());
     }
 
 }

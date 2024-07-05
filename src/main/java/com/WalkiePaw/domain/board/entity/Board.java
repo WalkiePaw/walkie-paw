@@ -40,12 +40,13 @@ public class Board extends BaseEntity {
     private BoardStatus status;
     @Enumerated(EnumType.STRING)
     private BoardCategory category;
+    private boolean priceProposal;
 
     @Builder
     public Board(
             Member member, String title, String content, int price, LocalDateTime meetingTime,
             LocalDateTime startTime, LocalDateTime endTime, PriceType priceType,
-            String location, String detailedLocation, BoardCategory category) {
+            String location, String detailedLocation, BoardCategory category, boolean priceProposal) {
         this.priceType = priceType;
         this.member = member;
         this.title = title;
@@ -56,6 +57,7 @@ public class Board extends BaseEntity {
         this.category = category;
         this.detailedLocation = detailedLocation;
         this.location = location;
+        this.priceProposal = priceProposal;
         status = BoardStatus.RECRUITING;
     }
 
