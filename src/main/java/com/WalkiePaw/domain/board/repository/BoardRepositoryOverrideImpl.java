@@ -23,10 +23,9 @@ import static com.WalkiePaw.domain.member.entity.QMember.member;
 import static org.springframework.util.StringUtils.*;
 
 @Repository
-@RequiredArgsConstructor
 public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport implements BoardRepositoryOverride {
 
-    public BoardRepositoryOverrideImpl(Class<?> domainClass) {
+    public BoardRepositoryOverrideImpl() {
         super(Board.class);
     }
 
