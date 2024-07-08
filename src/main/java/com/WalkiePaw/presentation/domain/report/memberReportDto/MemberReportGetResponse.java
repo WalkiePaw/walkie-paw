@@ -3,10 +3,13 @@ package com.WalkiePaw.presentation.domain.report.memberReportDto;
 import com.WalkiePaw.domain.report.entity.MemberReport;
 import com.WalkiePaw.domain.report.entity.MemberReportCategory;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public class MemberReportGetResponse {
 
+    private Integer memberReportId;
     private String content;
     private MemberReportCategory reason;
     private String reportingMemberName;
@@ -19,6 +22,7 @@ public class MemberReportGetResponse {
      */
     public static MemberReportGetResponse from(MemberReport memberReport) {
         return new MemberReportGetResponse(
+                memberReport.getId(),
                 memberReport.getContent(),
                 memberReport.getReason(),
                 memberReport.getReportingMember().getName(), // reportingMemberName
