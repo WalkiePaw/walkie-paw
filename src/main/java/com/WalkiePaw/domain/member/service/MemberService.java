@@ -2,7 +2,6 @@ package com.WalkiePaw.domain.member.service;
 
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
-import com.WalkiePaw.presentation.domain.member.EmailVerifyRequest;
 import com.WalkiePaw.presentation.domain.member.dto.*;
 import com.WalkiePaw.security.CustomPasswordEncoder;
 import lombok.RequiredArgsConstructor;
@@ -68,11 +67,13 @@ public class MemberService {
         member.withdraw();
     }
 
-    public EmailVerifyResponse verifyEmail(final EmailVerifyRequest request) {
-        if (memberRepository.findByEmail(request.getEmail()).isPresent()) {
-            return new EmailVerifyResponse(true);
-        } else {
-            return new EmailVerifyResponse(false);
-        }
+    public void ban(final Integer memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        member.ban();
+    }
+
+    public void general(final Integer memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        member.general();
     }
 }
