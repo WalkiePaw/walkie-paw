@@ -44,10 +44,12 @@ public class MemberService {
         member.updateMember(request);
     }
 
+    @Transactional(readOnly = true)
     public MemberScoreResponse getMemberScore(final Integer memberId) {
         return MemberScoreResponse.from(memberRepository.findById(memberId).orElseThrow());
     }
 
+    @Transactional(readOnly = true)
     public MemberRRCountResponse getMemberRRCount(final Integer memberId) {
         return MemberRRCountResponse.from(memberRepository.findById(memberId).orElseThrow());
     }
@@ -58,6 +60,7 @@ public class MemberService {
         passwordEncoder.encodePassword(member);
     }
 
+    @Transactional(readOnly = true)
     public Optional<Member> findByEmail(final String email) {
         return memberRepository.findByEmail(email);
     }
