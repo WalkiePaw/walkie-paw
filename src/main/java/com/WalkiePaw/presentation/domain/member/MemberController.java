@@ -81,9 +81,18 @@ public class MemberController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "이메일 검증")
-    @GetMapping("/verifyEmail")
-    public ResponseEntity<EmailVerifyResponse> verifyEmail(@RequestBody final EmailVerifyRequest request) {
-        return ResponseEntity.ok(memberService.verifyEmail(request));
+    @Operation(summary = "멤버 정지")
+    @PatchMapping("/{id}/ban")
+    public ResponseEntity<Void> banMember(@PathVariable("id") final Integer memberId) {
+        memberService.ban(memberId);
+        return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "멤버 복구")
+    @PatchMapping("{id}/general")
+    public ResponseEntity<Void> generalMember(@PathVariable("id") final Integer memberId) {
+        memberService.general(memberId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

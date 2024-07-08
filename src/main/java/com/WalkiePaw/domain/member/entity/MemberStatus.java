@@ -8,5 +8,4 @@ package com.WalkiePaw.domain.member.entity;
  */
 public enum MemberStatus {
     GENERAL, WITHDRAWN, BANNED, INACTIVE
-
 }

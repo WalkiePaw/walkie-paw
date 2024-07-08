@@ -1,7 +1,10 @@
 package com.WalkiePaw.presentation.domain.report;
 
 import com.WalkiePaw.domain.report.service.MemberReportService;
-import com.WalkiePaw.presentation.domain.report.memberReportDto.*;
+import com.WalkiePaw.presentation.domain.report.memberReportDto.MemberReportAddRequest;
+import com.WalkiePaw.presentation.domain.report.memberReportDto.MemberReportGetResponse;
+import com.WalkiePaw.presentation.domain.report.memberReportDto.MemberReportListResponse;
+import com.WalkiePaw.presentation.domain.report.memberReportDto.MemberReportUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -28,8 +31,7 @@ public class MemberReportController {
     @GetMapping("/{id}")
     public ResponseEntity<MemberReportGetResponse> getMemberReport(final @PathVariable("id") Integer memberReportId) {
         MemberReportGetResponse response = memberReportService.findById(memberReportId);
-        return ResponseEntity.ok()
-                .body(response);
+        return ResponseEntity.ok().body(response);
     }
 
     @PostMapping

@@ -5,7 +5,8 @@ package com.WalkiePaw.domain.board.entity;
  * RESERVED = "예약 중"
  * COMPLETED = "완료"
  * DELETED = "삭제"
+ * REPORTED  = "신고됨"
  */
 public enum BoardStatus {
-    RECRUITING, RESERVED, COMPLETED, DELETED
+    RECRUITING, RESERVED, COMPLETED, DELETED, REPORTED
 }
