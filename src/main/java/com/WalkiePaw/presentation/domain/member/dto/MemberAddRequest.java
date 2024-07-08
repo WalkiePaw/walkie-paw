@@ -6,10 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import lombok.ToString;
 
 @Schema(description = "멤버 생성 요청 DTO")
 @Getter
 @AllArgsConstructor
+@ToString
 public class MemberAddRequest {
 
     @Schema(description = "이름")
