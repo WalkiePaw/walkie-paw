@@ -68,8 +68,8 @@ public class BoardService {
         board.delete();
     }
 
-    public List<BoardListResponse> findBySearchCond(final BoardSearchRequest request) {
-        List<Board> bySearchCond = boardRepository.findBySearchCond(request.getTitle(), request.getContent());
+    public List<BoardListResponse> findBySearchCond(final String title, final String content, final BoardCategory category) {
+        List<Board> bySearchCond = boardRepository.findBySearchCond(title, content, category);
         return bySearchCond.stream()
                 .map(BoardListResponse::from)
                 .toList();

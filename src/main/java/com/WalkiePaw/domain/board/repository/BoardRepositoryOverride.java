@@ -13,7 +13,7 @@ public interface BoardRepositoryOverride {
 
     List<Board> findAllNotDeleted(BoardCategory category);
 
-    List<Board> findBySearchCond(String title, String content);
+    List<Board> findBySearchCond(String title, String content, BoardCategory category);
 
     List<BoardMypageListResponse> findMyBoardsBy(Integer memberId, BoardCategory category);
 
