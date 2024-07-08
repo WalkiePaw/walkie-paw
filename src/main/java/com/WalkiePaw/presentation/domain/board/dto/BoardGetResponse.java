@@ -3,8 +3,11 @@ package com.WalkiePaw.presentation.domain.board.dto;
 import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.board.entity.BoardCategory;
 import com.WalkiePaw.domain.board.entity.BoardStatus;
+import com.WalkiePaw.domain.board.entity.PriceType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -21,6 +24,11 @@ public class BoardGetResponse {
     private final BoardCategory category;
     private final String content;
     private final boolean priceProposal;
+      private final int price;
+      private final PriceType priceType;
+      private final LocalDateTime endTime;
+      private final LocalDateTime startTime;
+      private final String memberNickName;
 
     /**
      * BoardGetResponse 생성 메서드
@@ -28,7 +36,8 @@ public class BoardGetResponse {
      * @return BoardGetResponse
      */
     public static BoardGetResponse from(final Board board) {
-        return new BoardGetResponse(board.getId(), board.getStatus(), board.getDetailedLocation(), board.getLocation(), board.getTitle(), board.getCategory(), board.getContent(), board.isPriceProposal());
+        return new BoardGetResponse(board.getId(), board.getStatus(), board.getDetailedLocation(), board.getLocation(), board.getTitle(), board.getCategory(), board.getContent(), board.isPriceProposal(),
+                board.getPrice(), board.getPriceType(), board.getEndTime(), board.getStartTime(), board.getMember().getNickname());
     }
 
 }
