@@ -42,4 +42,9 @@ public class QnaService {
         Qna qna = qnaRepository.findById(qnaId).orElseThrow();
         qna.update(request);
     }
+
+    public void updateReply(final Integer qnaId, final replyUpdateRequest request) {
+        Qna qna = qnaRepository.findById(qnaId).orElseThrow();
+        qna.updateReply(request);
+    }
 }
