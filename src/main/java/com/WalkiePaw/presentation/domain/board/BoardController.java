@@ -52,7 +52,7 @@ public class BoardController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/status")
+    @PatchMapping("/status/{id}")
     public ResponseEntity<Void> updateBoardStatus(final @RequestBody BoardStatusUpdateRequest request) {
         boardService.updateBoardStatus(request);
         return ResponseEntity.noContent().build();
@@ -65,7 +65,7 @@ public class BoardController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<BoardListResponse>> searchBoard(final @RequestBody BoardSearchRequest request) {
+    public ResponseEntity<List<BoardListResponse>> searchBoard(final @RequestParam BoardSearchRequest request) {
         List<BoardListResponse> list = boardService.findBySearchCond(request);
         return ResponseEntity.ok(list);
     }

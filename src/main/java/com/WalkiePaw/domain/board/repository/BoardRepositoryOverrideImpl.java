@@ -1,10 +1,12 @@
 package com.WalkiePaw.domain.board.repository;
 
 import com.WalkiePaw.domain.board.entity.*;
+import com.WalkiePaw.global.util.Querydsl4RepositorySupport;
 import com.WalkiePaw.presentation.domain.board.dto.BoardListResponse;
 import com.WalkiePaw.presentation.domain.board.dto.BoardMypageListResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.function.Function;
 
 import static com.WalkiePaw.domain.board.entity.QBoard.*;
 import static com.WalkiePaw.domain.board.entity.QBoardLike.*;
@@ -20,14 +23,15 @@ import static com.WalkiePaw.domain.member.entity.QMember.member;
 import static org.springframework.util.StringUtils.*;
 
 @Repository
-@RequiredArgsConstructor
-public class BoardRepositoryOverrideImpl implements BoardRepositoryOverride {
+public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport implements BoardRepositoryOverride {
 
-    private final JPAQueryFactory jpaQueryFactory;
+    public BoardRepositoryOverrideImpl() {
+        super(Board.class);
+    }
 
     @Override
     public List<Board> findAllNotDeleted(final BoardCategory category) {
-        return jpaQueryFactory
+        return getJpaQueryFactory()
                 .selectFrom(board)
                 .join(board.member).fetchJoin()
                 .where(board.status.ne(BoardStatus.DELETED).and(board.category.eq(category)))
@@ -36,7 +40,7 @@ public class BoardRepositoryOverrideImpl implements BoardRepositoryOverride {
 
     @Override
     public List<Board> findBySearchCond(final String title, final String content) {
-        return jpaQueryFactory
+        return getJpaQueryFactory()
                 .selectFrom(board)
                 .join(board.member).fetchJoin()
                 .where(titleCond(title), contentCond(content))
@@ -53,7 +57,7 @@ public class BoardRepositoryOverrideImpl implements BoardRepositoryOverride {
 
     @Override
     public List<BoardMypageListResponse> findMyBoardsBy(final Integer memberId, final BoardCategory category) {
-        return jpaQueryFactory
+        return getJpaQueryFactory()
                 .select(Projections.fields(BoardMypageListResponse.class,
                         board.id.as("boardId"),
                         board.title,
@@ -65,22 +69,30 @@ public class BoardRepositoryOverrideImpl implements BoardRepositoryOverride {
 
     @Override
     public Slice<BoardListResponse> findLikeBoardList(final Integer memberId, final Pageable pageable) {
-        List<Board> result = jpaQueryFactory
+//        List<Board> result = jpaQueryFactory
+//                .select(board)
+//                .from(boardLike)
+//                .join(boardLike.board, board)
+//                .join(boardLike.member, member)
+//                .where(member.id.eq(memberId).and(board.status.ne(BoardStatus.DELETED)))
+//                .offset(pageable.getOffset())
+//                .limit(pageable.getPageSize() + 1)
+//                .fetch();
+//        List<BoardListResponse> boardListResponses = result.stream().map(BoardListResponse::from).toList();
+//        boolean hasNext = true;
+//        if (result.size() > pageable.getPageSize()) {
+//            hasNext = false;
+//            result.remove(pageable.getPageSize());
+//        }
+
+        return slicePage(pageable, slice -> slice
                 .select(board)
                 .from(boardLike)
                 .join(boardLike.board, board)
                 .join(boardLike.member, member)
                 .where(member.id.eq(memberId).and(board.status.ne(BoardStatus.DELETED)))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1)
-                .fetch();
-        List<BoardListResponse> boardListResponses = result.stream().map(BoardListResponse::from).toList();
-        boolean hasNext = true;
-        if (result.size() > pageable.getPageSize()) {
-            hasNext = false;
-            result.remove(pageable.getPageSize());
-        }
-        return new SliceImpl<>(boardListResponses, pageable, hasNext);
+                .limit(pageable.getPageSize() + 1));
     }
 
 }
