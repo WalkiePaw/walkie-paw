@@ -44,6 +44,7 @@ public class Qna extends BaseEntity {
 
     public void updateReply(final replyUpdateRequest request) {
         this.reply = request.getReply();
+        this.status = QnaStatus.COMPLETED;
     }
 
 //    /**
