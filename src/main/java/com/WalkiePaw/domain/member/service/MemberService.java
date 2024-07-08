@@ -2,7 +2,6 @@ package com.WalkiePaw.domain.member.service;
 
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
-import com.WalkiePaw.presentation.domain.member.EmailVerifyRequest;
 import com.WalkiePaw.presentation.domain.member.dto.*;
 import com.WalkiePaw.security.CustomPasswordEncoder;
 import lombok.RequiredArgsConstructor;
@@ -45,10 +44,12 @@ public class MemberService {
         member.updateMember(request);
     }
 
+    @Transactional(readOnly = true)
     public MemberScoreResponse getMemberScore(final Integer memberId) {
         return MemberScoreResponse.from(memberRepository.findById(memberId).orElseThrow());
     }
 
+    @Transactional(readOnly = true)
     public MemberRRCountResponse getMemberRRCount(final Integer memberId) {
         return MemberRRCountResponse.from(memberRepository.findById(memberId).orElseThrow());
     }
@@ -59,6 +60,7 @@ public class MemberService {
         passwordEncoder.encodePassword(member);
     }
 
+    @Transactional(readOnly = true)
     public Optional<Member> findByEmail(final String email) {
         return memberRepository.findByEmail(email);
     }
@@ -68,11 +70,13 @@ public class MemberService {
         member.withdraw();
     }
 
-    public EmailVerifyResponse verifyEmail(final EmailVerifyRequest request) {
-        if (memberRepository.findByEmail(request.getEmail()).isPresent()) {
-            return new EmailVerifyResponse(true);
-        } else {
-            return new EmailVerifyResponse(false);
-        }
+    public void ban(final Integer memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        member.ban();
+    }
+
+    public void general(final Integer memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        member.general();
     }
 }

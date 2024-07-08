@@ -2,7 +2,6 @@ package com.WalkiePaw.domain.chatroom.service;
 
 import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.board.repository.BoardRepository;
-import com.WalkiePaw.domain.board.repository.BoardRepositoryOverride;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.domain.chatroom.repository.ChatroomRepository;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
@@ -36,7 +35,7 @@ public class ChatroomService {
                 .orElseThrow(() -> new IllegalStateException("잘못된 게시글 번호입니다."));
         Member member = memberRepository.findById(request.getMemberId())
                 .orElseThrow(() -> new IllegalStateException("잘못된 회원 번호입니다."));
-        Chatroom chatroom = ChatroomAddRequest.toEntity(board, member, request);
+        Chatroom chatroom = ChatroomAddRequest.toEntity(board, member);
         return chatroomRepository.save(chatroom).getId();
     }
 

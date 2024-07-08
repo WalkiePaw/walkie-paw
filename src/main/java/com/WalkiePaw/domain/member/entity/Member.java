@@ -1,7 +1,6 @@
 package com.WalkiePaw.domain.member.entity;
 
 import com.WalkiePaw.domain.common.BaseEntity;
-import com.WalkiePaw.presentation.domain.member.dto.MemberPasswdUpdateRequest;
 import com.WalkiePaw.presentation.domain.member.dto.MemberUpdateRequest;
 import jakarta.persistence.*;
 import lombok.*;
@@ -92,6 +91,14 @@ public class Member extends BaseEntity {
      */
     public void withdraw() {
         status = MemberStatus.WITHDRAWN;
+    }
+
+    public void ban() {
+        status = MemberStatus.BANNED;
+    }
+
+    public void general() {
+        status = MemberStatus.GENERAL;
     }
 
     /**
