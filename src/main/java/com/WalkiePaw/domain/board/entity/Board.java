@@ -2,8 +2,6 @@ package com.WalkiePaw.domain.board.entity;
 
 import com.WalkiePaw.domain.common.BaseEntity;
 import com.WalkiePaw.domain.member.entity.Member;
-import com.WalkiePaw.presentation.domain.board.dto.BoardUpdateRequest;
-import com.querydsl.core.annotations.QueryEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -73,8 +71,8 @@ public class Board extends BaseEntity {
     public void updateBoard(final String title, final String content, final int price,
                        final LocalDateTime startTime,
                        final LocalDateTime endTime, final PriceType priceType,
-                            final String location, final String detailedLocation
-    ) {
+                            final String location, final String detailedLocation,
+                            final boolean priceProposal) {
 
         this.title = title;
         this.content = content;
@@ -84,6 +82,7 @@ public class Board extends BaseEntity {
         this.priceType = priceType;
         this.location = location;
         this.detailedLocation = detailedLocation;
+        this.priceProposal = priceProposal;
     }
 
     public void delete() {
