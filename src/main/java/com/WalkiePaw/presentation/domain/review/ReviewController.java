@@ -26,7 +26,7 @@ public class ReviewController {
     public static final String REVIEWS_URI = "/reviews/";
     private final ReviewService reviewService;
 
-    @GetMapping("/{id}/reviews")
+    @GetMapping("/{id}/reviewee")
     public ResponseEntity<Slice<ReviewListResponse>> getReviewsByRevieweeId(
             Pageable pageable,
             @PathVariable("id") final Integer revieweeId,
@@ -36,7 +36,7 @@ public class ReviewController {
         return ResponseEntity.ok(reviews);
     }
 
-    @GetMapping("/{id}/my-reviews")
+    @GetMapping("/{id}/reviewer")
     public ResponseEntity<Slice<ReviewListResponse>> getReviewsByReviewerId(
             Pageable pageable,
             @PathVariable("id") final Integer reviewerId,
