@@ -4,6 +4,7 @@ import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.board.repository.BoardRepository;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.domain.chatroom.repository.ChatroomRepository;
+import com.WalkiePaw.domain.chatroom.repository.TransactionResponse;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomAddRequest;
@@ -11,10 +12,11 @@ import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomListResponse;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomRespnose;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,8 +27,8 @@ public class ChatroomService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
-    public List<ChatroomListResponse> findAllByMemberId(final Integer memberId) {
-        return chatroomRepository.findByMemberId(memberId);
+    public Slice<ChatroomListResponse> findAllByMemberId(final Integer memberId, Pageable pageable) {
+        return chatroomRepository.findByMemberId(memberId, pageable);
     }
 
     @Transactional
@@ -43,5 +45,9 @@ public class ChatroomService {
         Chatroom chatroom = chatroomRepository.findById(chatroomId)
                 .orElseThrow(() -> new IllegalStateException("잘못된 채팅방 번호입니다."));
         return ChatroomRespnose.toEntity(chatroom);
+    }
+
+    public Page<TransactionResponse> findTransaction(final Integer memberId, final Pageable pageable) {
+        return chatroomRepository.findTransaction(memberId, pageable);
     }
 }

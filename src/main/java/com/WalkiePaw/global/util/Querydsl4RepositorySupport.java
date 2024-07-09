@@ -8,10 +8,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
 import org.springframework.data.jpa.repository.support.Querydsl;
@@ -79,5 +76,11 @@ public abstract class Querydsl4RepositorySupport {
             content.remove(pageable.getPageSize());
         }
         return new SliceImpl<>(content, pageable, hasNext);
+    }
+
+    protected <T> Page<T> page(Pageable pageable, Function<JPAQueryFactory, JPAQuery> pageQuery) {
+        JPAQuery query = pageQuery.apply(getJpaQueryFactory());
+        List<T> content = getQuerydsl().applyPagination(pageable, query).fetch();
+        return PageableExecutionUtils.getPage(content, pageable, query::fetchCount);
     }
 }

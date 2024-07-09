@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 @Profile("jpa")
-public class JpaReviewRepositoryImpl implements ReviewRepository{
+public class JpaReviewRepositoryImpl implements JpaReviewRepository {
 
     @PersistenceContext
     private final EntityManager em;

@@ -1,5 +1,6 @@
 package com.WalkiePaw.presentation.domain.review.dto;
 
+import com.WalkiePaw.domain.board.entity.BoardCategory;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.domain.review.entity.Review;
@@ -14,8 +15,9 @@ public class ReviewSaveRequest {
     private final Integer chatroomId;
     private final Integer revieweeId;
     private final Integer reviewerId;
+    private final BoardCategory category;
 
     public static Review toEntity(final ReviewSaveRequest request, Chatroom chatroom, Member reviewee, Member reviewer) {
-        return new Review(request.point, request.content, chatroom, reviewee, reviewer);
+        return new Review(request.point, request.content, chatroom, reviewee, reviewer, request.category);
     }
 }

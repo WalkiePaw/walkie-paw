@@ -36,6 +36,7 @@ public class Chatroom extends BaseEntity {
     private int unreadCount;
     private String latestMessage;
     private LocalDateTime latestMessageTime;
+    private LocalDateTime completedDate;
 
     public Chatroom(Board board, Member member) {
         this.board = board;
@@ -45,7 +46,6 @@ public class Chatroom extends BaseEntity {
 
     public void updateLatestMessage(final String latestMessage) {
         this.latestMessage = latestMessage;
-        unreadCount++;
     }
 
 //    /**

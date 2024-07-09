@@ -1,5 +1,6 @@
 package com.WalkiePaw.domain.review.service;
 
+import com.WalkiePaw.domain.board.entity.BoardCategory;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.domain.chatroom.repository.ChatroomRepository;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
@@ -12,11 +13,13 @@ import com.WalkiePaw.presentation.domain.review.dto.ReviewSaveRequest;
 import com.WalkiePaw.presentation.domain.review.dto.ReviewUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +30,6 @@ public class ReviewService {
     private final ChatroomRepository chatroomRepository;
     private final MemberRepository memberRepository;
 
-    public List<ReviewListResponse> findByRevieweeId(final Integer revieweeId) {
-        List<Review> reviews = reviewRepository.findByRevieweeId(revieweeId);
-        return reviews.stream()
-                .map(ReviewListResponse::from)
-                .toList();
-    }
 
     @Transactional
     public Integer addReview(final ReviewSaveRequest request) {
@@ -59,11 +56,17 @@ public class ReviewService {
         review.update(request.getContent(), request.getPoint());
     }
 
-    public List<ReviewListResponse> findByReviewerId(final Integer reviewerId) {
-        List<Review> reviews = reviewRepository.findByReviewerId(reviewerId);
-        return reviews.stream()
+    public Slice<ReviewListResponse> findByReviewerId(Pageable pageable, final Integer reviewerId, final BoardCategory category) {
+        List<Review> reviews = reviewRepository.findByReviewerIdAndCategory(pageable, reviewerId, category);
+        return new SliceImpl<>(reviews.stream()
                 .map(ReviewListResponse::from)
-                .toList();
+                .toList());
     }
 
+    public Slice<ReviewListResponse> findByRevieweeId(Pageable pageable, final Integer revieweeId, final BoardCategory category) {
+        List<Review> reviews = reviewRepository.findByRevieweeIdAndCategory(pageable, revieweeId, category);
+        return new SliceImpl<>(reviews.stream()
+                .map(ReviewListResponse::from)
+                .toList());
+    }
 }

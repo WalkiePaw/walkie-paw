@@ -1,18 +1,20 @@
 package com.WalkiePaw.presentation.domain.chatroom;
 
+import com.WalkiePaw.domain.chatroom.repository.TransactionResponse;
 import com.WalkiePaw.domain.chatroom.service.ChatroomService;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomAddRequest;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomListResponse;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomRespnose;
-import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,8 +31,8 @@ public class ChatroomController {
 ///api/v1/{domain}/{id} -> delete : 삭제
 
     @GetMapping
-    public ResponseEntity<List<ChatroomListResponse>> getChatroomList(@RequestParam("id") final Integer memberId) {
-        List<ChatroomListResponse> chatrooms = chatroomService.findAllByMemberId(memberId);
+    public ResponseEntity<Slice<ChatroomListResponse>> getChatroomList(@RequestParam("id") final Integer memberId, Pageable pageable) {
+        Slice<ChatroomListResponse> chatrooms = chatroomService.findAllByMemberId(memberId, pageable);
         return ResponseEntity.ok(chatrooms);
     }
 
@@ -44,5 +46,11 @@ public class ChatroomController {
     public ResponseEntity<ChatroomRespnose> getChatroom(final @PathVariable Integer id) {
         ChatroomRespnose chatroomById = chatroomService.findChatroomById(id);
         return ResponseEntity.ok(chatroomById);
+    }
+
+    @GetMapping("/{id}/transaction")
+    public ResponseEntity<Page<TransactionResponse>> getTransaction(final @PathVariable("id") Integer memberId, Pageable pageable) {
+        Page<TransactionResponse> transaction = chatroomService.findTransaction(memberId, pageable);
+        return ResponseEntity.ok(transaction);
     }
 }
