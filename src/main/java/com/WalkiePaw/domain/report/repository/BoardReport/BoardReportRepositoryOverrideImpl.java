@@ -1,4 +1,4 @@
-package com.WalkiePaw.domain.report.repository;
+package com.WalkiePaw.domain.report.repository.BoardReport;
 
 import com.WalkiePaw.domain.report.entity.BoardReport;
 import com.WalkiePaw.domain.report.entity.BoardReportStatus;
@@ -25,7 +25,6 @@ public class BoardReportRepositoryOverrideImpl extends Querydsl4RepositorySuppor
 
     private BooleanExpression statusCond(final String status) {
         if (hasText(status)) {
-            System.out.println("not null");
             if (status.equals("RESOLVED")) {
                 return boardReport.status.eq(BoardReportStatus.BLINDED)
                         .or(boardReport.status.eq(BoardReportStatus.IGNORE));
@@ -33,7 +32,6 @@ public class BoardReportRepositoryOverrideImpl extends Querydsl4RepositorySuppor
                 return boardReport.status.eq(BoardReportStatus.UNRESOLVED);
             }
         }
-        System.out.println("null");
         return null;
     }
 

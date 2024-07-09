@@ -58,4 +58,12 @@ public class MemberReportController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("list")
+    ResponseEntity<List<MemberReportListResponse>> list(
+            @RequestParam(required = false) final String status // RESOLVED, UNRESOLVED
+    ) {
+        List<MemberReportListResponse> list = memberReportService.findAllByCond(status);
+        return ResponseEntity.ok(list);
+    }
+
 }

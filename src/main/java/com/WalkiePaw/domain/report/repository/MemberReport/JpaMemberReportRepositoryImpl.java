@@ -1,4 +1,4 @@
-package com.WalkiePaw.domain.report.repository;
+package com.WalkiePaw.domain.report.repository.MemberReport;
 
 import com.WalkiePaw.domain.report.entity.MemberReport;
 import jakarta.persistence.EntityManager;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("jpa")
-public class JpaMemberReportRepositoryImpl implements MemberReportRepository {
+public class JpaMemberReportRepositoryImpl {
 
     private final EntityManager em;
 

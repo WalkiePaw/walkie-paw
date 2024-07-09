@@ -1,10 +1,8 @@
-package com.WalkiePaw.domain.report.repository;
+package com.WalkiePaw.domain.report.repository.BoardReport;
 
 import com.WalkiePaw.domain.report.entity.BoardReport;
-import com.WalkiePaw.presentation.domain.report.boardReportDto.BoardReportListResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BoardReportRepositoryOverride {
 

@@ -1,4 +1,4 @@
-package com.WalkiePaw.domain.report.repository;
+package com.WalkiePaw.domain.report.repository.BoardReport;
 
 import com.WalkiePaw.domain.report.entity.BoardReport;
 import jakarta.persistence.EntityManager;

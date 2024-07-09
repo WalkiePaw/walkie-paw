@@ -3,14 +3,14 @@ package com.WalkiePaw.domain.report.service;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.domain.report.entity.MemberReport;
-import com.WalkiePaw.domain.report.repository.MemberReportRepository;
+import com.WalkiePaw.domain.report.repository.MemberReport.MemberReportRepository;
+import com.WalkiePaw.domain.report.repository.MemberReport.MemberReportRepositoryOverride;
 import com.WalkiePaw.presentation.domain.report.memberReportDto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -54,5 +54,12 @@ public class MemberReportService {
     public void ignore(final Integer memberReportId) {
         MemberReport memberReport = memberReportRepository.findById(memberReportId).orElseThrow();
         memberReport.ignore();
+    }
+
+    public List<MemberReportListResponse> findAllByCond(final String status) {
+        List<MemberReport> list = memberReportRepository.findAllByCond(status);
+        return list.stream()
+                .map(MemberReportListResponse::from)
+                .toList();
     }
 }
