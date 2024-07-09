@@ -30,7 +30,7 @@ public class ReviewController {
     public ResponseEntity<Slice<ReviewListResponse>> getReviewsByRevieweeId(
             Pageable pageable,
             @PathVariable("id") final Integer revieweeId,
-            @RequestParam BoardCategory category
+            @RequestParam("category") BoardCategory category
     ) {
         Slice<ReviewListResponse> reviews = reviewService.findByRevieweeId(pageable, revieweeId, category);
         return ResponseEntity.ok(reviews);
@@ -40,7 +40,7 @@ public class ReviewController {
     public ResponseEntity<Slice<ReviewListResponse>> getReviewsByReviewerId(
             Pageable pageable,
             @PathVariable("id") final Integer reviewerId,
-            @RequestParam BoardCategory category
+            @RequestParam("category") BoardCategory category
     ) {
         Slice<ReviewListResponse> reviews = reviewService.findByReviewerId(pageable, reviewerId, category);
         return ResponseEntity.ok(reviews);
