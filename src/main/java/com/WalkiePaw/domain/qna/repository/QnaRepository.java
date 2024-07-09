@@ -1,17 +1,21 @@
 package com.WalkiePaw.domain.qna.repository;
 
 import com.WalkiePaw.domain.qna.entity.Qna;
-import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface QnaRepository {
+@Profile("spring-data-jpa")
+public interface QnaRepository extends JpaRepository<Qna, Integer>, QnaRepositoryOverride {
 
-    Qna save(final Qna qna);
-
-    List<Qna> findAll();
-
+    @Override
+    @EntityGraph(attributePaths = "member")
     Optional<Qna> findById(final Integer qnaId);
+
+    @Override
+    @EntityGraph(attributePaths = "member")
+    List<Qna> findAll();
 }
