@@ -65,4 +65,8 @@ public class ReviewService {
                 .map(ReviewListResponse::from)
                 .toList();
     }
+
+    public void findTransactionList(final Integer memberId) {
+        find
+    }
 }

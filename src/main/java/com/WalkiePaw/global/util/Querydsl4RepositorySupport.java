@@ -1,12 +1,14 @@
 package com.WalkiePaw.global.util;
 
+import com.querydsl.core.support.QueryBase;
 import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -20,6 +22,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.function.Function;
 
+/**
+ * Querydsl Page Util Class
+ * @see
+ * org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
+ */
 @Repository
 public abstract class Querydsl4RepositorySupport {
 
@@ -54,12 +61,21 @@ public abstract class Querydsl4RepositorySupport {
         return jpaQueryFactory;
     }
 
-    protected <T> Slice<T> slicePage(Pageable pageable, Function<JPAQueryFactory, JPAQuery> sliceQuery) {
+    protected <T> JPAQuery<T> selectFrom(EntityPath<T> from) {
+        return getJpaQueryFactory().selectFrom(from);
+    }
+
+    protected <T> JPAQuery<T> select(Expression<T> expr) {
+        return getJpaQueryFactory().select(expr);
+    }
+
+    protected <T> Slice<T> slice(Pageable pageable, Function<JPAQueryFactory, JPAQuery> sliceQuery) {
         JPAQuery query = sliceQuery.apply(getJpaQueryFactory());
-        List<T> content = getQuerydsl().applyPagination(pageable, query).fetch();
-        boolean hasNext = true;
+        JPAQuery limit = (JPAQuery) query.offset(pageable.getOffset()).limit(pageable.getPageSize());
+        List<T> content = getQuerydsl().applyPagination(pageable, limit).fetch();
+        boolean hasNext = false;
         if (content.size() > pageable.getPageSize()) {
-            hasNext = false;
+            hasNext = true;
             content.remove(pageable.getPageSize());
         }
         return new SliceImpl<>(content, pageable, hasNext);

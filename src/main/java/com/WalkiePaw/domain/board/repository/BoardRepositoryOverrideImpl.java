@@ -7,16 +7,11 @@ import com.WalkiePaw.presentation.domain.board.dto.BoardMypageListResponse;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.function.Function;
 
 import static com.WalkiePaw.domain.board.entity.QBoard.*;
 import static com.WalkiePaw.domain.board.entity.QBoardLike.*;
@@ -32,17 +27,15 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
 
     @Override
     public List<Board> findAllNotDeleted(final BoardCategory category) {
-        return getJpaQueryFactory()
-                .selectFrom(board)
+        return selectFrom(board)
                 .join(board.member).fetchJoin()
                 .where(board.status.ne(BoardStatus.DELETED).and(board.category.eq(category)))
                 .fetch();
     }
 
     @Override
-    public List<Board> findBySearchCond(final String title, final String content, final BoardCategory category) {
-        return getJpaQueryFactory()
-                .selectFrom(board)
+    public List<Board> findBySearchCond(final String title, final String content) {
+        return selectFrom(board)
                 .join(board.member).fetchJoin()
                 .where(
                         titleCond(title),
@@ -65,8 +58,7 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
 
     @Override
     public List<BoardMypageListResponse> findMyBoardsBy(final Integer memberId, final BoardCategory category) {
-        return getJpaQueryFactory()
-                .select(Projections.fields(BoardMypageListResponse.class,
+        return select(Projections.fields(BoardMypageListResponse.class,
                         board.id.as("boardId"),
                         board.title,
                         board.content,
@@ -93,14 +85,12 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
 //            result.remove(pageable.getPageSize());
 //        }
 
-        return slicePage(pageable, slice -> slice
+        return slice(pageable, slice -> slice
                 .select(board)
                 .from(boardLike)
                 .join(boardLike.board, board)
                 .join(boardLike.member, member)
-                .where(member.id.eq(memberId).and(board.status.ne(BoardStatus.DELETED)))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1));
+                .where(member.id.eq(memberId).and(board.status.ne(BoardStatus.DELETED))));
     }
 
 }
