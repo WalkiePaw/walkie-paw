@@ -5,6 +5,7 @@ import com.WalkiePaw.domain.chatroom.repository.ChatroomRepository;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.domain.review.entity.Review;
+import com.WalkiePaw.domain.review.repository.JpaReviewRepository;
 import com.WalkiePaw.domain.review.repository.ReviewRepository;
 import com.WalkiePaw.presentation.domain.review.dto.ReviewDetailResponse;
 import com.WalkiePaw.presentation.domain.review.dto.ReviewListResponse;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

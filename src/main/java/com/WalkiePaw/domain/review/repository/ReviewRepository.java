@@ -1,18 +1,13 @@
 package com.WalkiePaw.domain.review.repository;
 
 import com.WalkiePaw.domain.review.entity.Review;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface ReviewRepository {
-
-    Review save(Review review);
-
-//    List<Review> findByName(String name);
-
-    Optional<Review> findById(Integer reviewId);
-
+@Profile("spring-data-jpa")
+public interface ReviewRepository extends JpaRepository<Review, Integer>, ReviewRepositoryOverride {
     List<Review> findByRevieweeId(Integer revieweeId);
 
     List<Review> findByReviewerId(Integer reviewerId);
