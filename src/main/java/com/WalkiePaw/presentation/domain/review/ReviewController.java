@@ -52,10 +52,5 @@ public class ReviewController {
         reviewService.updateReview(id, request);
         return ResponseEntity.noContent().build();
     }
-
-    @GetMapping("/{id}/transaction")
-    public ResponseEntity<TransactionResponse> getTransaction(final @PathVariable("id") Integer memberId,
-                                                              final @RequestParam ) {
-        reviewService.findTransactionList(memberId);
-    }
+    
 }

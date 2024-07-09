@@ -70,9 +70,9 @@ public abstract class Querydsl4RepositorySupport {
     }
 
     protected <T> Slice<T> slice(Pageable pageable, Function<JPAQueryFactory, JPAQuery> sliceQuery) {
-        JPAQuery query = sliceQuery.apply(getJpaQueryFactory());
-        JPAQuery limit = (JPAQuery) query.offset(pageable.getOffset()).limit(pageable.getPageSize());
-        List<T> content = getQuerydsl().applyPagination(pageable, limit).fetch();
+        JPAQuery query = (JPAQuery) sliceQuery.apply(getJpaQueryFactory())
+                .offset(pageable.getOffset()).limit(pageable.getPageSize());
+        List<T> content = getQuerydsl().applyPagination(pageable, query).fetch();
         boolean hasNext = false;
         if (content.size() > pageable.getPageSize()) {
             hasNext = true;

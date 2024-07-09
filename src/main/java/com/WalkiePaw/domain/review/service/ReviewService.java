@@ -66,7 +66,4 @@ public class ReviewService {
                 .toList();
     }
 
-    public void findTransactionList(final Integer memberId) {
-        find
-    }
 }

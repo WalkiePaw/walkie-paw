@@ -34,7 +34,7 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
     }
 
     @Override
-    public List<Board> findBySearchCond(final String title, final String content) {
+    public List<Board> findBySearchCond(final String title, final String content, final BoardCategory category) {
         return selectFrom(board)
                 .join(board.member).fetchJoin()
                 .where(
