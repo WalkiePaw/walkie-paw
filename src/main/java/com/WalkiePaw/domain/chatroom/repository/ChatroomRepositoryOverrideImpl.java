@@ -28,7 +28,7 @@ public class ChatroomRepositoryOverrideImpl extends Querydsl4RepositorySupport i
                                 , chatroom.latestMessage, chatroom.modifiedDate, chatroom.unreadCount
                         ))
                         .from(chatroom)
-                        .where(chatroom.board.id.eq(memberId).or(chatroom.member.id.eq(memberId))));
+                        .where(chatroom.board.member.id.eq(memberId).or(chatroom.member.id.eq(memberId))));
     }
 
     @Override
@@ -39,10 +39,10 @@ public class ChatroomRepositoryOverrideImpl extends Querydsl4RepositorySupport i
                                 chatroom.board.title,
                                 review.reviewee.nickname.as("memberNickName"),
                                 review.createdDate,
-                                review.reviewer.id.as("revieweeId")
+                                review.reviewee.id.as("revieweeId")
                         ))
                         .from(chatroom)
                         .leftJoin(review).on(review.reviewer.id.eq(memberId))
-                        .where(chatroom.id.eq(memberId)));
+                        .where(chatroom.board.member.id.eq(memberId).or(chatroom.member.id.eq(memberId))));
     }
 }
