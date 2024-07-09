@@ -106,4 +106,12 @@ public class MemberController {
         List<MemberListResponse> list = memberService.findBySearchCond(name, nickname, email, reportedCnt);
         return ResponseEntity.ok(list);
     }
+
+    @Operation(summary = "닉네임 중복 확인")
+    @GetMapping("/check-nickname")
+    public ResponseEntity<NicknameCheckResponse> checkNickname(
+            @RequestParam final String nickname
+    ) {
+        return ResponseEntity.ok(memberService.NicknameCheck(nickname));
+    }
 }

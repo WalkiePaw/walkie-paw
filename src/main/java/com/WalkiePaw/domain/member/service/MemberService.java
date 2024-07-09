@@ -86,4 +86,13 @@ public class MemberService {
                 .map(MemberListResponse::from)
                 .toList();
     }
+
+    public NicknameCheckResponse NicknameCheck(final String nickname) {
+        Optional<Member> member = memberRepository.findByNickname(nickname);
+        if (member.isEmpty()) {
+            return new NicknameCheckResponse(NCheckResult.AVAILABLE);
+        } else {
+            return new NicknameCheckResponse(NCheckResult.DUPLICATED);
+        }
+    }
 }
