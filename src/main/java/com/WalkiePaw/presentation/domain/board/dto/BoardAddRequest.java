@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class BoardAddRequest {
@@ -23,6 +25,7 @@ public class BoardAddRequest {
     private final String location;
     private final String detailedLocation;
     private final boolean priceProposal;
+    private final List<String> photos = new ArrayList<>();
 
     /**
      * BoardAddResponse -> Board 객체로 만드는 toEntity 메서드 필요

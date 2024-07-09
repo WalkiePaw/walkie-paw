@@ -4,7 +4,7 @@ import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.board.repository.BoardRepository;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.domain.chatroom.repository.ChatroomRepository;
-import com.WalkiePaw.domain.chatroom.repository.TransactionResponse;
+import com.WalkiePaw.presentation.domain.chatroom.dto.TransactionResponse;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomAddRequest;

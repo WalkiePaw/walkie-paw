@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -26,12 +27,14 @@ public class BoardListResponse {
     private final String memberNickName;
     private final BoardStatus status;
     private final BoardCategory category;
-    private final  boolean priceProposal;
+    private final boolean priceProposal;
+
+    private final List<String> photos;
 
     public static BoardListResponse from(final Board board) {
         return new BoardListResponse(
                 board.getId(), board.getTitle(), board.getContent(), board.getLocation(),
                 board.getPrice(), board.getPriceType(), board.getEndTime(), board.getStartTime(), board.getLikeCount(),
-                board.getMember().getNickname(), board.getStatus(), board.getCategory(), board.isPriceProposal());
+                board.getMember().getNickname(), board.getStatus(), board.getCategory(), board.isPriceProposal(), board.getPhotoUrls(board));
     }
 }

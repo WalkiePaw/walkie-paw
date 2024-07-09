@@ -1,4 +1,4 @@
-package com.WalkiePaw.domain.chatroom.repository;
+package com.WalkiePaw.presentation.domain.chatroom.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
