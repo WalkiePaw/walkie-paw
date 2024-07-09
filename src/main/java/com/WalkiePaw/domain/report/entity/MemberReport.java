@@ -28,6 +28,8 @@ public class MemberReport extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reported_member_id", referencedColumnName = "member_id")
     private Member reportedMember;
+    @Enumerated(EnumType.STRING)
+    private MemberReportStatus status;
 
     @Builder
     public MemberReport(String title, String content, MemberReportCategory reason, Member reportingMember, Member reportedMember) {
@@ -36,6 +38,7 @@ public class MemberReport extends BaseEntity {
         this.reason = reason;
         this.reportingMember = reportingMember;
         this.reportedMember = reportedMember;
+        this.status = MemberReportStatus.UNRESOLVED;
     }
 
     public void update(MemberReportUpdateRequest request, Member reportingMember, Member reportedMember) {
@@ -43,6 +46,14 @@ public class MemberReport extends BaseEntity {
         this.reason = request.getReason();
         this.reportingMember = reportingMember;
         this.reportedMember = reportedMember;
+    }
+
+    public void ban() {
+        this.status = MemberReportStatus.BANNED;
+    }
+
+    public void ignore() {
+        this.status = MemberReportStatus.IGNORE;
     }
 
 //    /**

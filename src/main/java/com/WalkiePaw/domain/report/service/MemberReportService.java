@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -42,5 +43,16 @@ public class MemberReportService {
         Member reportedMember = memberRepository.findById(request.getReportedMemberId()).orElseThrow();
         MemberReport memberReport = memberReportRepository.findById(memberReportId).orElseThrow();
         memberReport.update(request, reportingMember, reportedMember);
+    }
+
+    public void ban(final Integer memberReportId) {
+        MemberReport memberReport = memberReportRepository.findById(memberReportId).orElseThrow();
+        memberReport.getReportedMember().ban();
+        memberReport.ban();
+    }
+
+    public void ignore(final Integer memberReportId) {
+        MemberReport memberReport = memberReportRepository.findById(memberReportId).orElseThrow();
+        memberReport.ignore();
     }
 }

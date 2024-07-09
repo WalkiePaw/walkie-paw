@@ -46,4 +46,16 @@ public class MemberReportController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/{id}/ban")
+    ResponseEntity<Void> banMemberReport(@PathVariable("id") final Integer memberReportId) {
+        memberReportService.ban(memberReportId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/ignore")
+    ResponseEntity<Void> ignoreMemberReport(@PathVariable("id") final Integer memberReportId) {
+        memberReportService.ignore(memberReportId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
