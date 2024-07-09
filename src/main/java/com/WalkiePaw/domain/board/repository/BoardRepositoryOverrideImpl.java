@@ -4,6 +4,7 @@ import com.WalkiePaw.domain.board.entity.*;
 import com.WalkiePaw.global.util.Querydsl4RepositorySupport;
 import com.WalkiePaw.presentation.domain.board.dto.BoardListResponse;
 import com.WalkiePaw.presentation.domain.board.dto.BoardMypageListResponse;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.data.domain.Pageable;
@@ -36,8 +37,15 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
     public List<Board> findBySearchCond(final String title, final String content) {
         return selectFrom(board)
                 .join(board.member).fetchJoin()
-                .where(titleCond(title), contentCond(content))
+                .where(
+                        titleCond(title),
+                        contentCond(content),
+                        categoryCond(category))
                 .fetch();
+    }
+
+    private BooleanExpression categoryCond(final BoardCategory category) {
+        return category != null ? board.category.eq(category) : null;
     }
 
     private BooleanExpression contentCond(final String content) {

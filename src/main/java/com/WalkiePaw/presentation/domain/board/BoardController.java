@@ -65,8 +65,12 @@ public class BoardController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<BoardListResponse>> searchBoard(final @RequestParam BoardSearchRequest request) {
-        List<BoardListResponse> list = boardService.findBySearchCond(request);
+    public ResponseEntity<List<BoardListResponse>> searchBoard(
+            final @RequestParam(required = false) String title,
+            final @RequestParam(required = false) String content,
+            final @RequestParam(required = false) BoardCategory category
+    ) {
+        List<BoardListResponse> list = boardService.findBySearchCond(title, content, category);
         return ResponseEntity.ok(list);
     }
 }

@@ -1,6 +1,5 @@
 package com.WalkiePaw.presentation.domain.qna;
 
-import com.WalkiePaw.domain.qna.repository.QnaRepository;
 import com.WalkiePaw.domain.qna.service.QnaService;
 import com.WalkiePaw.presentation.domain.qna.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -27,28 +26,27 @@ public class QnaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<QnaGetResponse> getQna(@PathVariable("id") Integer qnaId) {
+    public ResponseEntity<QnaGetResponse> getQna(@PathVariable("id") final Integer qnaId) {
         QnaGetResponse qnaGetResponse = qnaService.findById(qnaId);
         return ResponseEntity.ok()
                 .body(qnaGetResponse);
     }
 
     @PostMapping
-    public ResponseEntity<Void> addQna(@Validated @RequestBody QnaAddRequest request) {
+    public ResponseEntity<Void> addQna(@Validated @RequestBody final QnaAddRequest request) {
         Integer qnaId = qnaService.save(request);
         return ResponseEntity.created(URI.create(QNA_URL + qnaId)).build();
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateQna(@PathVariable("id") Integer qnaId, @Validated @RequestBody QnaUpdateRequest request) {
+    public ResponseEntity<Void> updateQna(@PathVariable("id") final Integer qnaId, @Validated @RequestBody final QnaUpdateRequest request) {
         qnaService.update(qnaId, request);
         return ResponseEntity.noContent().build();
     }
 
-    public ResponseEntity<Void> deleteQna(@PathVariable Integer id) {
-        /**
-         * id에 해당하는 데이터를 삭제하는 서비스
-         */
+    @PatchMapping("/{id}/reply")
+    public ResponseEntity<Void> replyQna(@PathVariable("id") final Integer qnaId, @Validated @RequestBody final replyUpdateRequest request) {
+        qnaService.updateReply(qnaId, request);
         return ResponseEntity.noContent().build();
     }
 
