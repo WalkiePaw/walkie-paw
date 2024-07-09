@@ -6,6 +6,8 @@ import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.domain.report.entity.BoardReport;
 import com.WalkiePaw.domain.report.repository.BoardReportRepository;
+import com.WalkiePaw.domain.report.repository.BoardReportRepositoryOverride;
+import com.WalkiePaw.presentation.domain.board.dto.BoardListResponse;
 import com.WalkiePaw.presentation.domain.report.boardReportDto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -60,5 +61,12 @@ public class BoardReportService {
     public void ignore(final Integer boardReportId) {
         BoardReport boardReport = boardReportRepository.findById(boardReportId).orElseThrow();
         boardReport.ignore();
+    }
+
+    public List<BoardReportListResponse> findAllByResolvedCond(final String status) {
+        List<BoardReport> list = boardReportRepository.findAllByResolvedCond(status);
+        return list.stream()
+                .map(BoardReportListResponse::from)
+                .toList();
     }
 }

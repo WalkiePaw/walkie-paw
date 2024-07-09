@@ -56,4 +56,12 @@ public class BoardReportController {
         boardReportService.ignore(boardReportId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<BoardReportListResponse>> list(
+            @RequestParam(required = false) final String status // RESOLVED, UNRESOLVED
+    ) {
+        List<BoardReportListResponse> list = boardReportService.findAllByResolvedCond(status);
+        return ResponseEntity.ok(list);
+    }
 }

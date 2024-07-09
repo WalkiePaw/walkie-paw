@@ -1,15 +1,21 @@
 package com.WalkiePaw.domain.report.repository;
 
 import com.WalkiePaw.domain.report.entity.BoardReport;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface BoardReportRepository {
+@Profile("spring-data-jpa")
+public interface BoardReportRepository extends JpaRepository<BoardReport, Integer>, BoardReportRepositoryOverride {
 
-    BoardReport save(final BoardReport boardReport);
+    @Override
+    @EntityGraph(attributePaths = {"member", "board"})
+    Optional<BoardReport> findById(final Integer boardReportId);
 
-    Optional<BoardReport> findById(final Integer brId);
-
+    @Override
+    @EntityGraph(attributePaths = {"member", "board"})
     List<BoardReport> findAll();
 }
