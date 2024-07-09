@@ -46,11 +46,24 @@ public class MemberReportController {
         return ResponseEntity.noContent().build();
     }
 
-    ResponseEntity<Void> deleteMemberReport(final @PathVariable("id") Integer memberReportId) {
-        /**
-         * id에 해당하는 데이터를 삭제하는 서비스
-         */
+    @PatchMapping("/{id}/ban")
+    ResponseEntity<Void> banMemberReport(@PathVariable("id") final Integer memberReportId) {
+        memberReportService.ban(memberReportId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/ignore")
+    ResponseEntity<Void> ignoreMemberReport(@PathVariable("id") final Integer memberReportId) {
+        memberReportService.ignore(memberReportId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("list")
+    ResponseEntity<List<MemberReportListResponse>> list(
+            @RequestParam(required = false) final String status // RESOLVED, UNRESOLVED
+    ) {
+        List<MemberReportListResponse> list = memberReportService.findAllByCond(status);
+        return ResponseEntity.ok(list);
     }
 
 }

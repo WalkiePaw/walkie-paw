@@ -16,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("jpa")
-public class JpaQnaRepositoryImpl implements QnaRepository {
+public class JpaQnaRepositoryImpl {
 
     @PersistenceContext
     private final EntityManager em;

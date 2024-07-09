@@ -50,4 +50,12 @@ public class QnaController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<List<QnaListResponse>> list(
+            @RequestParam(required = false) final String status // RESOLVED, UNRESOLVED
+    ) {
+        List<QnaListResponse> list = qnaService.findAllByCond(status);
+        return ResponseEntity.ok(list);
+    }
+
 }

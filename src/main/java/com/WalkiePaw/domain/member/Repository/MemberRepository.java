@@ -1,23 +1,16 @@
 package com.WalkiePaw.domain.member.Repository;
 
 import com.WalkiePaw.domain.member.entity.Member;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepository {
+@Profile("spring-data-jpa")
+public interface MemberRepository extends JpaRepository<Member, Integer>, MemberRepositoryOverride {
 
-    Member save(final Member member);
-
-    Optional<Member> findById(final Integer memberId);
-
-    List<Member> findByName(final String name);
-
-    List<Member> findAll();
-
-    Optional<Member> findByEmail(String email);
+    @Query("select m from Member m where m.email = :email")
+    Optional<Member> findByEmail(@Param("email") String email);
 }

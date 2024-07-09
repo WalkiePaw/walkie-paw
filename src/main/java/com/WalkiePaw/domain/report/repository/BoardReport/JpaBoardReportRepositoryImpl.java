@@ -1,6 +1,5 @@
-package com.WalkiePaw.domain.report.repository;
+package com.WalkiePaw.domain.report.repository.BoardReport;
 
-import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.report.entity.BoardReport;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("jpa")
-public class JpaBoardReportRepositoryImpl implements BoardReportRepository {
+public class JpaBoardReportRepositoryImpl {
 
     private final EntityManager em;
 

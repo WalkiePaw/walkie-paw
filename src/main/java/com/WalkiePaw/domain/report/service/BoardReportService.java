@@ -2,11 +2,10 @@ package com.WalkiePaw.domain.report.service;
 
 import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.board.repository.BoardRepository;
-import com.WalkiePaw.domain.board.repository.BoardRepositoryOverride;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.domain.report.entity.BoardReport;
-import com.WalkiePaw.domain.report.repository.BoardReportRepository;
+import com.WalkiePaw.domain.report.repository.BoardReport.BoardReportRepository;
 import com.WalkiePaw.presentation.domain.report.boardReportDto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,5 +47,24 @@ public class BoardReportService {
         Board board = boardRepository.findById(request.getBoardId()).orElseThrow();
         BoardReport boardReport = boardReportRepository.findById(boardReportId).orElseThrow();
         boardReport.update(request, member, board);
+    }
+
+    public void blind(final Integer boardReportId) {
+        BoardReport boardReport = boardReportRepository.findById(boardReportId).orElseThrow();
+        Board board = boardRepository.findById(boardReport.getBoard().getId()).orElseThrow();
+        board.delete();
+        boardReport.blind();
+    }
+
+    public void ignore(final Integer boardReportId) {
+        BoardReport boardReport = boardReportRepository.findById(boardReportId).orElseThrow();
+        boardReport.ignore();
+    }
+
+    public List<BoardReportListResponse> findAllByResolvedCond(final String status) {
+        List<BoardReport> list = boardReportRepository.findAllByResolvedCond(status);
+        return list.stream()
+                .map(BoardReportListResponse::from)
+                .toList();
     }
 }

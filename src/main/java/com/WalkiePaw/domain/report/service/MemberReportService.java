@@ -3,7 +3,8 @@ package com.WalkiePaw.domain.report.service;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.domain.report.entity.MemberReport;
-import com.WalkiePaw.domain.report.repository.MemberReportRepository;
+import com.WalkiePaw.domain.report.repository.MemberReport.MemberReportRepository;
+import com.WalkiePaw.domain.report.repository.MemberReport.MemberReportRepositoryOverride;
 import com.WalkiePaw.presentation.domain.report.memberReportDto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,5 +43,23 @@ public class MemberReportService {
         Member reportedMember = memberRepository.findById(request.getReportedMemberId()).orElseThrow();
         MemberReport memberReport = memberReportRepository.findById(memberReportId).orElseThrow();
         memberReport.update(request, reportingMember, reportedMember);
+    }
+
+    public void ban(final Integer memberReportId) {
+        MemberReport memberReport = memberReportRepository.findById(memberReportId).orElseThrow();
+        memberReport.getReportedMember().ban();
+        memberReport.ban();
+    }
+
+    public void ignore(final Integer memberReportId) {
+        MemberReport memberReport = memberReportRepository.findById(memberReportId).orElseThrow();
+        memberReport.ignore();
+    }
+
+    public List<MemberReportListResponse> findAllByCond(final String status) {
+        List<MemberReport> list = memberReportRepository.findAllByCond(status);
+        return list.stream()
+                .map(MemberReportListResponse::from)
+                .toList();
     }
 }

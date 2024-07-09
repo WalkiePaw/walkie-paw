@@ -1,4 +1,4 @@
-package com.WalkiePaw.domain.report.repository;
+package com.WalkiePaw.domain.report.repository.BoardReport;
 
 import com.WalkiePaw.domain.report.entity.BoardReport;
 import org.springframework.context.annotation.Profile;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Profile("spring-data-jpa")
-public interface SpringDataBoardReportRepository extends JpaRepository<BoardReport, Integer>, BoardReportRepository {
+public interface BoardReportRepository extends JpaRepository<BoardReport, Integer>, BoardReportRepositoryOverride {
 
     @Override
     @EntityGraph(attributePaths = {"member", "board"})

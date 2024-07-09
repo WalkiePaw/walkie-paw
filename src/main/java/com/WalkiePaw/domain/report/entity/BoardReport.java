@@ -25,6 +25,8 @@ public class BoardReport extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
+    @Enumerated(EnumType.STRING)
+    private BoardReportStatus status;
 
     @Builder
     public BoardReport(String content, Member member, Board board, BoardReportCategory reason) {
@@ -32,6 +34,7 @@ public class BoardReport extends BaseEntity {
         this.member = member;
         this.board = board;
         this.reason = reason;
+        this.status = BoardReportStatus.UNRESOLVED;
     }
 
     public void update(BoardReportUpdateRequest request, Member member, Board board) {
@@ -39,6 +42,14 @@ public class BoardReport extends BaseEntity {
         this.content = request.getContent();
         this.member = member;
         this.board = board;
+    }
+
+    public void blind() {
+        this.status = BoardReportStatus.BLINDED;
+    }
+
+    public void ignore() {
+        this.status = BoardReportStatus.IGNORE;
     }
 //    /**
 //     * BoardReport 생성 메서드

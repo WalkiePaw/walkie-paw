@@ -79,4 +79,11 @@ public class MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow();
         member.general();
     }
+
+    public List<MemberListResponse> findBySearchCond(final String name, final String nickname, final String email, final Integer reportedCnt) {
+        List<Member> list = memberRepository.findBySearchCond(name, nickname, email, reportedCnt);
+        return list.stream()
+                .map(MemberListResponse::from)
+                .toList();
+    }
 }
