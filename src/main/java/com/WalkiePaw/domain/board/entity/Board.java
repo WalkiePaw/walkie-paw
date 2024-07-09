@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,6 +41,8 @@ public class Board extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private BoardCategory category;
     private boolean priceProposal;
+    @OneToMany(mappedBy = "board")
+    private List<BoardPhoto> photos = new ArrayList<>();
 
     @Builder
     public Board(
@@ -94,6 +98,20 @@ public class Board extends BaseEntity {
     public void updateStatus(final BoardStatus status) {
         this.status = status;
     }
+
+    public void updatePhoto(final List<String> photos) {
+        this.photos.clear();
+        photos.stream()
+                .map(BoardPhoto::new)
+                .forEach(p -> p.addPhoto(this));
+    }
+
+    public List<String> getPhotoUrls(final Board board) {
+        return board.getPhotos().stream()
+                .map(BoardPhoto::getUrl)
+                .toList();
+    }
+
 
     /**
      * TODO : update 메서드 만들기

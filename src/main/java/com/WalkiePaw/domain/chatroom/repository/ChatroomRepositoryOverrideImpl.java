@@ -3,6 +3,7 @@ package com.WalkiePaw.domain.chatroom.repository;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.global.util.Querydsl4RepositorySupport;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomListResponse;
+import com.WalkiePaw.presentation.domain.chatroom.dto.TransactionResponse;
 import com.querydsl.core.types.Projections;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
