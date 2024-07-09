@@ -41,17 +41,19 @@ public class BoardReportController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateBoardReport(final @PathVariable("id") Integer boardReportId, final @Validated @RequestBody BoardReportUpdateRequest request) {
-        /**
-         * boardReportRequest로 수정하는 서비스
-         */
         boardReportService.update(boardReportId, request);
         return ResponseEntity.noContent().build();
     }
 
-    public ResponseEntity<Void> deleteBoardReport(@PathVariable Integer boardReportId) {
-        /**
-         * id에 해당하는 데이터를 삭제하는 서비스
-         */
+    @PatchMapping("/{id}/blind")
+    public ResponseEntity<Void> blindBoardReport(final @PathVariable("id") Integer boardReportId) {
+        boardReportService.blind(boardReportId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/ignore")
+    public ResponseEntity<Void> ignoreBoardReport(@PathVariable("id") final Integer boardReportId) {
+        boardReportService.ignore(boardReportId);
         return ResponseEntity.noContent().build();
     }
 }

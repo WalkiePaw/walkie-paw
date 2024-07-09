@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -47,5 +48,17 @@ public class BoardReportService {
         Board board = boardRepository.findById(request.getBoardId()).orElseThrow();
         BoardReport boardReport = boardReportRepository.findById(boardReportId).orElseThrow();
         boardReport.update(request, member, board);
+    }
+
+    public void blind(final Integer boardReportId) {
+        BoardReport boardReport = boardReportRepository.findById(boardReportId).orElseThrow();
+        Board board = boardRepository.findById(boardReport.getBoard().getId()).orElseThrow();
+        board.delete();
+        boardReport.blind();
+    }
+
+    public void ignore(final Integer boardReportId) {
+        BoardReport boardReport = boardReportRepository.findById(boardReportId).orElseThrow();
+        boardReport.ignore();
     }
 }
