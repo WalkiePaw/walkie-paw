@@ -95,4 +95,10 @@ public class MemberService {
             return new NicknameCheckResponse(NCheckResult.DUPLICATED);
         }
     }
+
+
+    public FindEmailResponse findEmail(final FindEmailRequest request) {
+        Member member = memberRepository.findByNameAndPhoneNumber(request.getName(), request.getPhoneNumber()).orElseThrow();
+        return new FindEmailResponse(member.getEmail());
+    }
 }

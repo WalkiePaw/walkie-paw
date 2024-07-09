@@ -114,4 +114,10 @@ public class MemberController {
     ) {
         return ResponseEntity.ok(memberService.NicknameCheck(nickname));
     }
+
+    @Operation(summary = "이메일 찾기")
+    @PostMapping("/find-email")
+    public ResponseEntity<FindEmailResponse> findEmail(@RequestBody final FindEmailRequest request) {
+        return ResponseEntity.ok(memberService.findEmail(request));
+    }
 }
