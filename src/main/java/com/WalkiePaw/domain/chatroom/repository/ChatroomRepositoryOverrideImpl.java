@@ -37,12 +37,12 @@ public class ChatroomRepositoryOverrideImpl extends Querydsl4RepositorySupport i
                 page -> page.select(Projections.constructor(TransactionResponse.class,
                                 chatroom.id,
                                 chatroom.board.title,
-                                review.reviewee.nickname.as("memberNickName"),
-                                review.createdDate,
-                                review.reviewee.id.as("revieweeId")
+                                chatroom.member.nickname.as("memberNickName"),
+                                chatroom.completedDate,
+                                review.id
                         ))
                         .from(chatroom)
-                        .leftJoin(review).on(review.reviewer.id.eq(memberId))
+                        .leftJoin(review).on(chatroom.id.eq(review.chatroom.id))
                         .where(chatroom.board.member.id.eq(memberId).or(chatroom.member.id.eq(memberId))));
     }
 }

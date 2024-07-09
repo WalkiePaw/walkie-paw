@@ -1,5 +1,6 @@
 package com.WalkiePaw.presentation.domain.review;
 
+import com.WalkiePaw.domain.board.entity.BoardCategory;
 import com.WalkiePaw.domain.review.service.ReviewService;
 import com.WalkiePaw.presentation.domain.review.dto.ReviewDetailResponse;
 import com.WalkiePaw.presentation.domain.review.dto.ReviewListResponse;
@@ -7,6 +8,8 @@ import com.WalkiePaw.presentation.domain.review.dto.ReviewSaveRequest;
 import com.WalkiePaw.presentation.domain.review.dto.ReviewUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,14 +27,22 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("/{id}/reviews")
-    public ResponseEntity<List<ReviewListResponse>> getReviewsByRevieweeId(@PathVariable("id") final Integer revieweeId) {
-        List<ReviewListResponse> reviews = reviewService.findByRevieweeId(revieweeId);
+    public ResponseEntity<Slice<ReviewListResponse>> getReviewsByRevieweeId(
+            Pageable pageable,
+            @PathVariable("id") final Integer revieweeId,
+            @RequestParam BoardCategory category
+    ) {
+        Slice<ReviewListResponse> reviews = reviewService.findByRevieweeId(pageable, revieweeId, category);
         return ResponseEntity.ok(reviews);
     }
 
     @GetMapping("/{id}/my-reviews")
-    public ResponseEntity<List<ReviewListResponse>> getReviewsByReviewerId(@PathVariable("id") final Integer reviewerId) {
-        List<ReviewListResponse> reviews = reviewService.findByReviewerId(reviewerId);
+    public ResponseEntity<Slice<ReviewListResponse>> getReviewsByReviewerId(
+            Pageable pageable,
+            @PathVariable("id") final Integer reviewerId,
+            @RequestParam BoardCategory category
+    ) {
+        Slice<ReviewListResponse> reviews = reviewService.findByReviewerId(pageable, reviewerId, category);
         return ResponseEntity.ok(reviews);
     }
 

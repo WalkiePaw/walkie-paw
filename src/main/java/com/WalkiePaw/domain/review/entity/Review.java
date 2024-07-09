@@ -1,5 +1,6 @@
 package com.WalkiePaw.domain.review.entity;
 
+import com.WalkiePaw.domain.board.entity.BoardCategory;
 import com.WalkiePaw.domain.common.BaseEntity;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.domain.member.entity.Member;
@@ -28,11 +29,14 @@ public class Review extends BaseEntity {
     private Chatroom chatroom;
     @Column(name = "review_content")
     private String content;
+    @Enumerated(EnumType.STRING)
+    private BoardCategory category;
     private int point;
     private boolean isDeleted;
 
     @Builder
-    public Review(int point, String content, Chatroom chatroom, Member reviewee, Member reviewer) {
+    public Review(int point, String content, Chatroom chatroom, Member reviewee, Member reviewer, BoardCategory category) {
+        this.category = category;
         this.point = point;
         this.content = content;
         this.chatroom = chatroom;
