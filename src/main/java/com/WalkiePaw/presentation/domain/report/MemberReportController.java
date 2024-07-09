@@ -46,11 +46,4 @@ public class MemberReportController {
         return ResponseEntity.noContent().build();
     }
 
-    ResponseEntity<Void> deleteMemberReport(final @PathVariable("id") Integer memberReportId) {
-        /**
-         * id에 해당하는 데이터를 삭제하는 서비스
-         */
-        return ResponseEntity.noContent().build();
-    }
-
 }

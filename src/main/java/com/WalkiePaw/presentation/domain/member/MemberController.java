@@ -95,4 +95,15 @@ public class MemberController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "멤버 검색")
+    @GetMapping("/search")
+    public ResponseEntity<List<MemberListResponse>> search(
+            @RequestParam(required = false) final String name,
+            @RequestParam(required = false) final String nickname,
+            @RequestParam(required = false) final String email,
+            @RequestParam(required = false) final Integer reportedCnt
+    ) {
+        List<MemberListResponse> list = memberService.findBySearchCond(name, nickname, email, reportedCnt);
+        return ResponseEntity.ok(list);
+    }
 }
