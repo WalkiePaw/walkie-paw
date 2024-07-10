@@ -1,5 +1,6 @@
 package com.WalkiePaw.domain.member.service;
 
+import com.WalkiePaw.domain.mail.service.MailService;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.presentation.domain.member.dto.*;
@@ -19,6 +20,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final CustomPasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     @Transactional(readOnly = true)
     public List<MemberListResponse> findAll() {
@@ -99,6 +101,27 @@ public class MemberService {
 
     public FindEmailResponse findEmail(final FindEmailRequest request) {
         Member member = memberRepository.findByNameAndPhoneNumber(request.getName(), request.getPhoneNumber()).orElseThrow();
-        return new FindEmailResponse(member.getEmail());
+        return new FindEmailResponse(maskedMail(member.getEmail()));
+    }
+
+    public FindPasswdResponse findPasswd(final FindPasswdRequest request) {
+        Optional<Member> member = memberRepository.findByEmailAndNameAndPhoneNumber(
+                request.getEmail(),
+                request.getName(),
+                request.getPhoneNumber());
+        if(member.isEmpty()) {
+            return new FindPasswdResponse(FindPasswdResult.USER_NOT_FOUND);
+        }
+        mailService.joinEmail(request.getEmail());
+        return new FindPasswdResponse(FindPasswdResult.SUCCESS);
+    }
+
+    private String maskedMail(String email) {
+        int atIndex = email.indexOf('@');
+        String beforeAt = email.substring(0, atIndex);
+        String afterAt = email.substring(atIndex);
+        String visible = beforeAt.substring(0, beforeAt.length() - 4);
+        String masked = "*".repeat(4);
+        return visible + masked + afterAt;
     }
 }

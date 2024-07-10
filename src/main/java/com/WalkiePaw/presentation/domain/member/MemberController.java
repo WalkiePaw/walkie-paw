@@ -120,4 +120,10 @@ public class MemberController {
     public ResponseEntity<FindEmailResponse> findEmail(@RequestBody final FindEmailRequest request) {
         return ResponseEntity.ok(memberService.findEmail(request));
     }
+
+    @Operation(summary = "비밀번호 찾기")
+    @PostMapping("/find-passwd")
+    public ResponseEntity<FindPasswdResponse> findPasswd(@RequestBody final FindPasswdRequest request) {
+        return ResponseEntity.ok(memberService.findPasswd(request));
+    }
 }

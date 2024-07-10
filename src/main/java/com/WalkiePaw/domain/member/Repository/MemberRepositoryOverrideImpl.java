@@ -1,7 +1,6 @@
 package com.WalkiePaw.domain.member.Repository;
 
 import com.WalkiePaw.domain.member.entity.Member;
-import com.WalkiePaw.domain.member.entity.QMember;
 import com.WalkiePaw.global.util.Querydsl4RepositorySupport;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -30,10 +29,21 @@ public class MemberRepositoryOverrideImpl extends Querydsl4RepositorySupport imp
 
     @Override
     public Optional<Member> findByNameAndPhoneNumber(final String name, final String phoneNumber) {
-        Member member = selectFrom(QMember.member)
-                .where(QMember.member.name.eq(name).and(QMember.member.phoneNumber.eq(phoneNumber)))
+        Member fetchedOne = selectFrom(member)
+                .where(member.name.eq(name).and(member.phoneNumber.eq(phoneNumber)))
                 .fetchOne();
-        return Optional.ofNullable(member);
+        return Optional.ofNullable(fetchedOne);
+    }
+
+    @Override
+    public Optional<Member> findByEmailAndNameAndPhoneNumber(final String email, final String name, final String phoneNumber) {
+        Member fetchedOne = selectFrom(member)
+                .where(
+                        member.email.eq(email),
+                        member.name.eq(name),
+                        member.phoneNumber.eq(phoneNumber)
+                ).fetchOne();
+        return Optional.ofNullable(fetchedOne);
     }
 
     private BooleanExpression nameCond(final String name) {

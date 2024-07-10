@@ -20,7 +20,8 @@ public class EmailController {
 
     @PostMapping("/send")
     public ResponseEntity<String> mailSend(@RequestBody @Valid final EmailSendRequest request) {
-        return ResponseEntity.ok(mailService.joinEmail(request.getEmail()));
+        mailService.joinEmail(request.getEmail());
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/authCheck")
