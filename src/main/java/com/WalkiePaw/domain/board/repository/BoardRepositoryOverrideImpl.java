@@ -12,10 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static com.WalkiePaw.domain.board.entity.QBoard.*;
@@ -104,4 +104,9 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
                 .orderBy(board.createdDate.desc()));
     }
 
+    public Optional<Board> findWithPhotoBy(Integer boardId) {
+        return Optional.ofNullable(selectFrom(board)
+                .leftJoin(board.photos)
+                .where(board.id.eq(boardId)).fetchOne());
+    }
 }

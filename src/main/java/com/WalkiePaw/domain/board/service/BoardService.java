@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.WalkiePaw.global.exception.ExceptionCode.*;
 
@@ -61,11 +62,14 @@ public class BoardService {
 
     @Transactional
     public void updateBoard(final Integer boardId, final BoardUpdateRequest request) {
-        Board board = boardRepository.findById(boardId)
+        Board board = boardRepository.findWithPhotoBy(boardId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
         board.updateBoard(request.getTitle(), request.getContent(), request.getPrice(), request.getStartTime(),
                 request.getEndTime(), request.getPriceType(), request.getLocation(), request.getDetailedLocation(), request.isPriceProposal());
-        board.updatePhoto(request.getPhotos().stream().map(ImageDto::getUrl).toList());
+        List<String> urls = request.getImageURLs().stream().map(ImageDto::getUrl).toList();
+        List<BoardPhoto> photos = urls.stream().map(BoardPhoto::new).toList();
+        photos.forEach(bp -> bp.addPhoto(board));
+        boardPhotoRepository.saveAll(photos);
     }
 
     @Transactional
