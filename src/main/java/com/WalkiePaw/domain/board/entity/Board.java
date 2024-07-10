@@ -41,7 +41,7 @@ public class Board extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private BoardCategory category;
     private boolean priceProposal;
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<BoardPhoto> photos = new ArrayList<>();
 
     @Builder
@@ -101,9 +101,6 @@ public class Board extends BaseEntity {
 
     public void updatePhoto(final List<String> photos) {
         this.photos.clear();
-        photos.stream()
-                .map(BoardPhoto::new)
-                .forEach(p -> p.addPhoto(this));
     }
 
     public List<String> getPhotoUrls(final Board board) {
