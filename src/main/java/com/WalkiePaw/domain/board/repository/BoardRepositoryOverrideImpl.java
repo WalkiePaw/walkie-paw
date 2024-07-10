@@ -92,16 +92,14 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
                 .orderBy(board.createdDate.desc()));
     }
 
-    /**
-     * TODO - photo 넣은건지 확인, 값 제대로 나오는지 확인
-     */
     @Override
     public Slice<BoardListResponse> findLikeBoardList(final Integer memberId, final Pageable pageable) {
-        return slice(pageable, slice -> slice
+        return sliceResponse(pageable, slice -> slice
                 .select(board)
                 .from(boardLike)
-                .join(boardLike.board, board)
-                .join(boardLike.member, member)
+                .join(boardLike.board, board).fetchJoin()
+                .join(boardLike.member, member).fetchJoin()
+                .leftJoin(board.photos).fetchJoin()
                 .where(member.id.eq(memberId).and(board.status.ne(BoardStatus.DELETED)))
                 .orderBy(board.createdDate.desc()));
     }
