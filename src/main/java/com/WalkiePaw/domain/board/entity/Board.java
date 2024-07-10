@@ -101,6 +101,9 @@ public class Board extends BaseEntity {
 
     public void updatePhoto(final List<String> photos) {
         this.photos.clear();
+        photos.stream()
+                .map(BoardPhoto::new)
+                .forEach(p -> p.addPhoto(this));
     }
 
     public List<String> getPhotoUrls(final Board board) {
