@@ -5,11 +5,12 @@ import com.WalkiePaw.domain.board.service.BoardService;
 import com.WalkiePaw.presentation.domain.board.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
 
 @RestController
@@ -22,15 +23,20 @@ public class BoardController {
     private static final String BOARD_URL = "/boards/";
 
     @GetMapping("/list/{category}")
-    public ResponseEntity<List<BoardListResponse>> getBoardList(final @PathVariable BoardCategory category) {
-        List<BoardListResponse> boardListResponses = boardService.findAllBoardAndMember(category);
+    public ResponseEntity<Page<BoardListResponse>> getBoardList(
+            final @PathVariable BoardCategory category,
+            Pageable pageable) {
+        Page<BoardListResponse> boardListResponses = boardService.findAllBoardAndMember(category, pageable);
         return ResponseEntity.ok(boardListResponses);
     }
 
     @GetMapping("/mypage/{memberId}/{category}")
-    public ResponseEntity<List<BoardMypageListResponse>> mypageList(@PathVariable Integer memberId, @PathVariable BoardCategory category
+    public ResponseEntity<Page<BoardMypageListResponse>> mypageList(
+            @PathVariable Integer memberId,
+            @PathVariable BoardCategory category,
+            Pageable pageable
     ) {
-        List<BoardMypageListResponse> boards = boardService.findMyBoardsBy(memberId, category);
+        Page<BoardMypageListResponse> boards = boardService.findMyBoardsBy(memberId, category, pageable);
         return ResponseEntity.ok(boards);
     }
 
@@ -65,12 +71,13 @@ public class BoardController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<BoardListResponse>> searchBoard(
+    public ResponseEntity<Page<BoardListResponse>> searchBoard(
             final @RequestParam(required = false) String title,
             final @RequestParam(required = false) String content,
-            final @RequestParam(required = false) BoardCategory category
+            final @RequestParam(required = false) BoardCategory category,
+            Pageable pageable
     ) {
-        List<BoardListResponse> list = boardService.findBySearchCond(title, content, category);
+        Page<BoardListResponse> list = boardService.findBySearchCond(title, content, category, pageable);
         return ResponseEntity.ok(list);
     }
 }

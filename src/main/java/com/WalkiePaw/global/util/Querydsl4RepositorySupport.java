@@ -84,3 +84,4 @@ public abstract class Querydsl4RepositorySupport {
         return PageableExecutionUtils.getPage(content, pageable, query::fetchCount);
     }
 }
+
