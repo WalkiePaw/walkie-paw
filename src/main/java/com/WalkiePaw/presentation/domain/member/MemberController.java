@@ -106,4 +106,24 @@ public class MemberController {
         List<MemberListResponse> list = memberService.findBySearchCond(name, nickname, email, reportedCnt);
         return ResponseEntity.ok(list);
     }
+
+    @Operation(summary = "닉네임 중복 확인")
+    @GetMapping("/check-nickname")
+    public ResponseEntity<NicknameCheckResponse> checkNickname(
+            @RequestParam final String nickname
+    ) {
+        return ResponseEntity.ok(memberService.NicknameCheck(nickname));
+    }
+
+    @Operation(summary = "이메일 찾기")
+    @PostMapping("/find-email")
+    public ResponseEntity<FindEmailResponse> findEmail(@RequestBody final FindEmailRequest request) {
+        return ResponseEntity.ok(memberService.findEmail(request));
+    }
+
+    @Operation(summary = "비밀번호 찾기")
+    @PostMapping("/find-passwd")
+    public ResponseEntity<FindPasswdResponse> findPasswd(@RequestBody final FindPasswdRequest request) {
+        return ResponseEntity.ok(memberService.findPasswd(request));
+    }
 }
