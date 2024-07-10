@@ -5,9 +5,10 @@ import com.WalkiePaw.global.util.Querydsl4RepositorySupport;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.WalkiePaw.domain.member.entity.QMember.member;
-import static org.springframework.util.StringUtils.*;
+import static org.springframework.util.StringUtils.hasText;
 
 public class MemberRepositoryOverrideImpl extends Querydsl4RepositorySupport implements MemberRepositoryOverride {
 
@@ -24,6 +25,25 @@ public class MemberRepositoryOverrideImpl extends Querydsl4RepositorySupport imp
                         emailCond(email),
                         reportedCntCond(reportedCnt))
                 .fetch();
+    }
+
+    @Override
+    public Optional<Member> findByNameAndPhoneNumber(final String name, final String phoneNumber) {
+        Member fetchedOne = selectFrom(member)
+                .where(member.name.eq(name).and(member.phoneNumber.eq(phoneNumber)))
+                .fetchOne();
+        return Optional.ofNullable(fetchedOne);
+    }
+
+    @Override
+    public Optional<Member> findByEmailAndNameAndPhoneNumber(final String email, final String name, final String phoneNumber) {
+        Member fetchedOne = selectFrom(member)
+                .where(
+                        member.email.eq(email),
+                        member.name.eq(name),
+                        member.phoneNumber.eq(phoneNumber)
+                ).fetchOne();
+        return Optional.ofNullable(fetchedOne);
     }
 
     private BooleanExpression nameCond(final String name) {
