@@ -45,7 +45,7 @@ public class BoardService {
     }
 
     private void createBoardPhoto(final BoardAddRequest request, final Board board) {
-        request.getImages().stream()
+        request.getPhotos().stream()
                 .map(i -> new BoardPhoto(i.getUrl()))
                 .map(boardPhotoRepository::save)
                 .toList().forEach(p -> p.addPhoto(board));
@@ -65,7 +65,7 @@ public class BoardService {
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
         board.updateBoard(request.getTitle(), request.getContent(), request.getPrice(), request.getStartTime(),
                 request.getEndTime(), request.getPriceType(), request.getLocation(), request.getDetailedLocation(), request.isPriceProposal());
-        board.updatePhoto(request.getImages().stream().map(ImageDto::getUrl).toList());
+        board.updatePhoto(request.getPhotos().stream().map(ImageDto::getUrl).toList());
     }
 
     @Transactional

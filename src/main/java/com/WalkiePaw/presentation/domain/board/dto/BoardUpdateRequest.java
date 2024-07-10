@@ -22,5 +22,5 @@ public class BoardUpdateRequest {
     private final String location;
     private final String detailedLocation;
     private final boolean priceProposal;
-    private List<ImageDto> images;
+    private List<ImageDto> photos;
 }
