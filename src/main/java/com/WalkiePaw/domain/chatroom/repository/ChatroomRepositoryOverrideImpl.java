@@ -43,7 +43,8 @@ public class ChatroomRepositoryOverrideImpl extends Querydsl4RepositorySupport i
                                 chatroom.completedDate,
                                 new CaseBuilder()
                                         .when(review.id.isNotNull()).then(true)
-                                        .otherwise(false).as("hasReview")
+                                        .otherwise(false).as("hasReview"),
+                                chatroom.board.category
                         ))
                         .from(chatroom)
                         .leftJoin(review).on(chatroom.id.eq(review.chatroom.id))

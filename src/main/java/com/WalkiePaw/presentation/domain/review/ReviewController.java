@@ -48,6 +48,7 @@ public class ReviewController {
 
     @PostMapping
     public ResponseEntity<Void> saveReview(final @RequestBody ReviewSaveRequest request) {
+        System.out.println("request = " + request);
         Integer id = reviewService.addReview(request);
         return ResponseEntity.created(URI.create(REVIEWS_URI + id)).build();
     }

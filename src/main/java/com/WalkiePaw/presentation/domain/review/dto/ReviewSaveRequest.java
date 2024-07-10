@@ -13,11 +13,17 @@ public class ReviewSaveRequest {
     private final int point;
     private final String content;
     private final Integer chatroomId;
-    private final Integer revieweeId;
     private final Integer reviewerId;
     private final BoardCategory category;
 
     public static Review toEntity(final ReviewSaveRequest request, Chatroom chatroom, Member reviewee, Member reviewer) {
-        return new Review(request.point, request.content, chatroom, reviewee, reviewer, request.category);
+        return Review.builder()
+            .point(request.point)
+            .chatroom(chatroom)
+            .reviewee(reviewee)
+            .reviewer(reviewer)
+            .content(request.content)
+            .category(request.category)
+            .build();
     }
 }

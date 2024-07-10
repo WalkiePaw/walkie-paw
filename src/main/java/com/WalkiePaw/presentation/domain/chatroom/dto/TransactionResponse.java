@@ -1,5 +1,6 @@
 package com.WalkiePaw.presentation.domain.chatroom.dto;
 
+import com.WalkiePaw.domain.board.entity.BoardCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,9 +11,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransactionResponse {
-    private Integer id;
+    private Integer chatroomId;
     private String title;
     private String memberNickName;
     private LocalDateTime createdDate;
-    private boolean hasReview;
+    private boolean hasReview;  // 추가
+    private BoardCategory category;
 }
