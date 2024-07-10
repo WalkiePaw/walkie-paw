@@ -5,6 +5,7 @@ import com.WalkiePaw.global.util.Querydsl4RepositorySupport;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomListResponse;
 import com.WalkiePaw.presentation.domain.chatroom.dto.TransactionResponse;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -40,7 +41,9 @@ public class ChatroomRepositoryOverrideImpl extends Querydsl4RepositorySupport i
                                 chatroom.board.title,
                                 chatroom.member.nickname.as("memberNickName"),
                                 chatroom.completedDate,
-                                review.id
+                                new CaseBuilder()
+                                        .when(review.id.isNotNull()).then(true)
+                                        .otherwise(false).as("hasReview")
                         ))
                         .from(chatroom)
                         .leftJoin(review).on(chatroom.id.eq(review.chatroom.id))

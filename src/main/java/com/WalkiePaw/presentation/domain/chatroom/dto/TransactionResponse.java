@@ -14,5 +14,5 @@ public class TransactionResponse {
     private String title;
     private String memberNickName;
     private LocalDateTime createdDate;
-    private Integer revieweeId;
+    private boolean hasReview;
 }

@@ -20,12 +20,12 @@ public class UploadController {
         return ResponseEntity.ok(new UploadUrlResponse(uploadURL));
     }
 
-    @PostMapping("board/{id}")
-    public ResponseEntity<UploadUrlResponse> uploadBoardImage(
-            @PathVariable("id") Integer boardId,
-            @RequestParam MultipartFile file) {
-        String uploadURL = uploadService.upload(file);
-        boardService.uploadPhoto(boardId, uploadURL, file.getOriginalFilename());
-        return ResponseEntity.ok(new UploadUrlResponse(uploadURL));
-    }
+//    @PostMapping("board/{id}")
+//    public ResponseEntity<UploadUrlResponse> uploadBoardImage(
+//            @PathVariable("id") Integer boardId,
+//            @RequestParam MultipartFile file) {
+//        String uploadURL = uploadService.upload(file);
+//        boardService.uploadPhoto(boardId, uploadURL, file.getOriginalFilename());
+//        return ResponseEntity.ok(new UploadUrlResponse(uploadURL));
+//    }
 }
