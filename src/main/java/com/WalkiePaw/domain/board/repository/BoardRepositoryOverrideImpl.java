@@ -58,7 +58,7 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
      */
     private  Slice<BoardListResponse> sliceResponse(Pageable pageable, Function<JPAQueryFactory, JPAQuery> sliceQuery) {
         JPAQuery query = (JPAQuery) sliceQuery.apply(getJpaQueryFactory())
-                .offset(pageable.getOffset()).limit(pageable.getPageSize());
+                .offset(pageable.getOffset()).limit(sliceSize(pageable));
         List<Board> content = getQuerydsl().applyPagination(pageable, query).fetch();
         boolean hasNext = false;
         if (content.size() > pageable.getPageSize()) {
@@ -67,6 +67,10 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
         }
         List<BoardListResponse> boards = content.stream().map(BoardListResponse::from).toList();
         return new SliceImpl<>(boards, pageable, hasNext);
+    }
+
+    private static int sliceSize(Pageable pageable) {
+        return pageable.getPageSize() + 1;
     }
 
     private BooleanExpression categoryCond(final BoardCategory category) {

@@ -68,7 +68,7 @@ public abstract class Querydsl4RepositorySupport {
 
     protected <T> Slice<T> slice(Pageable pageable, Function<JPAQueryFactory, JPAQuery> sliceQuery) {
         JPAQuery query = (JPAQuery) sliceQuery.apply(getJpaQueryFactory())
-                .offset(pageable.getOffset()).limit(pageable.getPageSize());
+                .offset(pageable.getOffset()).limit(sliceSize(pageable));
         List<T> content = getQuerydsl().applyPagination(pageable, query).fetch();
         boolean hasNext = false;
         if (content.size() > pageable.getPageSize()) {
@@ -76,6 +76,10 @@ public abstract class Querydsl4RepositorySupport {
             content.remove(pageable.getPageSize());
         }
         return new SliceImpl<>(content, pageable, hasNext);
+    }
+
+    private static int sliceSize(Pageable pageable) {
+        return pageable.getPageSize() + 1;
     }
 
     protected <T> Page<T> page(Pageable pageable, Function<JPAQueryFactory, JPAQuery> pageQuery) {
