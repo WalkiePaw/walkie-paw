@@ -11,6 +11,8 @@ import com.WalkiePaw.global.exception.BadRequestException;
 import com.WalkiePaw.presentation.domain.board.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +30,8 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final BoardPhotoRepository boardPhotoRepository;
 
-    public List<BoardListResponse> findAllBoardAndMember(final BoardCategory category) {
-        List<Board> findBoards = boardRepository.findAllNotDeleted(category);
-        return findBoards.stream()
-                .map(BoardListResponse::from)
-                .toList();
+    public Page<BoardListResponse> findAllBoardAndMember(final BoardCategory category, Pageable pageable) {
+        return boardRepository.findAllNotDeleted(category, pageable);
     }
 
     @Transactional
@@ -52,7 +51,7 @@ public class BoardService {
         Board board = boardRepository.getBoardDetail(boardId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
         List<String> photoUrls = board.getPhotoUrls(board);
-        return BoardGetResponse.from(board, photoUrls);
+        return BoardGetResponse.from(board);
     }
 
     @Transactional
@@ -78,15 +77,12 @@ public class BoardService {
         board.delete();
     }
 
-    public List<BoardListResponse> findBySearchCond(final String title, final String content, final BoardCategory category) {
-        List<Board> bySearchCond = boardRepository.findBySearchCond(title, content, category);
-        return bySearchCond.stream()
-                .map(BoardListResponse::from)
-                .toList();
+    public Page<BoardListResponse> findBySearchCond(final String title, final String content, final BoardCategory category, Pageable pageable) {
+        return boardRepository.findBySearchCond(title, content, category, pageable);
     }
 
-    public List<BoardMypageListResponse> findMyBoardsBy(final Integer memberId, final BoardCategory category) {
-        return boardRepository.findMyBoardsBy(memberId, category);
+    public Page<BoardMypageListResponse> findMyBoardsBy(final Integer memberId, final BoardCategory category, Pageable pageable) {
+        return boardRepository.findMyBoardsBy(memberId, category, pageable);
     }
 //
 //    @Transactional

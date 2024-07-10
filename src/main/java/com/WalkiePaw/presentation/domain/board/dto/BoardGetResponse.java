@@ -38,8 +38,8 @@ public class BoardGetResponse {
      * @param board Entity
      * @return BoardGetResponse
      */
-    public static BoardGetResponse from(final Board board, List<String> photos) {
+    public static BoardGetResponse from(final Board board) {
         return new BoardGetResponse(board.getId(), board.getStatus(), board.getDetailedLocation(), board.getLocation(), board.getTitle(), board.getCategory(), board.getContent(), board.isPriceProposal(),
-                board.getPrice(), board.getPriceType(), board.getEndTime(), board.getStartTime(), board.getMember().getNickname(), photos);
+                board.getPrice(), board.getPriceType(), board.getEndTime(), board.getStartTime(), board.getMember().getNickname(), board.getPhotoUrls(board));
     }
 }

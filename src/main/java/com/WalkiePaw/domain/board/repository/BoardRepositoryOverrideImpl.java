@@ -4,14 +4,18 @@ import com.WalkiePaw.domain.board.entity.*;
 import com.WalkiePaw.global.util.Querydsl4RepositorySupport;
 import com.WalkiePaw.presentation.domain.board.dto.BoardListResponse;
 import com.WalkiePaw.presentation.domain.board.dto.BoardMypageListResponse;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.function.Function;
 
 import static com.WalkiePaw.domain.board.entity.QBoard.*;
 import static com.WalkiePaw.domain.board.entity.QBoardLike.*;
@@ -26,22 +30,31 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
     }
 
     @Override
-    public List<Board> findAllNotDeleted(final BoardCategory category) {
-        return selectFrom(board)
-                .join(board.member).fetchJoin()
-                .where(board.status.ne(BoardStatus.DELETED).and(board.category.eq(category)))
-                .fetch();
+    public Page<BoardListResponse> findAllNotDeleted(final BoardCategory category, Pageable pageable) {
+        return pageResponse(pageable,
+                page -> page.selectFrom(board)
+                        .join(board.member).fetchJoin()
+                        .where(board.status.ne(BoardStatus.DELETED).and(board.category.eq(category))));
+    }
+
+    /**
+     * Support의 page method custom
+     */
+    private Page<BoardListResponse> pageResponse(Pageable pageable, Function<JPAQueryFactory, JPAQuery> pageQuery) {
+        JPAQuery query = pageQuery.apply(getJpaQueryFactory());
+        List<Board> content = getQuerydsl().applyPagination(pageable, query).fetch();
+        List<BoardListResponse> response = content.stream().map(BoardListResponse::from).toList();
+        return PageableExecutionUtils.getPage(response, pageable, query::fetchCount);
     }
 
     @Override
-    public List<Board> findBySearchCond(final String title, final String content, final BoardCategory category) {
-        return selectFrom(board)
+    public Page<BoardListResponse> findBySearchCond(final String title, final String content, final BoardCategory category, Pageable pageable) {
+        return pageResponse(pageable, page -> page.selectFrom(board)
                 .join(board.member).fetchJoin()
                 .where(
                         titleCond(title),
                         contentCond(content),
-                        categoryCond(category))
-                .fetch();
+                        categoryCond(category)));
     }
 
     private BooleanExpression categoryCond(final BoardCategory category) {
@@ -57,14 +70,13 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
     }
 
     @Override
-    public List<BoardMypageListResponse> findMyBoardsBy(final Integer memberId, final BoardCategory category) {
-        return select(Projections.fields(BoardMypageListResponse.class,
-                        board.id.as("boardId"),
-                        board.title,
-                        board.content,
-                        board.createdDate
-                )).from(board).where(board.member.id.eq(memberId).and(board.category.eq(category)))
-                .fetch();
+    public Page<BoardMypageListResponse> findMyBoardsBy(final Integer memberId, final BoardCategory category, Pageable pageable) {
+        return page(pageable, page -> page.select(Projections.fields(BoardMypageListResponse.class,
+                board.id.as("boardId"),
+                board.title,
+                board.content,
+                board.createdDate
+        )).from(board).where(board.member.id.eq(memberId).and(board.category.eq(category))));
     }
 
     @Override

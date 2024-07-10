@@ -4,6 +4,8 @@ import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.board.entity.BoardCategory;
 import com.WalkiePaw.domain.board.entity.BoardStatus;
 import com.WalkiePaw.domain.board.entity.PriceType;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -37,4 +39,5 @@ public class BoardListResponse {
                 board.getPrice(), board.getPriceType(), board.getEndTime(), board.getStartTime(), board.getLikeCount(),
                 board.getMember().getNickname(), board.getStatus(), board.getCategory(), board.isPriceProposal(), board.getPhotoUrls(board));
     }
+
 }
