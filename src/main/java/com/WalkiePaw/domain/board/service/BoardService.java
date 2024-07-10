@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,7 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final BoardPhotoRepository boardPhotoRepository;
 
-    public Page<BoardListResponse> findAllBoardAndMember(final BoardCategory category, Pageable pageable) {
+    public Slice<BoardListResponse> findAllBoardAndMember(final BoardCategory category, Pageable pageable) {
         return boardRepository.findAllNotDeleted(category, pageable);
     }
 
@@ -39,11 +40,15 @@ public class BoardService {
         Member member = memberRepository.findById(request.getMemberId()).orElseThrow();
         Board entity = BoardAddRequest.toEntity(request, member);
         Board board = boardRepository.save(entity);
-        request.getPhotos().stream()
-                .map(BoardPhoto::new)
+        createBoardPhoto(request, board);
+        return board.getId();
+    }
+
+    private void createBoardPhoto(final BoardAddRequest request, final Board board) {
+        request.getImages().stream()
+                .map(i -> new BoardPhoto(i.getUrl()))
                 .map(boardPhotoRepository::save)
                 .toList().forEach(p -> p.addPhoto(board));
-        return board.getId();
     }
 
 
@@ -60,7 +65,7 @@ public class BoardService {
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
         board.updateBoard(request.getTitle(), request.getContent(), request.getPrice(), request.getStartTime(),
                 request.getEndTime(), request.getPriceType(), request.getLocation(), request.getDetailedLocation(), request.isPriceProposal());
-        board.updatePhoto(request.getPhotos());
+        board.updatePhoto(request.getImages().stream().map(ImageDto::getUrl).toList());
     }
 
     @Transactional
@@ -77,7 +82,7 @@ public class BoardService {
         board.delete();
     }
 
-    public Page<BoardListResponse> findBySearchCond(final String title, final String content, final BoardCategory category, Pageable pageable) {
+    public Slice<BoardListResponse> findBySearchCond(final String title, final String content, final BoardCategory category, Pageable pageable) {
         return boardRepository.findBySearchCond(title, content, category, pageable);
     }
 

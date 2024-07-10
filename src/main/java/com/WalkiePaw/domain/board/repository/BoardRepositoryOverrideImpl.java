@@ -11,6 +11,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
@@ -30,31 +31,42 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
     }
 
     @Override
-    public Page<BoardListResponse> findAllNotDeleted(final BoardCategory category, Pageable pageable) {
-        return pageResponse(pageable,
-                page -> page.selectFrom(board)
+    public Slice<BoardListResponse> findAllNotDeleted(final BoardCategory category, Pageable pageable) {
+        return sliceResponse(pageable,
+                slice -> slice.selectFrom(board)
                         .join(board.member).fetchJoin()
-                        .where(board.status.ne(BoardStatus.DELETED).and(board.category.eq(category))));
+                        .join(board.photos).fetchJoin()
+                        .where(board.status.ne(BoardStatus.DELETED).and(board.category.eq(category)))
+                        .orderBy(board.createdDate.desc()));
+    }
+
+
+    @Override
+    public Slice<BoardListResponse> findBySearchCond(final String title, final String content, final BoardCategory category, Pageable pageable) {
+        return sliceResponse(pageable, slice -> slice.selectFrom(board)
+                .join(board.member).fetchJoin()
+                .join(board.photos).fetchJoin()
+                .where(
+                        titleCond(title),
+                        contentCond(content),
+                        categoryCond(category))
+                .orderBy(board.createdDate.desc()));
     }
 
     /**
      * Support의 page method custom
      */
-    private Page<BoardListResponse> pageResponse(Pageable pageable, Function<JPAQueryFactory, JPAQuery> pageQuery) {
-        JPAQuery query = pageQuery.apply(getJpaQueryFactory());
+    private  Slice<BoardListResponse> sliceResponse(Pageable pageable, Function<JPAQueryFactory, JPAQuery> sliceQuery) {
+        JPAQuery query = (JPAQuery) sliceQuery.apply(getJpaQueryFactory())
+                .offset(pageable.getOffset()).limit(pageable.getPageSize());
         List<Board> content = getQuerydsl().applyPagination(pageable, query).fetch();
-        List<BoardListResponse> response = content.stream().map(BoardListResponse::from).toList();
-        return PageableExecutionUtils.getPage(response, pageable, query::fetchCount);
-    }
-
-    @Override
-    public Page<BoardListResponse> findBySearchCond(final String title, final String content, final BoardCategory category, Pageable pageable) {
-        return pageResponse(pageable, page -> page.selectFrom(board)
-                .join(board.member).fetchJoin()
-                .where(
-                        titleCond(title),
-                        contentCond(content),
-                        categoryCond(category)));
+        boolean hasNext = false;
+        if (content.size() > pageable.getPageSize()) {
+            hasNext = true;
+            content.remove(pageable.getPageSize());
+        }
+        List<BoardListResponse> boards = content.stream().map(BoardListResponse::from).toList();
+        return new SliceImpl<>(boards, pageable, hasNext);
     }
 
     private BooleanExpression categoryCond(final BoardCategory category) {
@@ -76,33 +88,22 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
                 board.title,
                 board.content,
                 board.createdDate
-        )).from(board).where(board.member.id.eq(memberId).and(board.category.eq(category))));
+        )).from(board).where(board.member.id.eq(memberId).and(board.category.eq(category)))
+                .orderBy(board.createdDate.desc()));
     }
 
+    /**
+     * TODO - photo 넣은건지 확인, 값 제대로 나오는지 확인
+     */
     @Override
     public Slice<BoardListResponse> findLikeBoardList(final Integer memberId, final Pageable pageable) {
-//        List<Board> result = jpaQueryFactory
-//                .select(board)
-//                .from(boardLike)
-//                .join(boardLike.board, board)
-//                .join(boardLike.member, member)
-//                .where(member.id.eq(memberId).and(board.status.ne(BoardStatus.DELETED)))
-//                .offset(pageable.getOffset())
-//                .limit(pageable.getPageSize() + 1)
-//                .fetch();
-//        List<BoardListResponse> boardListResponses = result.stream().map(BoardListResponse::from).toList();
-//        boolean hasNext = true;
-//        if (result.size() > pageable.getPageSize()) {
-//            hasNext = false;
-//            result.remove(pageable.getPageSize());
-//        }
-
         return slice(pageable, slice -> slice
                 .select(board)
                 .from(boardLike)
                 .join(boardLike.board, board)
                 .join(boardLike.member, member)
-                .where(member.id.eq(memberId).and(board.status.ne(BoardStatus.DELETED))));
+                .where(member.id.eq(memberId).and(board.status.ne(BoardStatus.DELETED)))
+                .orderBy(board.createdDate.desc()));
     }
 
 }

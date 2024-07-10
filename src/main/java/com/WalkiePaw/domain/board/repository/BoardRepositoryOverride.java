@@ -12,9 +12,9 @@ import java.util.List;
 
 public interface BoardRepositoryOverride {
 
-    Page<BoardListResponse> findAllNotDeleted(BoardCategory category, Pageable pageable);
+    Slice<BoardListResponse> findAllNotDeleted(BoardCategory category, Pageable pageable);
 
-    Page<BoardListResponse> findBySearchCond(String title, String content, BoardCategory category, Pageable pageable);
+    Slice<BoardListResponse> findBySearchCond(String title, String content, BoardCategory category, Pageable pageable);
 
     Page<BoardMypageListResponse> findMyBoardsBy(Integer memberId, BoardCategory category, Pageable pageable);
 
