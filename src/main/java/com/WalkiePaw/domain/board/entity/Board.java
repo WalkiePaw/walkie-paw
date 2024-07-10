@@ -46,7 +46,7 @@ public class Board extends BaseEntity {
 
     @Builder
     public Board(
-            Member member, String title, String content, int price, LocalDateTime meetingTime,
+            Member member, String title, String content, int price,
             LocalDateTime startTime, LocalDateTime endTime, PriceType priceType,
             String location, String detailedLocation, BoardCategory category, boolean priceProposal) {
         this.priceType = priceType;
