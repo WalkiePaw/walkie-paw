@@ -1,4 +1,4 @@
-package com.WalkiePaw.domain.chatroom.repository;
+package com.WalkiePaw.presentation.domain.chatroom.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,5 +14,5 @@ public class TransactionResponse {
     private String title;
     private String memberNickName;
     private LocalDateTime createdDate;
-    private Integer revieweeId;
+    private boolean hasReview;
 }

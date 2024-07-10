@@ -13,16 +13,23 @@ public class BoardPhoto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_photo_id")
     private Integer id;
-    private String oriName;
-    private String uuidName;
+    private String url;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
 
-    public BoardPhoto(String oriName, String uuidName, Board board) {
+    public BoardPhoto(String url, Board board) {
         this.board = board;
-        this.oriName = oriName;
-        this.uuidName = uuidName;
+        this.url = url;
+    }
+
+    public BoardPhoto(final String url) {
+        this.url = url;
+    }
+
+    public void addPhoto(Board board) {
+        this.board = board;
+        board.getPhotos().add(this);
     }
 
 //    /**
