@@ -35,7 +35,7 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
         return sliceResponse(pageable,
                 slice -> slice.selectFrom(board)
                         .join(board.member).fetchJoin()
-                        .join(board.photos).fetchJoin()
+                        .leftJoin(board.photos).fetchJoin()
                         .where(board.status.ne(BoardStatus.DELETED).and(board.category.eq(category)))
                         .orderBy(board.createdDate.desc()));
     }
@@ -45,7 +45,7 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
     public Slice<BoardListResponse> findBySearchCond(final String title, final String content, final BoardCategory category, Pageable pageable) {
         return sliceResponse(pageable, slice -> slice.selectFrom(board)
                 .join(board.member).fetchJoin()
-                .join(board.photos).fetchJoin()
+                .leftJoin(board.photos).fetchJoin()
                 .where(
                         titleCond(title),
                         contentCond(content),
