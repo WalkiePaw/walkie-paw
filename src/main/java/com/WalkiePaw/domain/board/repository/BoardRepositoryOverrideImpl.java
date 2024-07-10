@@ -97,8 +97,8 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
         return sliceResponse(pageable, slice -> slice
                 .select(board)
                 .from(boardLike)
-                .join(boardLike.board, board).fetchJoin()
-                .join(boardLike.member, member).fetchJoin()
+                .join(boardLike.board, board)
+                .join(boardLike.member, member)
                 .leftJoin(board.photos).fetchJoin()
                 .where(member.id.eq(memberId).and(board.status.ne(BoardStatus.DELETED)))
                 .orderBy(board.createdDate.desc()));
