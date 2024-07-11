@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/boards-like")
 public class BoardLikeController {
@@ -32,13 +32,13 @@ public class BoardLikeController {
      * TODO - 좋아요 갯수 등 처리
      */
     @PostMapping
-    public ResponseEntity<Void> addBoardLike(final BoardLikeRequest request) {
+    public ResponseEntity<Void> addBoardLike(final @RequestBody BoardLikeRequest request) {
         Integer id = boardLikeService.saveBoardLike(request);
         return ResponseEntity.created(URI.create(BOARDS_LIKE + id)).build();
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> cancelBoardLike(final BoardLikeRequest request) {
+    public ResponseEntity<Void> cancelBoardLike(final @RequestBody BoardLikeRequest request) {
         boardLikeService.cancelBoardLike(request);
         return ResponseEntity.noContent().build();
     }
