@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class TransactionResponse {
     private Integer chatroomId;
     private String title;
@@ -17,4 +16,15 @@ public class TransactionResponse {
     private LocalDateTime createdDate;
     private boolean hasReview;  // 추가
     private BoardCategory category;
+
+    public TransactionResponse(
+            final Integer chatroomId, final String title, final String memberNickName,
+            final LocalDateTime createdDate, final boolean hasReview, final BoardCategory category) {
+        this.chatroomId = chatroomId;
+        this.title = title;
+        this.memberNickName = memberNickName;
+        this.createdDate = createdDate;
+        this.hasReview = hasReview;
+        this.category = category;
+    }
 }

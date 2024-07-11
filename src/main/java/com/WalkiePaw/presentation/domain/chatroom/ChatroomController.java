@@ -1,5 +1,6 @@
 package com.WalkiePaw.presentation.domain.chatroom;
 
+import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.presentation.domain.chatroom.dto.TransactionResponse;
 import com.WalkiePaw.domain.chatroom.service.ChatroomService;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomAddRequest;
@@ -49,8 +50,8 @@ public class ChatroomController {
     }
 
     @GetMapping("/{id}/transaction")
-    public ResponseEntity<Page<TransactionResponse>> getTransaction(final @PathVariable("id") Integer memberId, Pageable pageable) {
-        Page<TransactionResponse> transaction = chatroomService.findTransaction(memberId, pageable);
+    public ResponseEntity<Page<Chatroom>> getTransaction(final @PathVariable("id") Integer memberId, Pageable pageable) {
+        Page<Chatroom> transaction = chatroomService.findTransaction(memberId, pageable);
         return ResponseEntity.ok(transaction);
     }
 }
