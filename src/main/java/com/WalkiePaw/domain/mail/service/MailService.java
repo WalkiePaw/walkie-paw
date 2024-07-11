@@ -1,5 +1,8 @@
 package com.WalkiePaw.domain.mail.service;
 
+import com.WalkiePaw.domain.member.Repository.MemberRepository;
+import com.WalkiePaw.domain.member.entity.Member;
+import com.WalkiePaw.presentation.domain.mail.dto.EmailAuthResponse;
 import com.WalkiePaw.utils.RedisUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -8,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -17,15 +21,20 @@ public class MailService {
     private final RedisUtil redisUtil;
     private final JavaMailSender mailSender;
     private int authNumber;
+    private final MemberRepository memberRepository;
 
     // 인증번호 검증 메서드
-    public boolean CheckAuthNum(String email, String authNum) {
-        if (redisUtil.getData(authNum) == null) {
-            return false;
-        } else if (redisUtil.getData(authNum).equals(email)) {
-            return true;
+    public EmailAuthResponse CheckAuthNum(String email, String authNum) {
+        if (redisUtil.getData(authNum) == null) { // 검증 실패
+            return EmailAuthResponse.builder()
+                    .result("Wrong AuthNum")
+                    .build();
+        } else if (redisUtil.getData(authNum).equals(email)) { // 검증 성공
+            return buildEmailAuthResponse(email);
         } else {
-            return false;
+            return EmailAuthResponse.builder()
+                    .result("Something Wrong")
+                    .build();
         }
     }
 
@@ -55,7 +64,7 @@ public class MailService {
         String toMail = email;
         String title = "인증 이메일 입니다."; // 이메일 제목
         String content =
-                        "인증 번호는 " + authNumber + "입니다." +
+                "인증 번호는 " + authNumber + "입니다." +
                         "<br>" +
                         "인증번호를 제대로 입력해주세요"; //이메일 내용 삽입
         mailSend(setFrom, toMail, title, content);
@@ -71,5 +80,18 @@ public class MailService {
         }
 
         authNumber = Integer.parseInt(randomNumber);
+    }
+
+    /**
+     * 이메일 인증에 성공했을 때 호출되는 메서드
+     * db에 해당하는 email이 존재하면 해당 email의 memberId를 포함한 EmailAuthResponse를 만듦.
+     * 만약 없다면 memberId가 빈 EmailAuthResponse를 만듦.
+     */
+    private EmailAuthResponse buildEmailAuthResponse(String email) {
+        Optional<Member> memberOptional = memberRepository.findByEmail(email);
+        return EmailAuthResponse.builder()
+                .result("Success")
+                .memberId(memberOptional.map(Member::getId).orElse(null))
+                .build();
     }
 }
