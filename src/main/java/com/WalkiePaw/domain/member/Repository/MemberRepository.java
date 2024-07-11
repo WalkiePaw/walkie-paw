@@ -1,6 +1,7 @@
 package com.WalkiePaw.domain.member.Repository;
 
 import com.WalkiePaw.domain.member.entity.Member;
+import com.WalkiePaw.domain.member.entity.SocialType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -20,4 +21,6 @@ public interface MemberRepository {
     List<Member> findAll();
 
     Optional<Member> findByEmail(String email);
+
+    Optional<Member> findBySocialTypeAndSocialId(SocialType socialType, String socialId);
 }

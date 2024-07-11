@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("jpa")
-public class JpaMemberRepositoryImpl implements MemberRepository {
+public class JpaMemberRepositoryImpl {
 
     @PersistenceContext
     private final EntityManager em;
@@ -39,7 +39,7 @@ public class JpaMemberRepositoryImpl implements MemberRepository {
         return em.createQuery("select m from Member m", Member.class).getResultList();
     }
 
-    @Override
+//    @Override
     public Optional<Member> findByEmail(final String email) {
         return Optional.of(em.createQuery("select m from Member m where m.email = :email", Member.class)
                 .setParameter("email", email)
