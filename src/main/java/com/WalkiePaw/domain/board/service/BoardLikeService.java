@@ -6,7 +6,7 @@ import com.WalkiePaw.domain.board.repository.BoardLikeRepository;
 import com.WalkiePaw.domain.board.repository.BoardRepository;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
-import com.WalkiePaw.presentation.domain.board.dto.BoardLikeAddRequest;
+import com.WalkiePaw.presentation.domain.board.dto.BoardLikeRequest;
 import com.WalkiePaw.presentation.domain.board.dto.BoardListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -25,10 +25,15 @@ public class BoardLikeService {
         return boardRepository.findLikeBoardList(memberId, pageable);
     }
 
-    public Integer saveBoardLike(final BoardLikeAddRequest request) {
+    public Integer saveBoardLike(final BoardLikeRequest request) {
         Board board = boardRepository.findById(request.getBoardId()).orElseThrow();
         Member member = memberRepository.findById(request.getMemberId()).orElseThrow();
         BoardLike boardLike = new BoardLike(member, board);
         return boardLikeRepository.save(boardLike).getId();
+    }
+
+    public void cancelBoardLike(final BoardLikeRequest request) {
+        BoardLike boardLike = boardLikeRepository.findByMemberIdAndBoardId(request.getMemberId(), request.getBoardId());
+        boardLikeRepository.delete(boardLike);
     }
 }
