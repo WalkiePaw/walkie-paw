@@ -46,7 +46,7 @@ public class Board extends BaseEntity {
 
     @Builder
     public Board(
-            Member member, String title, String content, int price, LocalDateTime meetingTime,
+            Member member, String title, String content, int price,
             LocalDateTime startTime, LocalDateTime endTime, PriceType priceType,
             String location, String detailedLocation, BoardCategory category, boolean priceProposal) {
         this.priceType = priceType;
@@ -101,6 +101,9 @@ public class Board extends BaseEntity {
 
     public void updatePhoto(final List<String> photos) {
         this.photos.clear();
+        photos.stream()
+                .map(BoardPhoto::new)
+                .forEach(p -> p.addPhoto(this));
     }
 
     public List<String> getPhotoUrls(final Board board) {
