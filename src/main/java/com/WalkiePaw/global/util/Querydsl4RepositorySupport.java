@@ -101,6 +101,10 @@ public abstract class Querydsl4RepositorySupport {
         return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize() + 1);
     }
 
+    private static int sliceSize(Pageable pageable) {
+        return pageable.getPageSize() + 1;
+    }
+
     protected <T> Page<T> page(Pageable pageable, Function<JPAQueryFactory, JPAQuery> pageQuery) {
         JPAQuery query = pageQuery.apply(getJpaQueryFactory());
         List<T> content = getQuerydsl().applyPagination(pageable, query).fetch();

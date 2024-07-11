@@ -67,6 +67,10 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
         return new SliceImpl<>(boards, pageable, hasNext);
     }
 
+    private static int sliceSize(Pageable pageable) {
+        return pageable.getPageSize() + 1;
+    }
+
     private BooleanExpression categoryCond(final BoardCategory category) {
         return category != null ? board.category.eq(category) : null;
     }
