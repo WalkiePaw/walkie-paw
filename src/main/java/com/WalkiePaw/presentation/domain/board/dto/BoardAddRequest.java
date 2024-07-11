@@ -26,7 +26,7 @@ public class BoardAddRequest {
     private final String location;
     private final String detailedLocation;
     private final boolean priceProposal;
-    private List<ImageDto> photos;
+    private List<ImageDto> photoUrls;
 
     /**
      * BoardAddResponse -> Board 객체로 만드는 toEntity 메서드 필요
