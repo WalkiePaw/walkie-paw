@@ -31,7 +31,7 @@ public class BoardGetResponse {
     private final LocalDateTime endTime;
     private final LocalDateTime startTime;
     private final String memberNickName;
-    private final List<String> photos;
+    private final List<String> photoUrls;
 
     /**
      * BoardGetResponse 생성 메서드

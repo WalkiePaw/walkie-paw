@@ -31,7 +31,7 @@ public class BoardListResponse {
     private final BoardCategory category;
     private final boolean priceProposal;
 
-    private final List<String> photos;
+    private final List<String> photoUrls;
 
     public static BoardListResponse from(final Board board) {
         return new BoardListResponse(
