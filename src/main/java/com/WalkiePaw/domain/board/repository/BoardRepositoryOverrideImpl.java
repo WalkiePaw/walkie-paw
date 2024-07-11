@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,6 +37,7 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
                         .join(board.member).fetchJoin()
                         .leftJoin(board.photos).fetchJoin()
                         .where(board.status.ne(BoardStatus.DELETED).and(board.category.eq(category)))
+                        .groupBy(board)
                         .orderBy(board.createdDate.desc()));
     }
 
@@ -51,21 +51,18 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
                         titleCond(title),
                         contentCond(content),
                         categoryCond(category))
+                .groupBy(board)
                 .orderBy(board.createdDate.desc()));
     }
 
     /**
      * Support의 page method custom
      */
-    private  Slice<BoardListResponse> sliceResponse(Pageable pageable, Function<JPAQueryFactory, JPAQuery> sliceQuery) {
+    private Slice<BoardListResponse> sliceResponse(Pageable pageable, Function<JPAQueryFactory, JPAQuery> sliceQuery) {
         JPAQuery query = (JPAQuery) sliceQuery.apply(getJpaQueryFactory())
                 .offset(pageable.getOffset()).limit(pageable.getPageSize());
-        List<Board> content = getQuerydsl().applyPagination(pageable, query).fetch();
-        boolean hasNext = false;
-        if (content.size() > pageable.getPageSize()) {
-            hasNext = true;
-            content.remove(pageable.getPageSize());
-        }
+        List<Board> content = createContent(pageable, query);
+        boolean hasNext = isHasNext(pageable, content);
         List<BoardListResponse> boards = content.stream().map(BoardListResponse::from).toList();
         return new SliceImpl<>(boards, pageable, hasNext);
     }
@@ -85,11 +82,11 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
     @Override
     public Page<BoardMypageListResponse> findMyBoardsBy(final Integer memberId, final BoardCategory category, Pageable pageable) {
         return page(pageable, page -> page.select(Projections.fields(BoardMypageListResponse.class,
-                board.id.as("boardId"),
-                board.title,
-                board.content,
-                board.createdDate
-        )).from(board).where(board.member.id.eq(memberId).and(board.category.eq(category)))
+                        board.id.as("boardId"),
+                        board.title,
+                        board.content,
+                        board.createdDate
+                )).from(board).where(board.member.id.eq(memberId).and(board.category.eq(category)))
                 .orderBy(board.createdDate.desc()));
     }
 
@@ -102,6 +99,7 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
                 .join(boardLike.member, member)
                 .leftJoin(board.photos).fetchJoin()
                 .where(member.id.eq(memberId).and(board.status.ne(BoardStatus.DELETED)))
+                .groupBy(board)
                 .orderBy(board.createdDate.desc()));
     }
 
