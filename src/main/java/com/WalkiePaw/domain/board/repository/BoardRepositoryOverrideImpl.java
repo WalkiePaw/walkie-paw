@@ -30,14 +30,16 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
         super(Board.class);
     }
 
+    /**
+     * TODO
+     * - board photo 가져오는 쿼리 갯수만큼 나가는 문제 나중에 처리하기
+     */
     @Override
     public Slice<BoardListResponse> findAllNotDeleted(final BoardCategory category, Pageable pageable) {
         return sliceResponse(pageable,
                 slice -> slice.selectFrom(board)
                         .join(board.member).fetchJoin()
-                        .leftJoin(board.photos).fetchJoin()
                         .where(board.status.ne(BoardStatus.DELETED).and(board.category.eq(category)))
-                        .groupBy(board)
                         .orderBy(board.createdDate.desc()));
     }
 
@@ -46,12 +48,10 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
     public Slice<BoardListResponse> findBySearchCond(final String title, final String content, final BoardCategory category, Pageable pageable) {
         return sliceResponse(pageable, slice -> slice.selectFrom(board)
                 .join(board.member).fetchJoin()
-                .leftJoin(board.photos).fetchJoin()
                 .where(
                         titleCond(title),
                         contentCond(content),
                         categoryCond(category))
-                .groupBy(board)
                 .orderBy(board.createdDate.desc()));
     }
 
@@ -101,9 +101,7 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
                 .from(boardLike)
                 .join(boardLike.board, board)
                 .join(boardLike.member, member)
-                .leftJoin(board.photos).fetchJoin()
                 .where(member.id.eq(memberId).and(board.status.ne(BoardStatus.DELETED)))
-                .groupBy(board)
                 .orderBy(board.createdDate.desc()));
     }
 
