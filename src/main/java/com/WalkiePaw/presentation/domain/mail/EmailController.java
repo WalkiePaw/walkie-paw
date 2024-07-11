@@ -2,6 +2,7 @@ package com.WalkiePaw.presentation.domain.mail;
 
 import com.WalkiePaw.domain.mail.service.MailService;
 import com.WalkiePaw.presentation.domain.mail.dto.EmailAuthRequest;
+import com.WalkiePaw.presentation.domain.mail.dto.EmailAuthResponse;
 import com.WalkiePaw.presentation.domain.mail.dto.EmailSendRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +26,8 @@ public class EmailController {
     }
 
     @PostMapping("/authCheck")
-    public ResponseEntity<Void> AuthCheck(@RequestBody @Valid final EmailAuthRequest request) {
-        Boolean Checked = mailService.CheckAuthNum(request.getEmail(), request.getAuthNum());
-        if (Checked) {
-            return ResponseEntity.ok().build();
-        } else {
-            throw new NullPointerException("뭔가 잘못!");
-        }
+    public ResponseEntity<EmailAuthResponse> AuthCheck(@RequestBody @Valid final EmailAuthRequest request) {
+        return ResponseEntity.ok(mailService.CheckAuthNum(request.getEmail(), request.getAuthNum()));
+
     }
 }
