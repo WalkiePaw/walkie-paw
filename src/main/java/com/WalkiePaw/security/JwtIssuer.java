@@ -15,11 +15,12 @@ public class JwtIssuer {
     /**
      * JWT 토큰을 발급해주는 메서드
      */
-    public String issue(String email, List<String> roles) {
+    public String issue(String email, Long memberId, List<String> roles) {
         return JWT.create()
                 .withSubject(String.valueOf(email))
                 .withExpiresAt(Instant.now().plus(Duration.of(1, ChronoUnit.DAYS))) // 보통 duration 짧게 하는데 튜토리얼이니까 1day
                 .withClaim("r", roles) // JWT에 저장할 정보
+                .withClaim("id", memberId)
                 .sign(Algorithm.HMAC256("secret")); // JWT서명에 들어가는 알고리즘과 비밀키, 추후에 properties로 분리함.
     }
 }

@@ -37,7 +37,7 @@ public class AuthController {
         // manager에는 passwordEncoder로 BCryptEncoder가 사용됨. 비밀번호를 안전하게 저장하고 검증하는데 사용.
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         List<String> roles = principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-        String token = jwtIssuer.issue(principal.getEmail(), roles);// 토큰을 발급해줌.
+        String token = jwtIssuer.issue(principal.getEmail(), principal.getMemberId(), roles);// 토큰을 발급해줌.
         System.out.println("controller login end");
         return LoginResponse.builder()
                 .token(token)

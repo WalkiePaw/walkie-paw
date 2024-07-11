@@ -1,11 +1,15 @@
 package com.WalkiePaw.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TestController {
+
+    private static final Logger log = LoggerFactory.getLogger(TestController.class);
 
     @GetMapping("/")
     public String hello() {
@@ -27,6 +31,7 @@ public class TestController {
             return null;
         }
         System.out.println("controller secured end");
+        log.info("principal : {}", principal);
         return "If you see this, then you're logged in" +
                 "\n" +
                 "email: " + principal.getEmail() +

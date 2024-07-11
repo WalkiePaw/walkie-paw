@@ -13,6 +13,7 @@ import java.util.Collection;
 @ToString
 public class UserPrincipal implements UserDetails {
 
+    private final Long memberId;
     private final String email;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
