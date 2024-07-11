@@ -50,8 +50,8 @@ public class ChatroomController {
     }
 
     @GetMapping("/{id}/transaction")
-    public ResponseEntity<Page<Chatroom>> getTransaction(final @PathVariable("id") Integer memberId, Pageable pageable) {
-        Page<Chatroom> transaction = chatroomService.findTransaction(memberId, pageable);
+    public ResponseEntity<Page<TransactionResponse>> getTransaction(final @PathVariable("id") Integer memberId, Pageable pageable) {
+        Page<TransactionResponse> transaction = chatroomService.findTransaction(memberId, pageable);
         return ResponseEntity.ok(transaction);
     }
 }

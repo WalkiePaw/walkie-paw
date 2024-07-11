@@ -4,13 +4,19 @@ import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.domain.chatroom.entity.ChatroomStatus;
 import com.WalkiePaw.global.util.Querydsl4RepositorySupport;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomListResponse;
+import com.WalkiePaw.presentation.domain.chatroom.dto.TransactionResponse;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
+import static com.WalkiePaw.domain.board.entity.QBoard.board;
 import static com.WalkiePaw.domain.chatroom.entity.QChatroom.*;
+import static com.WalkiePaw.domain.member.entity.QMember.member;
 import static com.WalkiePaw.domain.review.entity.QReview.*;
 
 @Repository
@@ -33,13 +39,25 @@ public class ChatroomRepositoryOverrideImpl extends Querydsl4RepositorySupport i
     }
 
     @Override
-    public Page<Chatroom> findTransaction(final Integer memberId, Pageable pageable) {
+    public Page<TransactionResponse> findTransaction(final Integer memberId, Pageable pageable) {
         return page(pageable,
-                page -> page.selectFrom(chatroom)
-                        .join(chatroom.member).fetchJoin()
-                        .join(chatroom.board).fetchJoin()
-                        .leftJoin(review).on(chatroom.id.eq(review.chatroom.id))
-                        .where(chatroom.status.eq(ChatroomStatus.COMPLETED))
-                        .where(chatroom.board.member.id.eq(memberId).or(chatroom.member.id.eq(memberId))));
+                page -> page.select(Projections.bean(TransactionResponse.class,
+                                chatroom.id.as("chatroomId"),
+                                board.title.as("title"),
+                                board.category.as("category"),
+                                chatroom.completedDate.as("createdDate"),
+                                chatroom.member.nickname.as("memberNickName"),
+                                Expressions.as(
+                                        JPAExpressions.select(review.id.count().gt(0))
+                                                .from(review)
+                                                .where(review.reviewer.id.eq(memberId)
+                                                        .and(review.chatroom.id.eq(chatroom.id))), "hasReview"
+                                )))
+                        .from(chatroom)
+                        .join(chatroom.member, member)
+                        .join(chatroom.board, board)
+                        .where(chatroom.status.eq(ChatroomStatus.COMPLETED)
+                                .and(chatroom.board.member.id.eq(memberId).or(chatroom.member.id.eq(memberId)))));
+
     }
 }
