@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
 public class ChatController {
     public static final String CHAT_URI = "/chats/";
     private final ChatService chatService;
+    private final SimpMessagingTemplate webSocket;
 
     @GetMapping
     public ResponseEntity<List<ChatMsgListResponse>> getChatListByChatroomId(final @RequestParam Integer chatroomId) {
@@ -29,9 +32,9 @@ public class ChatController {
 
     @MessageMapping
     @SendTo("/chats")
-    public ResponseEntity<String> addChat(final @Payload ChatAddRequest request) {
-        Integer id = chatService.saveChatMsg(request);
-        return ResponseEntity.ok("ok");
+    public ResponseEntity<ChatMsgListResponse> addChat(final @Payload ChatAddRequest request) {
+        ChatMsgListResponse chatMsgListResponse = chatService.saveChatMsg(request);
+        return ResponseEntity.ok(chatMsgListResponse);
     }
 
     @PatchMapping("/{id}")
