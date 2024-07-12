@@ -106,10 +106,10 @@ public abstract class Querydsl4RepositorySupport {
         JPAQuery<T> query = sliceQuery.apply(getJpaQueryFactory())
                 .offset(pageable.getOffset()).limit(pageable.getPageSize());
         List<T> content = createContent(pageable, query);
+        boolean hasNext = isHasNext(pageable, content);
         List<R> transformedContent = content.stream()
                 .map(transformer)
                 .toList();
-        boolean hasNext = isHasNext(pageable, transformedContent);
         return new SliceImpl<>(transformedContent, pageable, hasNext);
     }
 
