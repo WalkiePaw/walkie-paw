@@ -44,20 +44,24 @@ public class ChatroomRepositoryOverrideImpl extends Querydsl4RepositorySupport i
                 page -> page.select(Projections.bean(TransactionResponse.class,
                                 chatroom.id.as("chatroomId"),
                                 board.title.as("title"),
-                                board.category.as("category"),
+                                Expressions.stringTemplate("CASE WHEN {0} = {1} THEN {2} ELSE {3} END",
+                                        memberId, chatroom.member.id,
+                                        chatroom.board.member.nickname, chatroom.member.nickname).as("memberNickName"),
                                 chatroom.completedDate.as("createdDate"),
-                                chatroom.member.nickname.as("memberNickName"),
-                                Expressions.as(
-                                        JPAExpressions.select(review.id.count().gt(0))
-                                                .from(review)
-                                                .where(review.reviewer.id.eq(memberId)
-                                                        .and(review.chatroom.id.eq(chatroom.id))), "hasReview"
-                                )))
+                                Expressions.booleanTemplate("CASE WHEN {0} = {1} THEN {2} ELSE {3} END",
+                                        memberId, chatroom.member.id,
+                                        JPAExpressions.selectOne().from(review)
+                                                .where(review.reviewer.id.eq(chatroom.member.id)
+                                                        .and(review.chatroom.id.eq(chatroom.id))).exists(),
+                                        JPAExpressions.selectOne().from(review)
+                                                .where(review.reviewer.id.eq(chatroom.board.member.id)
+                                                        .and(review.chatroom.id.eq(chatroom.id))).exists()).as("hasReview"),
+                                board.category.as("category")
+                        ))
                         .from(chatroom)
                         .join(chatroom.member, member)
                         .join(chatroom.board, board)
                         .where(chatroom.status.eq(ChatroomStatus.COMPLETED)
                                 .and(chatroom.board.member.id.eq(memberId).or(chatroom.member.id.eq(memberId)))));
-
     }
 }
