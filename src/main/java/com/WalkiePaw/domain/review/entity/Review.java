@@ -24,7 +24,7 @@ public class Review extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reviewer_member_id", referencedColumnName = "member_id")
     private Member reviewer;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatroom_id")
     private Chatroom chatroom;
     @Column(name = "review_content")

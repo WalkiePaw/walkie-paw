@@ -38,13 +38,13 @@ public class ReviewService {
         Member reviewer = memberRepository.findById(request.getReviewerId())
                 .orElseThrow(() -> new IllegalStateException("잘못된 회원 번호입니다."));
         Review review = null;
-        if (chatroom.getBoard().getId() == reviewer.getId()) {
+        if (chatroom.getBoard().getMember().getId() == reviewer.getId()) {
             review = ReviewSaveRequest.toEntity(request, chatroom,
-                memberRepository.findById(chatroom.getBoard().getId()).orElseThrow(),
+                memberRepository.findById(chatroom.getMember().getId()).orElseThrow(),
                 reviewer);
         } else {
             review = ReviewSaveRequest.toEntity(request, chatroom,
-                memberRepository.findById(chatroom.getMember().getId()).orElseThrow(),
+                memberRepository.findById(chatroom.getBoard().getMember().getId()).orElseThrow(),
                 reviewer);
         }
         return reviewRepository.save(review).getId();
