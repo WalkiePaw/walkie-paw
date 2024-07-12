@@ -32,6 +32,7 @@ public class BoardGetResponse {
     private final LocalDateTime startTime;
     private final String memberNickName;
     private final List<String> photoUrls;
+    private final String memberPhoto;
 
     /**
      * BoardGetResponse 생성 메서드
@@ -40,6 +41,6 @@ public class BoardGetResponse {
      */
     public static BoardGetResponse from(final Board board) {
         return new BoardGetResponse(board.getId(), board.getStatus(), board.getDetailedLocation(), board.getLocation(), board.getTitle(), board.getCategory(), board.getContent(), board.isPriceProposal(),
-                board.getPrice(), board.getPriceType(), board.getEndTime(), board.getStartTime(), board.getMember().getNickname(), board.getPhotoUrls(board));
+                board.getPrice(), board.getPriceType(), board.getEndTime(), board.getStartTime(), board.getMember().getNickname(), board.getPhotoUrls(board), board.getMember().getPhoto());
     }
 }
