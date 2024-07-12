@@ -1,6 +1,7 @@
 package com.WalkiePaw.domain.member.Repository;
 
 import com.WalkiePaw.domain.member.entity.Member;
+import com.WalkiePaw.domain.member.entity.SocialType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer>, Member
     Optional<Member> findByNickname(@Param("nickname") String nickname);
 
     Optional<Member> findByEmailAndName(String email, String name);
+
+    Optional<Member> findBySocialTypeAndSocialId(SocialType socialType, String socialId);
 }

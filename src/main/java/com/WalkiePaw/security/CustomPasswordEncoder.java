@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class CustomPasswordEncoder extends BCryptPasswordEncoder {
 
-    public void encodePassword(Member member) {
-        member.updatePasswd(encode(member.getPassword()));
-    }
+  public void encodePassword(Member member) {
+    member.updatePasswd(encode(member.getPassword()));
+  }
 }
