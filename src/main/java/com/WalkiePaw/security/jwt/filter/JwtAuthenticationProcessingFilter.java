@@ -160,7 +160,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
    * 해당되는 요청의 경우 true, 아니면 false를 리턴함.
    */
   private boolean shouldSkipFilter(HttpServletRequest request) {
-    return Arrays.asList("/login/**", "/index.html", "/oauth2/**", "/api/**", "/**"
+    return Arrays.asList("/login/**", "/index.html", "/oauth2/**", "/api/**"
             , ""
             ).stream()
         .anyMatch(pattern -> new AntPathMatcher().match(pattern, request.getRequestURI()));
