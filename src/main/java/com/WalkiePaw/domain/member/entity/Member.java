@@ -1,5 +1,7 @@
 package com.WalkiePaw.domain.member.entity;
 
+import static com.WalkiePaw.domain.member.entity.Role.USER;
+
 import com.WalkiePaw.domain.common.BaseEntity;
 import com.WalkiePaw.presentation.domain.member.dto.MemberUpdateRequest;
 import jakarta.persistence.*;
@@ -7,6 +9,7 @@ import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.LocalDate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter
@@ -37,12 +40,16 @@ public class Member extends BaseEntity {
     private int reportedCnt;
     private int recruitCnt;
     private int researchCnt;
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType; // KAKAO, NAVER, GOOGLE
+    private String socialId; // 로그인한 소셜 타입의 식별자 값 (일반 로그인인 경우 null)
 
     @Builder
     public Member(String name, String nickname, String email, String password, String phoneNumber,
                   String address, LocalDate birth, String profile, double rating,
-                  String photo) {
+                  String photo, SocialType socialType, String socialId) {
         this.name = name;
         this.nickname = nickname;
         this.email = email;
@@ -57,7 +64,9 @@ public class Member extends BaseEntity {
         this.reportedCnt = 0;
         this.recruitCnt = 0;
         this.researchCnt = 0;
-        this.role = "USER";
+        this.role = USER;
+        this.socialType = socialType;
+        this.socialId = socialId;
     }
 
     public void updateMember(MemberUpdateRequest request) {
@@ -99,6 +108,20 @@ public class Member extends BaseEntity {
 
     public void general() {
         status = MemberStatus.GENERAL;
+    }
+
+    public void setRoleToGuest() {
+        role = Role.GUEST;
+    }
+
+    // 유저 권한 설정 메소드
+    public void authorizeUser() {
+        this.role = USER;
+    }
+
+    // 비밀번호 암호화 메소드
+    public void passwordEncode(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
     }
 
     /**

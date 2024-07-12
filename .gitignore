@@ -6,6 +6,7 @@ application-dev.properties
 application-prod.properties
 application.properties
 *.properties
+application-oauth.yml
 ### Eclipse ###
 .metadata
 bin/

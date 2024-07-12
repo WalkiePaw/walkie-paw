@@ -1,19 +1,26 @@
 package com.WalkiePaw.domain.member.Repository;
 
 import com.WalkiePaw.domain.member.entity.Member;
-import org.springframework.context.annotation.Profile;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import com.WalkiePaw.domain.member.entity.SocialType;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
-@Profile("spring-data-jpa")
-public interface MemberRepository extends JpaRepository<Member, Integer>, MemberRepositoryOverride {
+public interface MemberRepository {
 
-    @Query("select m from Member m where m.email = :email")
-    Optional<Member> findByEmail(@Param("email") String email);
+    Member save(final Member member);
 
-    @Query("select m from Member m where m.nickname = :nickname")
-    Optional<Member> findByNickname(@Param("nickname") String nickname);
+    Optional<Member> findById(final Integer memberId);
+
+    List<Member> findByName(final String name);
+
+    List<Member> findAll();
+
+    Optional<Member> findByEmail(String email);
+
+    Optional<Member> findBySocialTypeAndSocialId(SocialType socialType, String socialId);
 }
