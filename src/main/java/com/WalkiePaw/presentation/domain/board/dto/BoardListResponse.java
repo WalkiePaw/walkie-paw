@@ -29,6 +29,7 @@ public class BoardListResponse {
     private final boolean priceProposal;
 
     private final String photoUrls;
+    private final String memberPhoto;
 
     public static BoardListResponse from(final Board board) {
         String photoUrls = null;
@@ -38,7 +39,8 @@ public class BoardListResponse {
         return new BoardListResponse(
                 board.getId(), board.getTitle(), board.getContent(), board.getLocation(),
                 board.getPrice(), board.getPriceType(), board.getEndTime(), board.getStartTime(), board.getLikeCount(),
-                board.getMember().getNickname(), board.getStatus(), board.getCategory(), board.isPriceProposal(), photoUrls);
+                board.getMember().getNickname(), board.getStatus(),
+                board.getCategory(), board.isPriceProposal(), photoUrls, board.getMember().getPhoto());
     }
 
 }
