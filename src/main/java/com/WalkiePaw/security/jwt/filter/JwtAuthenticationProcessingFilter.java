@@ -125,7 +125,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     UserDetails userDetailsUser = UserPrincipal.builder()
         .email(member.getEmail())
-        .memberId(Long.valueOf(member.getId()))
+        .memberId(member.getId())
         .password(password)
         .authorities(List.of(new SimpleGrantedAuthority(member.getRole().name())))
         .build();

@@ -15,8 +15,8 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 public class CustomOAuth2User extends DefaultOAuth2User {
 
   private String email;
-  private String name;
-  private Long memberId;
+  private String nickname;
+  private Integer memberId;
   private Role role;
 
   /**
@@ -29,11 +29,11 @@ public class CustomOAuth2User extends DefaultOAuth2User {
    */
   public CustomOAuth2User(Collection<? extends GrantedAuthority> authorities,
       Map<String, Object> attributes, String nameAttributeKey,
-      String email, Long memberId, String name, Role role) {
+      String email, Integer memberId, String nickname, Role role) {
     super(authorities, attributes, nameAttributeKey);
     this.email = email;
     this.memberId = memberId;
-    this.name = name;
+    this.nickname = nickname;
     this.role = role;
   }
 }

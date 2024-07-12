@@ -53,14 +53,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
   }
 
   private void userLoginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
-    String accessToken = jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId());
+    String accessToken = jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname());
 
     jwtService.sendAccessToken(response, accessToken);
   }
 
   private void guestLoginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
     Map<String, Object> responseBody = new HashMap<>();
-    responseBody.put("Token", jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId()));
+    responseBody.put("Token", jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname()));
     responseBody.put("Account Status", "New Account");
     responseBody.put("name", oAuth2User.getName());
     responseBody.put("email", oAuth2User.getEmail());

@@ -8,9 +8,9 @@ import com.WalkiePaw.presentation.domain.chat.dto.ChatMsgListResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,9 +28,10 @@ public class ChatController {
     }
 
     @MessageMapping
-    public ResponseEntity<Void> addChat(final @Payload ChatAddRequest request) {
+    @SendTo("/chats")
+    public ResponseEntity<String> addChat(final @Payload ChatAddRequest request) {
         Integer id = chatService.saveChatMsg(request);
-        return ResponseEntity.created(URI.create(CHAT_URI + id)).build();
+        return ResponseEntity.ok("ok");
     }
 
     @PatchMapping("/{id}")

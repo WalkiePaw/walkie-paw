@@ -25,7 +25,8 @@ public class LoginService implements UserDetailsService {
 
     return UserPrincipal.builder()
         .email(member.getEmail())
-        .memberId(Long.valueOf(member.getId()))
+        .memberId(member.getId())
+        .nickname(member.getNickname())
         .password(member.getPassword())
         .authorities(List.of(new SimpleGrantedAuthority(member.getRole().name())))
         .build();
