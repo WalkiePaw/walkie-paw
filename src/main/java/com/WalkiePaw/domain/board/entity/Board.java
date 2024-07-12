@@ -41,12 +41,12 @@ public class Board extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private BoardCategory category;
     private boolean priceProposal;
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<BoardPhoto> photos = new ArrayList<>();
 
     @Builder
     public Board(
-            Member member, String title, String content, int price, LocalDateTime meetingTime,
+            Member member, String title, String content, int price,
             LocalDateTime startTime, LocalDateTime endTime, PriceType priceType,
             String location, String detailedLocation, BoardCategory category, boolean priceProposal) {
         this.priceType = priceType;

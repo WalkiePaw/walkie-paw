@@ -11,6 +11,9 @@ import com.WalkiePaw.global.exception.BadRequestException;
 import com.WalkiePaw.presentation.domain.board.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +31,8 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final BoardPhotoRepository boardPhotoRepository;
 
-    public List<BoardListResponse> findAllBoardAndMember(final BoardCategory category) {
-        List<Board> findBoards = boardRepository.findAllNotDeleted(category);
-        return findBoards.stream()
-                .map(BoardListResponse::from)
-                .toList();
+    public Slice<BoardListResponse> findAllBoardAndMember(final BoardCategory category, Pageable pageable) {
+        return boardRepository.findAllNotDeleted(category, pageable);
     }
 
     @Transactional
@@ -40,11 +40,15 @@ public class BoardService {
         Member member = memberRepository.findById(request.getMemberId()).orElseThrow();
         Board entity = BoardAddRequest.toEntity(request, member);
         Board board = boardRepository.save(entity);
-        request.getPhotos().stream()
-                .map(BoardPhoto::new)
+        createBoardPhoto(request, board);
+        return board.getId();
+    }
+
+    private void createBoardPhoto(final BoardAddRequest request, final Board board) {
+        request.getPhotoUrls().stream()
+                .map(i -> new BoardPhoto(i.getUrl()))
                 .map(boardPhotoRepository::save)
                 .toList().forEach(p -> p.addPhoto(board));
-        return board.getId();
     }
 
 
@@ -52,16 +56,19 @@ public class BoardService {
         Board board = boardRepository.getBoardDetail(boardId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
         List<String> photoUrls = board.getPhotoUrls(board);
-        return BoardGetResponse.from(board, photoUrls);
+        return BoardGetResponse.from(board);
     }
 
     @Transactional
     public void updateBoard(final Integer boardId, final BoardUpdateRequest request) {
-        Board board = boardRepository.findById(boardId)
+        Board board = boardRepository.findWithPhotoBy(boardId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
         board.updateBoard(request.getTitle(), request.getContent(), request.getPrice(), request.getStartTime(),
                 request.getEndTime(), request.getPriceType(), request.getLocation(), request.getDetailedLocation(), request.isPriceProposal());
-        board.updatePhoto(request.getPhotos());
+        List<String> urls = request.getPhotoUrls().stream().map(ImageDto::getUrl).toList();
+        List<BoardPhoto> photos = urls.stream().map(BoardPhoto::new).toList();
+        photos.forEach(bp -> bp.addPhoto(board));
+        boardPhotoRepository.saveAll(photos);
     }
 
     @Transactional
@@ -78,15 +85,12 @@ public class BoardService {
         board.delete();
     }
 
-    public List<BoardListResponse> findBySearchCond(final String title, final String content, final BoardCategory category) {
-        List<Board> bySearchCond = boardRepository.findBySearchCond(title, content, category);
-        return bySearchCond.stream()
-                .map(BoardListResponse::from)
-                .toList();
+    public Slice<BoardListResponse> findBySearchCond(final String title, final String content, final BoardCategory category, Pageable pageable) {
+        return boardRepository.findBySearchCond(title, content, category, pageable);
     }
 
-    public List<BoardMypageListResponse> findMyBoardsBy(final Integer memberId, final BoardCategory category) {
-        return boardRepository.findMyBoardsBy(memberId, category);
+    public Page<BoardMypageListResponse> findMyBoardsBy(final Integer memberId, final BoardCategory category, Pageable pageable) {
+        return boardRepository.findMyBoardsBy(memberId, category, pageable);
     }
 //
 //    @Transactional

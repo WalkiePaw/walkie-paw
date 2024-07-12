@@ -1,5 +1,6 @@
 package com.WalkiePaw.presentation.domain.chatroom;
 
+import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.presentation.domain.chatroom.dto.TransactionResponse;
 import com.WalkiePaw.domain.chatroom.service.ChatroomService;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomAddRequest;

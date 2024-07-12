@@ -1,6 +1,7 @@
 package com.WalkiePaw.presentation.domain.board.dto;
 import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.board.entity.BoardCategory;
+import com.WalkiePaw.domain.board.entity.BoardPhoto;
 import com.WalkiePaw.domain.board.entity.PriceType;
 import com.WalkiePaw.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
@@ -25,13 +26,12 @@ public class BoardAddRequest {
     private final String location;
     private final String detailedLocation;
     private final boolean priceProposal;
-    private final List<String> photos = new ArrayList<>();
+    private List<ImageDto> photoUrls;
 
     /**
      * BoardAddResponse -> Board 객체로 만드는 toEntity 메서드 필요
      */
     public static Board toEntity(final BoardAddRequest request, final Member member) {
-
         return Board.builder()
                 .member(member)
                 .content(request.content)

@@ -105,10 +105,9 @@ public class MemberService {
     }
 
     public FindPasswdResponse findPasswd(final FindPasswdRequest request) {
-        Optional<Member> member = memberRepository.findByEmailAndNameAndPhoneNumber(
-                request.getEmail(),
-                request.getName(),
-                request.getPhoneNumber());
+        Optional<Member> member = memberRepository.findByEmailAndName(
+            request.getEmail(),
+            request.getName());
         if(member.isEmpty()) {
             return new FindPasswdResponse(FindPasswdResult.USER_NOT_FOUND);
         }

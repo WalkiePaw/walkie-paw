@@ -6,5 +6,4 @@ import lombok.Getter;
 public class FindPasswdRequest {
     private String name;
     private String email;
-    private String phoneNumber;
 }
