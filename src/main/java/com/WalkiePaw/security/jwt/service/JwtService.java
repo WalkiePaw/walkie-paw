@@ -3,15 +3,19 @@ package com.WalkiePaw.security.jwt.service;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,6 +43,7 @@ public class JwtService {
   private static final String BEARER = "Bearer ";
 
   private final MemberRepository memberRepository;
+  private final ObjectMapper objectMapper;
 
   /**
    * AccessToken 생성 메소드
@@ -62,10 +67,14 @@ public class JwtService {
    * AccessToken 바디에 실어서 보내기
    */
   public void sendAccessToken(HttpServletResponse response, String accessToken) throws IOException {
+    Map<String, Object> responseBody = new HashMap<>();
+    responseBody.put("token", accessToken);
+    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+    response.setCharacterEncoding("UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
-
-    response.getWriter().write(accessToken);
     log.info("재발급된 Access Token : {}", accessToken);
+
+    objectMapper.writeValue(response.getWriter(), responseBody);
   }
 
   /**
