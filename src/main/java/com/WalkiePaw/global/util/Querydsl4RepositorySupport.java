@@ -1,5 +1,6 @@
 package com.WalkiePaw.global.util;
 
+import com.WalkiePaw.presentation.domain.board.dto.BoardListResponse;
 import com.querydsl.core.support.QueryBase;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
@@ -16,6 +17,8 @@ import org.springframework.data.querydsl.SimpleEntityPathResolver;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.Function;
 
@@ -66,6 +69,11 @@ public abstract class Querydsl4RepositorySupport {
         return getJpaQueryFactory().select(expr);
     }
 
+    /**
+     * pageable.pageSize() + 1 로 리스트를 가져온 뒤 가져온 값이 == pageSize() + 1 보다 작으면 마지막 페이지
+     * @return Slice 구현체
+     * @param <T> 반환 객체
+     */
     protected <T> Slice<T> slice(Pageable pageable, Function<JPAQueryFactory, JPAQuery> sliceQuery) {
         JPAQuery query = (JPAQuery) sliceQuery.apply(getJpaQueryFactory())
                 .offset(pageable.getOffset()).limit(pageable.getPageSize());
@@ -83,6 +91,29 @@ public abstract class Querydsl4RepositorySupport {
         return hasNext;
     }
 
+    /**
+     *
+     * @param pageable
+     * @param sliceQuery
+     * @param transformer
+     * @return
+     * @param <T>
+     * @param <R>
+     */
+    protected <T, R> Slice<R> slice(Pageable pageable,
+                                    Function<JPAQueryFactory, JPAQuery<T>> sliceQuery,
+                                    Function<T, R> transformer) {
+        JPAQuery<T> query = sliceQuery.apply(getJpaQueryFactory())
+                .offset(pageable.getOffset()).limit(pageable.getPageSize());
+        List<T> content = createContent(pageable, query);
+        List<R> transformedContent = content.stream()
+                .map(transformer)
+                .toList();
+        boolean hasNext = isHasNext(pageable, transformedContent);
+        return new SliceImpl<>(transformedContent, pageable, hasNext);
+    }
+
+
     protected <T> List<T> createContent(final Pageable pageable, final JPAQuery query) {
         List<T> content = null;
         if (pageable.getSort() == null) {
@@ -94,11 +125,11 @@ public abstract class Querydsl4RepositorySupport {
     }
 
     private static PageRequest sliceWithSort(final Pageable pageable) {
-        return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize() + 1, pageable.getSort());
+        return PageRequest.of(pageable.getPageNumber(), sliceSize(pageable), pageable.getSort());
     }
 
     private static PageRequest sliceWithoutSort(final Pageable pageable) {
-        return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize() + 1);
+        return PageRequest.of(pageable.getPageNumber(), sliceSize(pageable));
     }
 
     private static int sliceSize(Pageable pageable) {

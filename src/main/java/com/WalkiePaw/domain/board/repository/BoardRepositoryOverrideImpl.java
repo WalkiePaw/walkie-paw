@@ -36,39 +36,26 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
      */
     @Override
     public Slice<BoardListResponse> findAllNotDeleted(final BoardCategory category, Pageable pageable) {
-        return sliceResponse(pageable,
+        return slice(pageable,
                 slice -> slice.selectFrom(board)
                         .join(board.member).fetchJoin()
                         .where(board.status.ne(BoardStatus.DELETED).and(board.category.eq(category)))
-                        .orderBy(board.createdDate.desc()));
+                        .orderBy(board.createdDate.desc()),
+                BoardListResponse::from
+        );
     }
 
 
     @Override
     public Slice<BoardListResponse> findBySearchCond(final String title, final String content, final BoardCategory category, Pageable pageable) {
-        return sliceResponse(pageable, slice -> slice.selectFrom(board)
-                .join(board.member).fetchJoin()
-                .where(
-                        titleCond(title),
-                        contentCond(content),
-                        categoryCond(category))
-                .orderBy(board.createdDate.desc()));
-    }
-
-    /**
-     * Support의 page method custom
-     */
-    private Slice<BoardListResponse> sliceResponse(Pageable pageable, Function<JPAQueryFactory, JPAQuery> sliceQuery) {
-        JPAQuery query = (JPAQuery) sliceQuery.apply(getJpaQueryFactory())
-                .offset(pageable.getOffset()).limit(pageable.getPageSize());
-        List<Board> content = createContent(pageable, query);
-        boolean hasNext = isHasNext(pageable, content);
-        List<BoardListResponse> boards = content.stream().map(BoardListResponse::from).toList();
-        return new SliceImpl<>(boards, pageable, hasNext);
-    }
-
-    private static int sliceSize(Pageable pageable) {
-        return pageable.getPageSize() + 1;
+        return slice(pageable, slice -> slice.selectFrom(board)
+                        .join(board.member).fetchJoin()
+                        .where(
+                                titleCond(title),
+                                contentCond(content),
+                                categoryCond(category))
+                        .orderBy(board.createdDate.desc()),
+                BoardListResponse::from);
     }
 
     private BooleanExpression categoryCond(final BoardCategory category) {
@@ -96,13 +83,15 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
 
     @Override
     public Slice<BoardListResponse> findLikeBoardList(final Integer memberId, final Pageable pageable) {
-        return sliceResponse(pageable, slice -> slice
-                .select(board)
-                .from(boardLike)
-                .join(boardLike.board, board)
-                .join(boardLike.member, member)
-                .where(member.id.eq(memberId).and(board.status.ne(BoardStatus.DELETED)))
-                .orderBy(board.createdDate.desc()));
+        return slice(pageable, slice -> slice
+                        .select(board)
+                        .from(boardLike)
+                        .join(boardLike.board, board)
+                        .join(boardLike.member, member)
+                        .where(member.id.eq(memberId).and(board.status.ne(BoardStatus.DELETED)))
+                        .orderBy(board.createdDate.desc()),
+                BoardListResponse::from
+        );
     }
 
     public Optional<Board> findWithPhotoBy(Integer boardId) {
