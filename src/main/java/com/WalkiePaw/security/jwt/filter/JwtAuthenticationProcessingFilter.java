@@ -57,7 +57,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     log.info("JwtAuthenticationProcessingFilter start");
 //    if (request.getRequestURI().equals(NO_CHECK_URL) || request.getRequestURI().equals("/index.html")) {
     if(shouldSkipFilter(request)) {
-      filterChain.doFilter(request, response); // "/login" 요청이 들어오면, 다음 필터 호출
+      filterChain.doFilter(request, response); // SkipFilter에 해당하는 요청이 들어오면, 다음 필터 호출
       log.info("JwtAuthenticationProcessingFilter end");
       return; // return으로 이후 현재 필터 진행 막기 (안해주면 아래로 내려가서 계속 필터 진행시킴)
     }
@@ -77,12 +77,12 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
    */
   public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
-    log.info("checkAccessTokenAndAuthentication() 호출");
+    log.info("checkAccessTokenAndAuthentication() start");
     Optional<String> tokenOptional = jwtService.extractAccessToken(request);
 
     log.info("tokenOptional.isPresent() : {}", tokenOptional.isPresent());
     if (tokenOptional.isPresent()) {
-      log.info("tokenOptional.isPresent() true");
+      log.info("Token Provided");
       String token = tokenOptional.get();
       if (jwtService.isTokenValid(token)) {
         jwtService.extractEmail(token)
@@ -90,13 +90,14 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             .ifPresent(this::saveAuthentication);
         filterChain.doFilter(request, response);
       } else {
-//        sendInvalidTokenResponse(response);
-        filterChain.doFilter(request, response);
+        log.info("Invalid Token");
+        sendInvalidTokenResponse(response);
+        log.info("checkAccessTokenAndAuthentication() end");
       }
     } else {
-      log.info("tokenOptional.isPresent() false");
-//      sendMissingTokenResponse(response);
-      filterChain.doFilter(request, response);
+      log.info("Missing Token");
+      sendMissingTokenResponse(response);
+      log.info("checkAccessTokenAndAuthentication() end");
     }
 
   }
@@ -155,10 +156,13 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
   }
 
   /**
+   * 해당하는 요청의 경우 JWT필터를 로직 수행 없이 그냥 통과함.
    * 해당되는 요청의 경우 true, 아니면 false를 리턴함.
    */
   private boolean shouldSkipFilter(HttpServletRequest request) {
-    return Arrays.asList("/login/**", "/index.html", "/oauth2/**").stream()
+    return Arrays.asList("/login/**", "/index.html", "/oauth2/**", "/api/**", "/**"
+            , ""
+            ).stream()
         .anyMatch(pattern -> new AntPathMatcher().match(pattern, request.getRequestURI()));
   }
 }
