@@ -1,25 +1,21 @@
 package com.WalkiePaw.global.config;
 
-import com.WalkiePaw.domain.chat.repository.ChatMsgRepository;
-import com.WalkiePaw.domain.chat.service.ChatService;
-import com.WalkiePaw.domain.chatroom.repository.ChatroomRepository;
-import com.WalkiePaw.domain.member.Repository.MemberRepository;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.*;
 
 @Configuration
-public class WebSocketConfig implements WebSocketConfigurer {
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private final ChatService chatService;
-
-    public WebSocketConfig(final ChatService chatService) {
-        this.chatService = chatService;
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        registry.enableSimpleBroker("/chats");
+        registry.setApplicationDestinationPrefixes("/api/v1/chats");
     }
 
     @Override
-    public void registerWebSocketHandlers(final WebSocketHandlerRegistry registry) {
-        registry.addHandler(new ChatWebSocketHandler(chatService), "/api/v1/chats").setAllowedOrigins("/*");
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws").withSockJS();
     }
 }

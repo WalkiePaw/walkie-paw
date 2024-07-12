@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.WalkiePaw.presentation.domain.chat.dto.ChatMsgListResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -25,8 +27,8 @@ public class ChatController {
         return ResponseEntity.ok(chats);
     }
 
-    @PostMapping
-    public ResponseEntity<Void> addChat(final @RequestBody ChatAddRequest request) {
+    @MessageMapping
+    public ResponseEntity<Void> addChat(final @Payload ChatAddRequest request) {
         Integer id = chatService.saveChatMsg(request);
         return ResponseEntity.created(URI.create(CHAT_URI + id)).build();
     }
