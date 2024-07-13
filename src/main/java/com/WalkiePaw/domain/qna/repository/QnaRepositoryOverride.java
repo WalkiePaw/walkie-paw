@@ -8,5 +8,5 @@ public interface QnaRepositoryOverride {
 
     List<Qna> findAllByCond(String status);
 
-    List<Qna> findMyQnaByMemberId(Integer memberId);
+    List<Qna> findByMemberId(Integer memberId);
 }

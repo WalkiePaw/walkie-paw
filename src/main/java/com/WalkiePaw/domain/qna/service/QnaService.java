@@ -53,8 +53,8 @@ public class QnaService {
                 .toList();
     }
 
-    public List<QnaListResponse> findMyQnaByMemberId(final Integer memberId) {
-        List<Qna> myQnaByMemberId = qnaRepository.findMyQnaByMemberId(memberId);
+    public List<QnaListResponse> findByMemberId(final Integer memberId) {
+        List<Qna> myQnaByMemberId = qnaRepository.findByMemberId(memberId);
         return myQnaByMemberId.stream()
                 .map(QnaListResponse::from)
                 .toList();

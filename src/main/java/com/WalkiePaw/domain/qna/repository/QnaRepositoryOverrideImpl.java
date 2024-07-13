@@ -24,7 +24,7 @@ public class QnaRepositoryOverrideImpl extends Querydsl4RepositorySupport implem
     }
 
     @Override
-    public List<Qna> findMyQnaByMemberId(final Integer memberId) {
+    public List<Qna> findByMemberId(final Integer memberId) {
         return selectFrom(qna)
                 .where(qna.member.id.eq(memberId))
                 .fetch();
