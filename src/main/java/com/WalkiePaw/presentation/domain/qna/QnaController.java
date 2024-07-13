@@ -58,4 +58,10 @@ public class QnaController {
         return ResponseEntity.ok(list);
     }
 
+    @GetMapping("/{id}/list")
+    public ResponseEntity<List<QnaListResponse>> mypageList(@PathVariable("id") final Integer memberId) {
+        List<QnaListResponse> list = qnaService.findMyQnaByMemberId(memberId);
+        return ResponseEntity.ok(list);
+    }
+
 }

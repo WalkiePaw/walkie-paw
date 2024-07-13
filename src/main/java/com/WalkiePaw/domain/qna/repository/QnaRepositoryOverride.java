@@ -7,4 +7,6 @@ import java.util.List;
 public interface QnaRepositoryOverride {
 
     List<Qna> findAllByCond(String status);
+
+    List<Qna> findMyQnaByMemberId(Integer memberId);
 }

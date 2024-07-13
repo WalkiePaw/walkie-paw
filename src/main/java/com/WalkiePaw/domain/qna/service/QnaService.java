@@ -4,7 +4,6 @@ import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.domain.qna.entity.Qna;
 import com.WalkiePaw.domain.qna.repository.QnaRepository;
-import com.WalkiePaw.domain.qna.repository.QnaRepositoryOverride;
 import com.WalkiePaw.presentation.domain.qna.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -50,6 +49,13 @@ public class QnaService {
     public List<QnaListResponse> findAllByCond(final String status) {
         List<Qna> list = qnaRepository.findAllByCond(status);
         return list.stream()
+                .map(QnaListResponse::from)
+                .toList();
+    }
+
+    public List<QnaListResponse> findMyQnaByMemberId(final Integer memberId) {
+        List<Qna> myQnaByMemberId = qnaRepository.findMyQnaByMemberId(memberId);
+        return myQnaByMemberId.stream()
                 .map(QnaListResponse::from)
                 .toList();
     }
