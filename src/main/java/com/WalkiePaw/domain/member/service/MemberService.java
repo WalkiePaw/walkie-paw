@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.WalkiePaw.global.exception.ExceptionCode.NOT_FOUND_MEMBER_ID;
+import static com.WalkiePaw.global.exception.ExceptionCode.NOT_FOUND_EMAIL;
 
 @Service
 @Transactional
@@ -140,5 +141,12 @@ public class MemberService {
         return ProfileResponse.from(memberRepository.findById(memberId).orElseThrow(
                 () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
         ));
+    }
+
+    public Integer socialSignUp(final SocialSignUpRequest request) {
+        Member member = memberRepository.findByEmail(request.getEmail()).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_EMAIL)
+        );
+        return member.updateBySocialSignUpRequest(request);
     }
 }

@@ -47,6 +47,13 @@ public class MemberController {
         return ResponseEntity.created(URI.create(MEMBER_URL + memberId)).build();
     }
 
+    @Operation(summary = "소셜로그인 회원가입")
+    @PostMapping("/social-signup")
+    public ResponseEntity<Void> socialSignUp(final @Validated @RequestBody SocialSignUpRequest request) {
+        Integer memberId = memberService.socialSignUp(request);
+        return ResponseEntity.created(URI.create(MEMBER_URL + memberId)).build();
+    }
+
     @ApiResponse(responseCode = "204", description = "수정됨")
     @Operation(summary = "멤버 수정")
     @PatchMapping("/{id}")

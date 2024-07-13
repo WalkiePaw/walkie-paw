@@ -4,6 +4,7 @@ import static com.WalkiePaw.domain.member.entity.Role.USER;
 
 import com.WalkiePaw.domain.common.BaseEntity;
 import com.WalkiePaw.presentation.domain.member.dto.MemberUpdateRequest;
+import com.WalkiePaw.presentation.domain.member.dto.SocialSignUpRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
@@ -122,6 +123,17 @@ public class Member extends BaseEntity {
     // 비밀번호 암호화 메소드
     public void passwordEncode(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
+    }
+
+    public Integer updateBySocialSignUpRequest(final SocialSignUpRequest request) {
+        this.nickname = request.getNickname();
+        this.phoneNumber = request.getPhoneNumber();
+        this.birth = request.getBirth();
+        this.address = request.getAddress();
+        this.profile = request.getProfile();
+        this.photo = request.getPhoto();
+        this.role = USER;
+        return this.id;
     }
 
     /**
