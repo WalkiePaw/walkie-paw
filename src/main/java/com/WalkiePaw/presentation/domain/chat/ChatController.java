@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-//@RequestMapping("/api/v1/chats")
+@RequestMapping("/api/v1/chats")
 public class ChatController {
     public static final String CHAT_URI = "/chats/";
     private final ChatService chatService;
@@ -28,13 +28,6 @@ public class ChatController {
     public ResponseEntity<List<ChatMsgListResponse>> getChatListByChatroomId(final @RequestParam Integer chatroomId) {
         List<ChatMsgListResponse> chats = chatService.findChatsByChatroomId(chatroomId);
         return ResponseEntity.ok(chats);
-    }
-
-    @MessageMapping
-    @SendTo("/chats")
-    public ResponseEntity<ChatMsgListResponse> addChat(final @Payload ChatAddRequest request) {
-        ChatMsgListResponse chatMsgListResponse = chatService.saveChatMsg(request);
-        return ResponseEntity.ok(chatMsgListResponse);
     }
 
     @PatchMapping("/{id}")
