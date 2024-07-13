@@ -46,6 +46,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
   private static final String RESPONSE_CONTENT_TYPE_JSON = "application/json";
   private static final String INVALID_TOKEN_RESPONSE = "{\"error\": \"Invalid token\"}";
   private static final String MISSING_TOKEN_RESPONSE = "{\"error\": \"Missing token\"}";
+  private static final String[] FILTER_PATHS = {"/login/**", "/index.html", "/oauth2/**", "/api/**", "/**"};
 
   private final JwtService jwtService;
   private final MemberRepository memberRepository;
@@ -160,9 +161,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
    * 해당되는 요청의 경우 true, 아니면 false를 리턴함.
    */
   private boolean shouldSkipFilter(HttpServletRequest request) {
-    return Arrays.asList("/login/**", "/index.html", "/oauth2/**", "/api/**"
-            , ""
-            ).stream()
+    return Arrays.asList(FILTER_PATHS).stream()
         .anyMatch(pattern -> new AntPathMatcher().match(pattern, request.getRequestURI()));
   }
 }
