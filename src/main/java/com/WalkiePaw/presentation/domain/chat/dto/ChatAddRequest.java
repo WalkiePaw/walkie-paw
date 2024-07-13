@@ -9,7 +9,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ChatAddRequest {
-    private final Integer chatroomId;
     private final Integer writerId;
     private final String content;
 

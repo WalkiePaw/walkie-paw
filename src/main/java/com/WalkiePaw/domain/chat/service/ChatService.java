@@ -33,8 +33,8 @@ public class ChatService {
     }
 
     @Transactional
-    public ChatMsgListResponse saveChatMsg(final ChatAddRequest request) {
-        Chatroom chatroom = chatroomRepository.findById(request.getChatroomId())
+    public ChatMsgListResponse saveChatMsg(Integer chatroomId, final ChatAddRequest request) {
+        Chatroom chatroom = chatroomRepository.findById(chatroomId)
                 .orElseThrow(() -> new IllegalStateException("잘못된 채팅방 번호입니다."));
         Member member = memberRepository.findById(request.getWriterId())
                 .orElseThrow();
