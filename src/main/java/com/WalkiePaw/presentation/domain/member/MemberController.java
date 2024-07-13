@@ -115,6 +115,14 @@ public class MemberController {
         return ResponseEntity.ok(memberService.NicknameCheck(nickname));
     }
 
+    @Operation(summary = "이메일 중복 확인")
+    @GetMapping("/check-email")
+    public ResponseEntity<EmailCheckResponse> checkEmail(
+            @RequestParam final String email
+    ) {
+        return ResponseEntity.ok(memberService.EmailCheck(email));
+    }
+
     @Operation(summary = "이메일 찾기")
     @PostMapping("/find-email")
     public ResponseEntity<FindEmailResponse> findEmail(@RequestBody final FindEmailRequest request) {

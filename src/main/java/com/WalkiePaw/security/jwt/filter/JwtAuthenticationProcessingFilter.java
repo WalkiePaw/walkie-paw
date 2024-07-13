@@ -161,7 +161,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
    */
   private boolean shouldSkipFilter(HttpServletRequest request) {
     return Arrays.asList("/login/**", "/index.html", "/oauth2/**", "/api/**"
-            , ""
+            , "/swagger-ui.html", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**" // swagger
             ).stream()
         .anyMatch(pattern -> new AntPathMatcher().match(pattern, request.getRequestURI()));
   }
