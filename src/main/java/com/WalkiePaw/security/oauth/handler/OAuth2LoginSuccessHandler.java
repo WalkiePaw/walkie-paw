@@ -28,6 +28,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
   private final MemberRepository memberRepository;
   private final ObjectMapper objectMapper;
 
+  private static final String ACCOUNT_STATUS_KEY = "Account Status";
+  private static final String TOKEN_KEY = "Token";
+  private static final String NAME_KEY = "Name";
+  private static final String EMAIL_KEY = "Email";
+
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
     log.info("OAuth2 Login 성공!");
@@ -37,8 +42,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
       log.info("email = {}", oAuth2User.getEmail());
       log.info("name = {}", oAuth2User.getName());
       log.info("oAuth2UserAttributes = {}", oAuth2User.getAttributes().get(""));
-
-      memberRepository.findByEmail(oAuth2User.getEmail());
 
       // User의 Role이 GUEST일 경우 처음 요청한 회원이므로 회원가입 페이지로 리다이렉트
       if(oAuth2User.getRole() == Role.GUEST) {
@@ -55,15 +58,26 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
   private void userLoginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
     String accessToken = jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname());
 
+    Map<String, Object> responseBody = new HashMap<>();
+    responseBody.put(TOKEN_KEY, jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname()));
+    responseBody.put(ACCOUNT_STATUS_KEY, "Exist Account");
+    responseBody.put(NAME_KEY, null);
+    responseBody.put(EMAIL_KEY, null);
+    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+    response.setCharacterEncoding("UTF-8");
+    response.setStatus(HttpServletResponse.SC_OK);
+
+    objectMapper.writeValue(response.getWriter(), responseBody);
+
     jwtService.sendAccessToken(response, accessToken);
   }
 
   private void guestLoginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
     Map<String, Object> responseBody = new HashMap<>();
-    responseBody.put("Token", jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname()));
-    responseBody.put("Account Status", "New Account");
-    responseBody.put("name", oAuth2User.getName());
-    responseBody.put("email", oAuth2User.getEmail());
+    responseBody.put(TOKEN_KEY, jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname()));
+    responseBody.put(ACCOUNT_STATUS_KEY, "New Account");
+    responseBody.put(NAME_KEY, oAuth2User.getName());
+    responseBody.put(EMAIL_KEY, oAuth2User.getEmail());
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     response.setCharacterEncoding("UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
