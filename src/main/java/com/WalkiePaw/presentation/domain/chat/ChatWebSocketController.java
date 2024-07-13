@@ -15,7 +15,7 @@ public class ChatWebSocketController {
 
     private final ChatService chatService;
 
-    @MessageMapping("/api/v1/ws/chats")
+    @MessageMapping("/chats")
     @SendTo("/chats")
     public ChatMsgListResponse addChat(@Payload ChatAddRequest request) {
         System.out.println("request = " + request);
