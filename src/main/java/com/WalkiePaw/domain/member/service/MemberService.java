@@ -123,4 +123,13 @@ public class MemberService {
         String masked = "*".repeat(4);
         return visible + masked + afterAt;
     }
+
+    public EmailCheckResponse EmailCheck(final String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if (member.isEmpty()) {
+            return new EmailCheckResponse(EmailCheckResult.AVAILABLE);
+        } else {
+            return new EmailCheckResponse(EmailCheckResult.DUPLICATED);
+        }
+    }
 }
