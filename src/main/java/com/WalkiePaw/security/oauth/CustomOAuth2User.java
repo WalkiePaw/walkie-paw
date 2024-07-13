@@ -17,6 +17,7 @@ public class CustomOAuth2User extends DefaultOAuth2User {
   private String email;
   private String nickname;
   private Integer memberId;
+  private String name;
   private Role role;
 
   /**
@@ -29,11 +30,12 @@ public class CustomOAuth2User extends DefaultOAuth2User {
    */
   public CustomOAuth2User(Collection<? extends GrantedAuthority> authorities,
       Map<String, Object> attributes, String nameAttributeKey,
-      String email, Integer memberId, String nickname, Role role) {
+      String email, Integer memberId, String nickname, String name, Role role) {
     super(authorities, attributes, nameAttributeKey);
     this.email = email;
     this.memberId = memberId;
     this.nickname = nickname;
+    this.name = name;
     this.role = role;
   }
 }
