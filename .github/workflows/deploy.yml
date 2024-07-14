@@ -67,10 +67,10 @@ jobs:
       - name: Docker build & push
         if: contains(github.ref, 'Deploy-Test')
         run: |
-          cd walkie-paw
           echo $(ls)
-          echo "docker build & push start!!!"
-          echo $(tree)
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/bitcamp .
+          docker push ${{ secrets.DOCKER_USERNAME }}/bitcamp
 
       # check directory
       - name: check directory
