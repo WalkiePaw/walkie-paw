@@ -69,6 +69,8 @@ jobs:
       - name: make application.properties
         if: contains(github.ref, 'Deploy-Test')
         run: |
+          echo pwd
+          pwd
           mkdir -p walkie-paw/src/main/resources
           cd walkie-paw/src/main/resources
           touch ./application.properties
@@ -78,6 +80,8 @@ jobs:
       - name: make application-mysql.properties
         if: contains(github.ref, 'Deploy-Test')
         run: |
+          echo pwd
+          pwd
           mkdir -p walkie-paw/src/main/resources
           cd walkie-paw/src/main/resources
           touch ./application-mysql.properties
@@ -87,6 +91,8 @@ jobs:
       - name: make application-private.properties
         if: contains(github.ref, 'Deploy-Test')
         run: |
+          echo pwd
+          pwd
           mkdir -p walkie-paw/src/main/resources
           cd walkie-paw/src/main/resources
           touch ./application-private.properties
@@ -96,6 +102,8 @@ jobs:
       - name: make application-oauth.yml
         if: contains(github.ref, 'Deploy-Test')
         run: |
+          echo pwd
+          pwd
           mkdir -p walkie-paw/src/main/resources
           cd walkie-paw/src/main/resources
           touch ./application-oauth.yml
@@ -105,7 +113,9 @@ jobs:
       # gradle build
       - name: Build with Gradle
         run: |
+          echo pwd
           pwd
+          echo ls
           ls
           chmod +x ./gradlew
           ./gradlew clean build -x test
@@ -146,7 +156,10 @@ jobs:
           pwd
           echo ls
           ls
-          
+          echo cd
+          cd src/main/resources
+          echo ls
+          ls
 
       ## deploy to production
       # - name: Deploy to prod
