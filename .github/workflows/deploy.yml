@@ -107,8 +107,6 @@ jobs:
         run: |
           pwd
           ls
-          cd walkie-paw
-          ls
           chmod +x ./gradlew
           ./gradlew clean build -x test
 
