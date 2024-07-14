@@ -117,6 +117,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bitcamp
             sudo docker run -d --name walkiepaw_api -p 8888:8888 -v /home/ubuntu/config:/root/config ${{ secrets.DOCKER_USERNAME }}/bitcamp
             sudo docker image prune -f
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       # slack으로 메시지 발송
 #      - name: send message to slack
