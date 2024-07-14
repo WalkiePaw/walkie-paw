@@ -30,6 +30,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      # Debug
       - name: Debug
         run: echo ${{ github.ref }}
 
@@ -101,21 +102,20 @@ jobs:
       #       sudo docker image prune -f
 
       ## deploy to develop
-#      - name: Deploy to dev
-#        uses: appleboy/ssh-action@master
-#        id: deploy-dev
-#        if: contains(github.ref, 'develop')
-#        with:
-#          host: ${{ secrets.HOST_DEV }}
-#          username: ${{ secrets.USERNAME }}
-#          password: ${{ secrets.PASSWORD }}
-#          port: 22
-#          key: ${{ secrets.PRIVATE_KEY }}
-#          script: |
-#            docker ps -aq --filter name=modu_study | grep -q . && docker rm -f $(docker ps -aq --filter name=modu_study)
-#            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/docker-test-dev
-#            sudo docker run -d --name modu_study -p 8888:8888 ${{ secrets.DOCKER_USERNAME }}/docker-test-dev
-#            sudo docker image prune -f
+      - name: Deploy to dev
+        uses: appleboy/ssh-action@master
+        id: deploy
+        if: contains(github.ref, 'Deploy-Test')
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: 22
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            docker ps -aq --filter name=walkiepaw_api | grep -q . && docker rm -f $(docker ps -aq --filter name=walkiepaw_api)
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bitcamp
+            sudo docker run -d --name walkiepaw_api -p 8888:8888 ${{ secrets.DOCKER_USERNAME }}/bitcamp
+            sudo docker image prune -f
 
       # slack으로 메시지 발송
 #      - name: send message to slack

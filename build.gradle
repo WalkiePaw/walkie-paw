@@ -69,8 +69,15 @@ dependencies {
 	// WebSocket
 	implementation 'org.springframework:spring-websocket'
 
+	//
+//	implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
 
 }
+
+// 여러 로깅을 하나에서 사용하게 해주는??? 경고가 자꾸 발생해서 추가
+//configurations.all {
+//	exclude group: 'commons-logging', module: 'commons-logging'
+//}
 
 clean {
 	delete file('src/main/generated')
