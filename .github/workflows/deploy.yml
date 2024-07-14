@@ -105,10 +105,10 @@ jobs:
       # gradle build
       - name: Build with Gradle
         run: |
-          echo $(pwd)
-          echo $(ls)
+          pwd
+          ls
           cd walkie-paw
-          echo $(ls)
+          ls
           chmod +x ./gradlew
           ./gradlew clean build -x test
 
