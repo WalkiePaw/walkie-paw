@@ -30,85 +30,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # 환경별 properties 파일 생성(1) - 공통 실행 환경 (현재 ide 환경 설정이 안되서 주석처리함)
-      # 경로 이동 시 mos 하위에 있는 mos 폴더로 들어가야됨!
-      # - name: make application.properties
-      #   if: |
-      #     contains(github.ref, 'main') ||
-      #     contains(github.ref, 'develop')
-      #   run: |
-      #     mkdir -p mos/src/main/resources
-      #     cd mos/src/main/resources
-      #     touch ./application.properties
-      #     echo "${{ secrets.PROPERTIES }}" > ./application.properties
-      #   shell: bash
-
-      # 환경별 yml 파일 생성(2) - dev
-      # 경로 이동 시 mos 하위에 있는 mos 폴더로 들어가야됨!
-      - name: make application-dev.properties
-        if: contains(github.ref, 'develop')
-        run: |
-          mkdir -p mos/src/main/resources
-          cd mos/src/main/resources
-          touch ./application-dev.properties
-          echo "${{ secrets.PROPERTIES_DEV }}" > ./application-dev.properties
-        shell: bash
-
-      # 환경별 yml 파일 생성(3) - prod
-      # 경로 이동 시 mos 하위에 있는 mos 폴더로 들어가야됨!
-      - name: make application-prod.properties
-        if: contains(github.ref, 'main')
-        run: |
-          mkdir -p mos/src/main/resources
-          cd mos/src/main/resources
-          touch ./application-prod.properties
-          echo "${{ secrets.PROPERTIES_PROD }}" > ./application-prod.properties
-        shell: bash
-
-      # application properties
-      - name: make application.properties
-        if: contains(github.ref, 'Deploy-Test')
-        run: |
-          echo pwd
-          pwd
-          mkdir -p walkie-paw/src/main/resources
-          cd walkie-paw/src/main/resources
-          touch ./application.properties
-          echo "${{ secrets.APP_PROPERTIES }}" > ./application.properties
-        shell: bash
-
-      - name: make application-mysql.properties
-        if: contains(github.ref, 'Deploy-Test')
-        run: |
-          echo pwd
-          pwd
-          mkdir -p walkie-paw/src/main/resources
-          cd walkie-paw/src/main/resources
-          touch ./application-mysql.properties
-          echo "${{ secrets.MYSQL_PROPERTIES }}" > ./application-mysql.properties
-        shell: bash
-
-      - name: make application-private.properties
-        if: contains(github.ref, 'Deploy-Test')
-        run: |
-          echo pwd
-          pwd
-          mkdir -p walkie-paw/src/main/resources
-          cd walkie-paw/src/main/resources
-          touch ./application-private.properties
-          echo "${{ secrets.PRIVATE_PROPERTIES }}" > ./application-private.properties
-        shell: bash
-
-      - name: make application-oauth.yml
-        if: contains(github.ref, 'Deploy-Test')
-        run: |
-          echo pwd
-          pwd
-          mkdir -p walkie-paw/src/main/resources
-          cd walkie-paw/src/main/resources
-          touch ./application-oauth.yml
-          echo "${{ secrets.OAUTH_YML }}" > ./application-oauth.yml
-        shell: bash
+      - name: Debug
+        run: echo ${{ github.ref }}
 
       # gradle build
       - name: Build with Gradle
@@ -140,7 +63,7 @@ jobs:
 #          docker build -t ${{ secrets.DOCKER_USERNAME }}/docker-test-dev .
 #          docker push ${{ secrets.DOCKER_USERNAME }}/docker-test-dev
 
-      # docker build & push to develop
+      # docker build & push
       - name: Docker build & push
         if: contains(github.ref, 'Deploy-Test')
         run: |
