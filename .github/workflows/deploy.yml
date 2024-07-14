@@ -139,6 +139,15 @@ jobs:
           echo "docker build & push start!!!"
           echo $(tree)
 
+      # check directory
+      - name: check directory
+        run: |
+          echo pwd
+          pwd
+          echo ls
+          ls
+          
+
       ## deploy to production
       # - name: Deploy to prod
       #   uses: appleboy/ssh-action@master
