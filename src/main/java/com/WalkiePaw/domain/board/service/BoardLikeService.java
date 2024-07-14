@@ -30,13 +30,13 @@ public class BoardLikeService {
 
     public Integer saveBoardLike(final BoardLikeRequest request) {
         Board board = boardRepository.findById(request.getBoardId()).orElseThrow();
-        Member member = memberRepository.findById(request.getMemberId()).orElseThrow();
+        Member member = memberRepository.findById(request.getLoginUserId()).orElseThrow();
         BoardLike boardLike = new BoardLike(member, board);
         return boardLikeRepository.save(boardLike).getId();
     }
 
     public void cancelBoardLike(final BoardLikeRequest request) {
-        BoardLike boardLike = boardLikeRepository.findByMemberIdAndBoardId(request.getMemberId(), request.getBoardId());
+        BoardLike boardLike = boardLikeRepository.findByMemberIdAndBoardId(request.getLoginUserId(), request.getBoardId());
         boardLikeRepository.delete(boardLike);
     }
 }
