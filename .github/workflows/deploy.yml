@@ -111,6 +111,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
+          debug: true
           script: |
             docker ps -aq --filter name=walkiepaw_api | grep -q . && docker rm -f $(docker ps -aq --filter name=walkiepaw_api)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bitcamp
