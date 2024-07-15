@@ -56,10 +56,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
   }
 
   private void userLoginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
-    String accessToken = jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname());
+    String accessToken = jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname(), oAuth2User.getPhotoUrl());
 
     Map<String, Object> responseBody = new HashMap<>();
-    responseBody.put(TOKEN_KEY, jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname()));
+    responseBody.put(TOKEN_KEY, jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname(), oAuth2User.getPhotoUrl()));
     responseBody.put(ACCOUNT_STATUS_KEY, "Exist Account");
     responseBody.put(NAME_KEY, null);
     responseBody.put(EMAIL_KEY, null);
@@ -74,7 +74,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
   private void guestLoginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
     Map<String, Object> responseBody = new HashMap<>();
-    responseBody.put(TOKEN_KEY, jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname()));
+    responseBody.put(TOKEN_KEY, jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname(), oAuth2User.getPhotoUrl()));
     responseBody.put(ACCOUNT_STATUS_KEY, "New Account");
     responseBody.put(NAME_KEY, oAuth2User.getName());
     responseBody.put(EMAIL_KEY, oAuth2User.getEmail());
@@ -84,4 +84,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     objectMapper.writeValue(response.getWriter(), responseBody);
   }
+
+
 }

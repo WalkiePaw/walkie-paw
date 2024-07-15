@@ -33,6 +33,8 @@ public class JwtService {
   @Value("${jwt.access.header}")
   private String accessHeader;
 
+  public static final String PHOTO_URL = "photoUrl";
+
   /**
    * JWT의 Subject와 Claim으로 email 사용 -> 클레임의 name을 "email"으로 설정
    * JWT의 헤더에 들어오는 값 : 'Authorization(Key) = Bearer {토큰} (Value)' 형식
@@ -49,7 +51,7 @@ public class JwtService {
   /**
    * AccessToken 생성 메소드
    */
-  public String createAccessToken(String email, Integer memberId, String nickname) {
+  public String createAccessToken(String email, Integer memberId, String nickname, String photoUrl) {
     Date now = new Date();
     log.info("nickname = {}", nickname);
     return JWT.create() // JWT 토큰을 생성하는 빌더 반환
@@ -62,6 +64,7 @@ public class JwtService {
         .withClaim(EMAIL_CLAIM, email)
         .withClaim(ID_CLAIM, memberId)
         .withClaim(NICKNAME_CLAIM, nickname)
+        .withClaim(PHOTO_URL, photoUrl)
         .sign(Algorithm.HMAC512(secretKey)); // HMAC512 알고리즘 사용, application-jwt.yml에서 지정한 secret 키로 암호화
   }
 

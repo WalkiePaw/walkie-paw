@@ -70,6 +70,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         createdMember.getId(),
         createdMember.getNickname(),
         createdMember.getName(),
+        createdMember.getPhoto(),
         createdMember.getRole()
     );
   }
