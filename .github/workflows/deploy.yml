@@ -115,7 +115,7 @@ jobs:
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker ps -aq --filter name=walkiepaw_api | grep -q . && docker rm -f $(docker ps -aq --filter name=walkiepaw_api)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bitcamp
-            sudo docker run -d --name walkiepaw_api -p 8888:8888 -v /home/ubuntu/config:/root/config ${{ secrets.DOCKER_USERNAME }}/bitcamp
+            sudo docker run -d --name walkiepaw_api -p 8000:8080 -v /home/ubuntu/config:/root/config ${{ secrets.DOCKER_USERNAME }}/bitcamp
             sudo docker image prune -f
 
       # slack으로 메시지 발송
