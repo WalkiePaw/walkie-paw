@@ -2,7 +2,7 @@ package com.WalkiePaw.presentation.domain.chat;
 
 import com.WalkiePaw.domain.chat.service.ChatService;
 import com.WalkiePaw.presentation.domain.chat.dto.ChatAddRequest;
-import com.WalkiePaw.presentation.domain.chat.dto.ChatMsgListResponse;
+import com.WalkiePaw.presentation.domain.chat.dto.ChatWebSocketResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;

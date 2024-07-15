@@ -43,9 +43,9 @@ public class ChatroomController {
         return ResponseEntity.created(URI.create(CHATROOM_URI + id)).build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ChatroomRespnose> getChatroom(final @PathVariable Integer id) {
-        ChatroomRespnose chatroomById = chatroomService.findChatroomById(id);
+    @GetMapping("/{memberId}")
+    public ResponseEntity<ChatroomRespnose> getChatroom(final @PathVariable Integer memberId, final @RequestParam("board_id") Integer boardId) {
+        ChatroomRespnose chatroomById = chatroomService.findChatroomById(memberId, boardId);
         return ResponseEntity.ok(chatroomById);
     }
 
