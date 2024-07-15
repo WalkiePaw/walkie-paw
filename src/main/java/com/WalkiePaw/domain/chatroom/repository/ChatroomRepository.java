@@ -12,6 +12,4 @@ public interface ChatroomRepository extends JpaRepository<Chatroom, Integer>, Ch
 
     List<Chatroom> findByMemberId(final Integer memberId);
 
-
-    Optional<Chatroom> findByMemberIdAndBoardId(Integer chatroomId, Integer boardId);
 }

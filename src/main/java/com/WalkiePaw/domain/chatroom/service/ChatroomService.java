@@ -51,9 +51,11 @@ public class ChatroomService {
         return chatroomRepository.save(chatroom).getId();
     }
 
-    public ChatroomRespnose findChatroomById(final Integer chatroomId, final Integer boardId) {
-        Chatroom chatroom = chatroomRepository.findByMemberIdAndBoardId(chatroomId, boardId)
-                .orElseThrow(() -> new BadRequestException(NOT_FOUND_CHATROOM_ID));
+    public ChatroomRespnose findChatroomById(final Integer memberId, final Integer boardId) {
+        Chatroom chatroom = chatroomRepository.findByMemberIdAndBoardId(memberId, boardId)
+                .orElseGet(() ->
+                        chatroomRepository.findByWriterIdAndBoardId(memberId, boardId)
+                                .orElseThrow(() -> new BadRequestException(NOT_FOUND_CHATROOM_ID)));
         return ChatroomRespnose.toEntity(chatroom);
     }
 
