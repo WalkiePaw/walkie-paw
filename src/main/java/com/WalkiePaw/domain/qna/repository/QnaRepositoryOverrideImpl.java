@@ -23,6 +23,13 @@ public class QnaRepositoryOverrideImpl extends Querydsl4RepositorySupport implem
                 .fetch();
     }
 
+    @Override
+    public List<Qna> findByMemberId(final Integer memberId) {
+        return selectFrom(qna)
+                .where(qna.member.id.eq(memberId))
+                .fetch();
+    }
+
     private BooleanExpression statusCond(String status) {
         if (hasText(status)) {
             if (status.equals("RESOLVED")) {

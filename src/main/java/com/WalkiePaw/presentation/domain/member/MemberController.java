@@ -47,6 +47,13 @@ public class MemberController {
         return ResponseEntity.created(URI.create(MEMBER_URL + memberId)).build();
     }
 
+    @Operation(summary = "소셜로그인 회원가입")
+    @PostMapping("/social-signup")
+    public ResponseEntity<Void> socialSignUp(final @Validated @RequestBody SocialSignUpRequest request) {
+        Integer memberId = memberService.socialSignUp(request);
+        return ResponseEntity.created(URI.create(MEMBER_URL + memberId)).build();
+    }
+
     @ApiResponse(responseCode = "204", description = "수정됨")
     @Operation(summary = "멤버 수정")
     @PatchMapping("/{id}")
@@ -67,9 +74,16 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getMemberRRCount(memberId));
     }
 
-    @Operation(summary = "멤버 비밀번호 수정")
+    @Operation(summary = "비밀번호 찾기 - 멤버 비밀번호 수정")
     @PatchMapping("/{id}/passwordUpdate")
     public ResponseEntity<Void> updateMemberPasswd(@PathVariable("id") final Integer memberId, @RequestBody final MemberPasswdUpdateRequest request) {
+        memberService.updatePasswd(memberId, request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "마이페이지 - 멤버 비밀번호 수정")
+    @PatchMapping("/mypage/{id}/password-update")
+    public ResponseEntity<Void> mypageUpdateMemberPasswd(@PathVariable("id") final Integer memberId, @RequestBody final MemberPasswdUpdateRequest request) {
         memberService.updatePasswd(memberId, request);
         return ResponseEntity.noContent().build();
     }
@@ -115,6 +129,14 @@ public class MemberController {
         return ResponseEntity.ok(memberService.NicknameCheck(nickname));
     }
 
+    @Operation(summary = "이메일 중복 확인")
+    @GetMapping("/check-email")
+    public ResponseEntity<EmailCheckResponse> checkEmail(
+            @RequestParam final String email
+    ) {
+        return ResponseEntity.ok(memberService.EmailCheck(email));
+    }
+
     @Operation(summary = "이메일 찾기")
     @PostMapping("/find-email")
     public ResponseEntity<FindEmailResponse> findEmail(@RequestBody final FindEmailRequest request) {
@@ -125,5 +147,11 @@ public class MemberController {
     @PostMapping("/find-passwd")
     public ResponseEntity<FindPasswdResponse> findPasswd(@RequestBody final FindPasswdRequest request) {
         return ResponseEntity.ok(memberService.findPasswd(request));
+    }
+
+    @Operation(summary = "프로파일 - 회원 소개글, 이름, 사진 요청")
+    @GetMapping("/{id}/profile")
+    public ResponseEntity<ProfileResponse> profile(@PathVariable("id") final Integer memberId) {
+        return ResponseEntity.ok(memberService.findProfile(memberId));
     }
 }

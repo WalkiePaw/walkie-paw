@@ -3,6 +3,7 @@ package com.WalkiePaw.domain.member.service;
 import com.WalkiePaw.domain.mail.service.MailService;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
+import com.WalkiePaw.global.exception.BadRequestException;
 import com.WalkiePaw.presentation.domain.member.dto.*;
 import com.WalkiePaw.security.CustomPasswordEncoder;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.WalkiePaw.global.exception.ExceptionCode.NOT_FOUND_MEMBER_ID;
+import static com.WalkiePaw.global.exception.ExceptionCode.NOT_FOUND_EMAIL;
 
 @Service
 @Transactional
@@ -122,5 +126,27 @@ public class MemberService {
         String visible = beforeAt.substring(0, beforeAt.length() - 4);
         String masked = "*".repeat(4);
         return visible + masked + afterAt;
+    }
+
+    public EmailCheckResponse EmailCheck(final String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if (member.isEmpty()) {
+            return new EmailCheckResponse(EmailCheckResult.AVAILABLE);
+        } else {
+            return new EmailCheckResponse(EmailCheckResult.DUPLICATED);
+        }
+    }
+
+    public ProfileResponse findProfile(final Integer memberId) {
+        return ProfileResponse.from(memberRepository.findById(memberId).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        ));
+    }
+
+    public Integer socialSignUp(final SocialSignUpRequest request) {
+        Member member = memberRepository.findByEmail(request.getEmail()).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_EMAIL)
+        );
+        return member.updateBySocialSignUpRequest(request);
     }
 }
