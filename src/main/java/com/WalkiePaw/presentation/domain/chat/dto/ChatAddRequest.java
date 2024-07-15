@@ -11,6 +11,8 @@ import lombok.Data;
 public class ChatAddRequest {
     private final Integer writerId;
     private final String content;
+    private final String sentTime;
+    private final String nickname;
 
     public ChatMessage toEntity(final ChatAddRequest request, final Member member, final Chatroom chatroom) {
         return new ChatMessage(chatroom, member, request.content);
