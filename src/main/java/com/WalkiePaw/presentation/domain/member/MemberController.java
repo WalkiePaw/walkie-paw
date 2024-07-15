@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -162,5 +161,11 @@ public class MemberController {
         @PathVariable("id") final Integer memberId, @RequestBody final UpdateSelectedAddrRequest request ) {
         memberService.updateSeletedAddr(memberId, request);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "마이페이지 - 내 주소, 선택 주소 요청")
+    @GetMapping("/{id}/addresses")
+    public ResponseEntity<AddressesGetResponse> getAddresses(@PathVariable("id") final Integer memberId) {
+        memberService.getAddressesByMemberId(memberId)
     }
 }
