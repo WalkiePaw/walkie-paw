@@ -6,12 +6,15 @@ import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.domain.chatroom.repository.ChatroomRepository;
 import com.WalkiePaw.domain.review.entity.Review;
 import com.WalkiePaw.domain.review.repository.ReviewRepository;
+import com.WalkiePaw.global.exception.BadRequestException;
+import com.WalkiePaw.global.exception.ExceptionCode;
 import com.WalkiePaw.presentation.domain.chatroom.dto.TransactionResponse;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomAddRequest;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomListResponse;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomRespnose;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.WalkiePaw.global.exception.ExceptionCode.NOT_FOUND_CHATROOM_ID;
 
 @Service
 @RequiredArgsConstructor
@@ -46,9 +51,9 @@ public class ChatroomService {
         return chatroomRepository.save(chatroom).getId();
     }
 
-    public ChatroomRespnose findChatroomById(final Integer chatroomId) {
-        Chatroom chatroom = chatroomRepository.findById(chatroomId)
-                .orElseThrow(() -> new IllegalStateException("잘못된 채팅방 번호입니다."));
+    public ChatroomRespnose findChatroomById(final Integer chatroomId, final Integer boardId) {
+        Chatroom chatroom = chatroomRepository.findByMemberIdAndBoardId(chatroomId, boardId)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_CHATROOM_ID));
         return ChatroomRespnose.toEntity(chatroom);
     }
 

@@ -1,4 +1,4 @@
-package com.WalkiePaw.presentation.domain.chat;
+package com.WalkiePaw.presentation.domain.chat.dto;
 
 import lombok.Data;
 
