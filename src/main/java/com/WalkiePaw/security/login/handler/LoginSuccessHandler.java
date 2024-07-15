@@ -27,7 +27,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     String email = extractUsername(authentication); // 인증 정보에서 Username(email) 추출
     Integer memberId = extractMemberId(authentication);
     String nickname = extractNickname(authentication);
-    String accessToken = jwtService.createAccessToken(email, memberId, nickname); // JwtService의 createAccessToken을 사용하여 AccessToken 발급
+    String photoUrl = extractPhotoUrl(authentication);
+    String accessToken = jwtService.createAccessToken(email, memberId, nickname, photoUrl); // JwtService의 createAccessToken을 사용하여 AccessToken 발급
 
     jwtService.sendAccessToken(response, accessToken); // 응답 바디에 AccessToken 실어서 응답
 
@@ -36,6 +37,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     log.info("로그인에 성공하였습니다. nickname : {}", nickname);
     log.info("로그인에 성공하였습니다. memberId : {}", memberId);
     log.info("로그인에 성공하였습니다. AccessToken : {}", accessToken);
+    log.info("로그인에 성공하였습니다. PhotoUrl : {}", photoUrl);
     log.info("발급된 AccessToken 만료 기간 : {}", accessTokenExpiration);
   }
 
@@ -52,5 +54,10 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
   private Integer extractMemberId(Authentication authentication) {
     UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
     return userPrincipal.getMemberId();
+  }
+
+  private String extractPhotoUrl(Authentication authentication) {
+    UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+    return userPrincipal.getPhotoUrl();
   }
 }
