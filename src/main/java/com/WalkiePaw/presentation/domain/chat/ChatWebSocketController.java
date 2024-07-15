@@ -8,6 +8,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -15,10 +16,14 @@ import org.springframework.stereotype.Controller;
 public class ChatWebSocketController {
 
     private final ChatService chatService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/chats/{chatroomId}")
     @SendTo("/chats/{chatroomId}")
-    public ChatMsgListResponse addChat(@DestinationVariable("chatroomId") Integer chatroomId, @Payload ChatAddRequest request) {
-        return chatService.saveChatMsg(chatroomId, request);
+    public void addChat(@DestinationVariable("chatroomId") Integer chatroomId, @Payload ChatAddRequest request) {
+        String destination = "/chats/" + chatroomId;
+        ChatWebSocketResponse response = new ChatWebSocketResponse(request.getWriterId(), request.getNickname(), request.getContent(), request.getSentTime());
+        simpMessagingTemplate.convertAndSend(destination, response);
+        chatService.saveChatMsg(chatroomId, request);
     }
 }
