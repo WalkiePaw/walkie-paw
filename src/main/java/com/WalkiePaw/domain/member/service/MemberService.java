@@ -149,4 +149,11 @@ public class MemberService {
         );
         return member.updateBySocialSignUpRequest(request);
     }
+
+    public void updateSeletedAddr(Integer memberId, UpdateSelectedAddrRequest request) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+            () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        );
+        member.updateSelectedAdrrs(request);
+    }
 }

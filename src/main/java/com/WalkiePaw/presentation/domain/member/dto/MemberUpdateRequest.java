@@ -4,7 +4,6 @@ import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.domain.member.entity.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDate;
 
@@ -33,7 +32,7 @@ public class MemberUpdateRequest {
                 .nickname(this.nickname)
                 .email(this.email)
                 .phoneNumber(this.phoneNumber)
-                .address(this.address)
+                .memberAddress(this.address)
                 .birth(this.birth)
                 .profile(this.profile)
                 .rating(this.rating)
@@ -47,7 +46,7 @@ public class MemberUpdateRequest {
                 member.getNickname(),
                 member.getEmail(),
                 member.getPhoneNumber(),
-                member.getAddress(),
+                member.getMemberAddress(),
                 member.getBirth(),
                 member.getProfile(),
                 member.getRating(),
