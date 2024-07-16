@@ -163,4 +163,11 @@ public class MemberService {
         );
         return AddressesGetResponse.from(member);
     }
+
+    public SideBarInfoResponse getSidebarinfoBy(Integer memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        );
+        return SideBarInfoResponse.from(member);
+    }
 }
