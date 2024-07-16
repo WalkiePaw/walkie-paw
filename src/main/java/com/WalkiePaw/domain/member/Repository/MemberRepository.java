@@ -12,7 +12,7 @@ import java.util.Optional;
 @Profile("spring-data-jpa")
 public interface MemberRepository extends JpaRepository<Member, Integer>, MemberRepositoryOverride {
 
-    @Query("select m from Member m where m.email = :email")
+    @Query("select m from Member m where m.email = :email and m.role = 'USER'")
     Optional<Member> findByEmail(@Param("email") String email);
 
     @Query("select m from Member m where m.nickname = :nickname")

@@ -31,8 +31,12 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final BoardPhotoRepository boardPhotoRepository;
 
-    public Slice<BoardListResponse> findAllBoardAndMember(final BoardCategory category, Pageable pageable) {
-        return boardRepository.findAllNotDeleted(category, pageable);
+    public Slice<BoardListResponse> findAllBoardAndMember(final Integer memberId, final BoardCategory category, Pageable pageable) {
+        if (memberId == null) {
+            return boardRepository.findAllNotDeleted(category, pageable);
+        } else {
+            return boardRepository.findAllNotDeleted(memberId, category, pageable);
+        }
     }
 
     @Transactional

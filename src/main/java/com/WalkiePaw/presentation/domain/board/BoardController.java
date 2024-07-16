@@ -2,6 +2,7 @@ package com.WalkiePaw.presentation.domain.board;
 
 import com.WalkiePaw.domain.board.entity.BoardCategory;
 import com.WalkiePaw.domain.board.service.BoardService;
+import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.presentation.domain.board.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,9 +10,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+
+import static org.eclipse.jdt.internal.compiler.problem.ProblemSeverities.Optional;
 
 
 @RestController
@@ -26,8 +33,9 @@ public class BoardController {
     @GetMapping("/list/{category}")
     public ResponseEntity<Slice<BoardListResponse>> getBoardList(
             final @PathVariable BoardCategory category,
+            final @RequestParam(required = false) Integer memberId,
             Pageable pageable) {
-        Slice<BoardListResponse> boardListResponses = boardService.findAllBoardAndMember(category, pageable);
+        Slice<BoardListResponse> boardListResponses = boardService.findAllBoardAndMember(memberId, category, pageable);
         return ResponseEntity.ok(boardListResponses);
     }
 

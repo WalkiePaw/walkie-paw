@@ -16,7 +16,7 @@ public class ChatroomListResponse {
     private String location;
     private String nickname;
     private String latestMessage;
-    private LocalTime latestTime;
+    private LocalDateTime latestTime;
     private int unreadCount;
 
     public ChatroomListResponse(Integer id, String location, String nickname, String latestMessage, LocalDateTime modifiedDate, int unreadCount) {
@@ -24,7 +24,7 @@ public class ChatroomListResponse {
         this.location = location;
         this.nickname = nickname;
         this.latestMessage = latestMessage;
-        this.latestTime = modifiedDate.toLocalTime();
+        this.latestTime = modifiedDate;
         this.unreadCount = unreadCount;
     }
 

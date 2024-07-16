@@ -22,4 +22,6 @@ public interface BoardRepositoryOverride {
     Slice<BoardListResponse> findLikeBoardList(Integer memberId, Pageable pageable);
 
     Optional<Board> findWithPhotoBy(Integer boardId);
+
+    Slice<BoardListResponse> findAllNotDeleted(Integer memberId, BoardCategory category, Pageable pageable);
 }
