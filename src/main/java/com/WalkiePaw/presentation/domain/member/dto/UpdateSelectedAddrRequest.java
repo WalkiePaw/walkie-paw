@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class UpdateSelectedAddrRequest {
-  private String selectedAddrs;
+  private String selectedAddresses;
 }
