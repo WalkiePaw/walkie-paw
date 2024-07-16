@@ -36,7 +36,9 @@ public class ChatroomRepositoryOverrideImpl extends Querydsl4RepositorySupport i
                                 Expressions.stringTemplate("CASE WHEN {0} = {1} THEN {2} ELSE {3} END",
                                         memberId, chatroom.member.id,
                                         chatroom.board.member.nickname, chatroom.member.nickname).as("nickname"),
-                                chatroom.latestMessage, chatroom.modifiedDate, chatroom.unreadCount
+                                chatroom.latestMessage, chatroom.modifiedDate, chatroom.unreadCount,
+                                chatroom.board.title.as("boardTitle"),
+                                chatroom.member.photo.as("memberPhoto")
                         ))
                         .from(chatroom)
                         .where(chatroom.board.member.id.eq(memberId).or(chatroom.member.id.eq(memberId))));
