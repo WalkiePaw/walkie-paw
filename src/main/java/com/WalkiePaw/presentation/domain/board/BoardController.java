@@ -75,12 +75,13 @@ public class BoardController {
 
     @GetMapping("/search")
     public ResponseEntity<Slice<BoardListResponse>> searchBoard(
+            final @RequestParam(required = false) Integer memberId,
             final @RequestParam(required = false) String title,
             final @RequestParam(required = false) String content,
             final @RequestParam(required = false) BoardCategory category,
             Pageable pageable
     ) {
-        Slice<BoardListResponse> list = boardService.findBySearchCond(title, content, category, pageable);
+        Slice<BoardListResponse> list = boardService.findBySearchCond(memberId, title, content, category, pageable);
         return ResponseEntity.ok(list);
     }
 }

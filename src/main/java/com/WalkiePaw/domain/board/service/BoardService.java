@@ -89,8 +89,14 @@ public class BoardService {
         board.delete();
     }
 
-    public Slice<BoardListResponse> findBySearchCond(final String title, final String content, final BoardCategory category, Pageable pageable) {
-        return boardRepository.findBySearchCond(title, content, category, pageable);
+    public Slice<BoardListResponse> findBySearchCond(
+            final Integer memberId,
+            final String title, final String content, final BoardCategory category, Pageable pageable) {
+        if (memberId == null) {
+            return boardRepository.findAllNotDeleted(category, pageable);
+        } else {
+            return boardRepository.findAllNotDeleted(memberId, category, pageable);
+        }
     }
 
     public Page<BoardMypageListResponse> findMyBoardsBy(final Integer memberId, final BoardCategory category, Pageable pageable) {
