@@ -55,13 +55,13 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
       return null;
     }
 
-    Map<String, Object> profile = (Map<String, Object>) account.get("profile");
+    String email = (String) account.get("email");
 
-    if (profile == null) {
+    if (email == null) {
       return null;
     }
 
-    return (String) profile.get("email");
+    return email;
   }
 
   @Override
@@ -72,12 +72,12 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
       return null;
     }
 
-    Map<String, Object> profile = (Map<String, Object>) account.get("profile");
+    String name = (String) account.get("name");
 
-    if (profile == null) {
+    if (name == null) {
       return null;
     }
 
-    return (String) profile.get("name");
+    return name;
   }
 }

@@ -154,4 +154,18 @@ public class MemberController {
     public ResponseEntity<ProfileResponse> profile(@PathVariable("id") final Integer memberId) {
         return ResponseEntity.ok(memberService.findProfile(memberId));
     }
+
+    @Operation(summary = "마이페이지 - 주소 선택? 동네 설정?")
+    @PatchMapping("/{id}/selected-addresses")
+    public ResponseEntity<Void> updateSelectedAddresses(
+        @PathVariable("id") final Integer memberId, @RequestBody final UpdateSelectedAddrRequest request ) {
+        memberService.updateSeletedAddr(memberId, request);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "마이페이지 - 내 주소, 선택 주소 요청")
+    @GetMapping("/{id}/addresses")
+    public ResponseEntity<AddressesGetResponse> getAddresses(@PathVariable("id") final Integer memberId) {
+        return ResponseEntity.ok(memberService.getAddressesByMemberId(memberId));
+    }
 }
