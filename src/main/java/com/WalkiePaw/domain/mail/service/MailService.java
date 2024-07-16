@@ -12,10 +12,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Random;
 
 import static com.WalkiePaw.global.exception.ExceptionCode.DUPLICATED_EMAIL;
+import static com.WalkiePaw.global.exception.ExceptionCode.MAIL_SEND_FAIL;
 import static com.WalkiePaw.global.exception.ExceptionCode.NOT_FOUND_EMAIL;
 
 @Service
@@ -55,9 +55,10 @@ public class MailService {
             mailSender.send(message);
         } catch (MessagingException e) { // 이메일 서버에 연결할 수 없거나, 잘못된 이메일 주소를 사용하거나, 인증 오류가 발생하는 등 오류
             // 이러한 경우 MessagingException이 발생
-            e.printStackTrace(); // e.printStackTrace()는 예외를 기본 오류 스트림에 출력하는 메서드
+            throw new BadRequestException(MAIL_SEND_FAIL);
+//            e.printStackTrace(); // e.printStackTrace()는 예외를 기본 오류 스트림에 출력하는 메서드
         }
-        redisUtil.setDataExpire(Integer.toString(authNumber), toMail, 60 * 5L);
+        redisUtil.setDataExpire(Integer.toString(authNumber), toMail, 60 * 5L); // redis db에 인증번호와 이메일을 하나의 쌍으로, 유효기간을 지정하여 저장.
     }
 
 
@@ -97,10 +98,9 @@ public class MailService {
      * 만약 없다면 memberId가 빈 EmailAuthResponse를 만듦.
      */
     private EmailAuthResponse buildEmailAuthResponse(String email) {
-        Optional<Member> memberOptional = memberRepository.findByEmail(email);
-        return EmailAuthResponse.builder()
-                .result("Success")
-                .memberId(memberOptional.map(Member::getId).orElse(null))
-                .build();
+        Member member = memberRepository.findByEmail(email).orElseThrow(
+            () -> new BadRequestException(NOT_FOUND_EMAIL)
+        );
+        return EmailAuthResponse.from(member);
     }
 }
