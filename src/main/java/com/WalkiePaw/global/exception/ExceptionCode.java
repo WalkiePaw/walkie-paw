@@ -12,7 +12,8 @@ public enum ExceptionCode {
     NOT_FOUND_CHATROOM_ID(1003, "요청한 ID의 채팅방이 존재하지 않습니다."),
     NOT_FOUND_REVIEW_ID(1004, "요청한 ID의 리뷰가 존재하지 않습니다."),
 
-    NOT_FOUND_EMAIL(1005, "요청한 EMAIL의 사용자가 존재하지 않습니다.");
+    NOT_FOUND_EMAIL(1005, "요청한 EMAIL의 사용자가 존재하지 않습니다."),
+    DUPLICATED_EMAIL(1006, "요청한 EMAIL의 사용자가 이미 존재합니다.");
 
 
     private final int code;

@@ -43,7 +43,7 @@ public class MemberAddRequest {
                 .email(this.email)
                 .password(this.password)
                 .phoneNumber(this.phoneNumber)
-                .address(this.address)
+                .memberAddress(this.address)
                 .birth(this.birth)
                 .profile(this.profile)
                 .photo(this.photo)
@@ -57,7 +57,7 @@ public class MemberAddRequest {
                 member.getEmail(),
                 member.getPassword(),
                 member.getPhoneNumber(),
-                member.getAddress(),
+                member.getMemberAddress(),
                 member.getBirth(),
                 member.getProfile(),
                 member.getPhoto()
