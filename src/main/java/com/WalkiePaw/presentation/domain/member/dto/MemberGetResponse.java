@@ -4,7 +4,6 @@ import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.domain.member.entity.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -28,7 +27,7 @@ public class MemberGetResponse {
                 member.getNickname(),
                 member.getEmail(),
                 member.getPhoneNumber(),
-                member.getAddress(),
+                member.getMemberAddress(),
                 member.getBirth(),
                 member.getProfile(),
                 member.getRating(),
