@@ -168,4 +168,10 @@ public class MemberController {
     public ResponseEntity<AddressesGetResponse> getAddresses(@PathVariable("id") final Integer memberId) {
         return ResponseEntity.ok(memberService.getAddressesByMemberId(memberId));
     }
+
+    @Operation(summary = "마이페이지 - 좌측 사이드바 사용자 데이터 요청")
+    @GetMapping("/{id}/sidebar-info")
+    public ResponseEntity<SideBarInfoResponse> getSideBarInfo(@PathVariable("id") final Integer memberId) {
+        return ResponseEntity.ok(memberService.getSidebarinfoBy(memberId));
+    }
 }
