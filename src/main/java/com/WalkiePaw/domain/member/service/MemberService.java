@@ -7,6 +7,8 @@ import com.WalkiePaw.global.exception.BadRequestException;
 import com.WalkiePaw.presentation.domain.member.dto.*;
 import com.WalkiePaw.security.CustomPasswordEncoder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,11 +88,8 @@ public class MemberService {
         member.general();
     }
 
-    public List<MemberListResponse> findBySearchCond(final String name, final String nickname, final String email, final Integer reportedCnt) {
-        List<Member> list = memberRepository.findBySearchCond(name, nickname, email, reportedCnt);
-        return list.stream()
-                .map(MemberListResponse::from)
-                .toList();
+    public Page<MemberListResponse> findBySearchCond(final String name, final String nickname, final String email, final Integer reportedCnt, Pageable pageable) {
+        return memberRepository.findBySearchCond(name, nickname, email, reportedCnt, pageable);
     }
 
     public NicknameCheckResponse NicknameCheck(final String nickname) {
