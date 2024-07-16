@@ -149,10 +149,10 @@ public class MemberController {
         return ResponseEntity.ok(memberService.findPasswd(request));
     }
 
-    @Operation(summary = "프로파일 - 회원 소개글, 이름, 사진 요청")
-    @GetMapping("/{id}/profile")
-    public ResponseEntity<ProfileResponse> profile(@PathVariable("id") final Integer memberId) {
-        return ResponseEntity.ok(memberService.findProfile(memberId));
+    @Operation(summary = "프로파일")
+    @GetMapping("/{nickname}/dashboard")
+    public ResponseEntity<ProfileResponse> profile(@PathVariable("nickname") final String nickname) {
+        return ResponseEntity.ok(memberService.findProfile(nickname));
     }
 
     @Operation(summary = "마이페이지 - 주소 선택? 동네 설정?")
