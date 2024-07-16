@@ -141,7 +141,7 @@ public class Member extends BaseEntity {
     }
 
     public void updateSelectedAdrrs(UpdateSelectedAddrRequest request) {
-        this.selectedAddresses = request.getSelectedAddrs();
+        this.selectedAddresses = request.getSelectedAddresses();
     }
 
     /**
