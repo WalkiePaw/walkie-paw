@@ -70,6 +70,8 @@ public class BoardService {
         board.updateBoard(request.getTitle(), request.getContent(), request.getPrice(), request.getStartTime(),
                 request.getEndTime(), request.getPriceType(), request.getLocation(), request.getDetailedLocation(), request.isPriceProposal());
         List<String> urls = request.getPhotoUrls().stream().map(ImageDto::getUrl).toList();
+        board.getPhotos().forEach(BoardPhoto::deletePhoto);
+        board.getPhotos().clear();
         List<BoardPhoto> photos = urls.stream().map(BoardPhoto::new).toList();
         photos.forEach(bp -> bp.addPhoto(board));
         boardPhotoRepository.saveAll(photos);

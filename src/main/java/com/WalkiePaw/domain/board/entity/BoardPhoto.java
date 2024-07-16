@@ -23,6 +23,10 @@ public class BoardPhoto {
         this.url = url;
     }
 
+    public void deletePhoto() {
+        this.board = null;
+    }
+
     public BoardPhoto(final String url) {
         this.url = url;
     }

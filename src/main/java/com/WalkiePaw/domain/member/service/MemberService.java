@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.WalkiePaw.global.exception.ExceptionCode.NOT_FOUND_MEMBER_ID;
-import static com.WalkiePaw.global.exception.ExceptionCode.NOT_FOUND_EMAIL;
+import static com.WalkiePaw.global.exception.ExceptionCode.*;
 
 @Service
 @Transactional
@@ -115,7 +114,19 @@ public class MemberService {
         if(member.isEmpty()) {
             return new FindPasswdResponse(FindPasswdResult.USER_NOT_FOUND);
         }
-        mailService.joinEmail(request.getEmail());
+        /**
+         * TODO
+         *  - mail 관련 기능 분리
+         */
+        Integer authNumber = mailService.makeRandomNumber();
+        String setFrom = "no.reply.walkiepaw@gmail.com"; // email-config에 설정한 자신의 이메일 주소를 입력
+        String toMail = request.getEmail();
+        String title = "인증 이메일 입니다."; // 이메일 제목
+        String content =
+                "인증 번호는 " + authNumber + "입니다." +
+                        "<br>" +
+                        "인증번호를 제대로 입력해주세요"; //이메일 내용 삽입
+        mailService.mailSend(setFrom, toMail, title, content);
         return new FindPasswdResponse(FindPasswdResult.SUCCESS);
     }
 
@@ -137,10 +148,11 @@ public class MemberService {
         }
     }
 
-    public ProfileResponse findProfile(final Integer memberId) {
-        return ProfileResponse.from(memberRepository.findById(memberId).orElseThrow(
-                () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
-        ));
+    public ProfileResponse findProfile(final String nickanme) {
+        return ProfileResponse.from(memberRepository.findByNickname(nickanme).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_NICKNAME)
+                )
+        );
     }
 
     public Integer socialSignUp(final SocialSignUpRequest request) {
@@ -162,5 +174,12 @@ public class MemberService {
             () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
         );
         return AddressesGetResponse.from(member);
+    }
+
+    public SideBarInfoResponse getSidebarinfoBy(Integer memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        );
+        return SideBarInfoResponse.from(member);
     }
 }
