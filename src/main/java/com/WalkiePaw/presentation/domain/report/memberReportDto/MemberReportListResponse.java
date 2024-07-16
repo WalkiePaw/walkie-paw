@@ -4,11 +4,15 @@ import com.WalkiePaw.domain.report.entity.MemberReport;
 import com.WalkiePaw.domain.report.entity.MemberReportCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
+@Setter
 public class MemberReportListResponse {
 
     private Integer memberReportId;
