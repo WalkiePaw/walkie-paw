@@ -161,6 +161,6 @@ public class MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow(
             () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
         );
-        return null;
+        return AddressesGetResponse.from(member);
     }
 }

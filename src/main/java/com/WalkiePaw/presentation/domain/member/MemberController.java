@@ -166,6 +166,6 @@ public class MemberController {
     @Operation(summary = "마이페이지 - 내 주소, 선택 주소 요청")
     @GetMapping("/{id}/addresses")
     public ResponseEntity<AddressesGetResponse> getAddresses(@PathVariable("id") final Integer memberId) {
-        memberService.getAddressesByMemberId(memberId)
+        return ResponseEntity.ok(memberService.getAddressesByMemberId(memberId));
     }
 }
