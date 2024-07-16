@@ -18,18 +18,25 @@ public class ChatroomListResponse {
     private String latestMessage;
     private LocalDateTime latestTime;
     private int unreadCount;
+    private String boardTitle;
+    private String memberPhoto;
 
-    public ChatroomListResponse(Integer id, String location, String nickname, String latestMessage, LocalDateTime modifiedDate, int unreadCount) {
+    public ChatroomListResponse(
+        Integer id, String location, String nickname, String latestMessage, LocalDateTime modifiedDate, int unreadCount, String boardTitle, String memberPhoto
+    ) {
         this.id = id;
         this.location = location;
         this.nickname = nickname;
         this.latestMessage = latestMessage;
         this.latestTime = modifiedDate;
         this.unreadCount = unreadCount;
+        this.boardTitle = boardTitle;
+        this.memberPhoto = memberPhoto;
     }
 
     public static ChatroomListResponse from(final Chatroom chatroom) {
         return new ChatroomListResponse(chatroom.getId(), chatroom.getBoard().getLocation(),
-                 chatroom.getMember().getNickname(), chatroom.getLatestMessage(), chatroom.getModifiedDate(), chatroom.getUnreadCount());
+                 chatroom.getMember().getNickname(), chatroom.getLatestMessage(), chatroom.getModifiedDate(), chatroom.getUnreadCount(), chatroom.getBoard()
+            .getTitle(), chatroom.getMember().getPhoto());
     }
 }
