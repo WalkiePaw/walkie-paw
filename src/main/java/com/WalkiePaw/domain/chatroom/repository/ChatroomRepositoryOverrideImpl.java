@@ -30,18 +30,20 @@ public class ChatroomRepositoryOverrideImpl extends Querydsl4RepositorySupport i
     @Override
     public Slice<ChatroomListResponse> findByMemberId(final Integer memberId, Pageable pageable) {
         return slice(pageable,
-                query -> query.select(
-                        Projections.constructor(ChatroomListResponse.class,
-                                chatroom.id, chatroom.board.location,
-                                Expressions.stringTemplate("CASE WHEN {0} = {1} THEN {2} ELSE {3} END",
-                                        memberId, chatroom.member.id,
-                                        chatroom.board.member.nickname, chatroom.member.nickname).as("nickname"),
-                                chatroom.latestMessage, chatroom.modifiedDate, chatroom.unreadCount,
-                                chatroom.board.title.as("boardTitle"),
-                                chatroom.member.photo.as("memberPhoto")
-                        ))
-                        .from(chatroom)
-                        .where(chatroom.board.member.id.eq(memberId).or(chatroom.member.id.eq(memberId))));
+            query -> query.select(
+                    Projections.constructor(ChatroomListResponse.class,
+                        chatroom.id, chatroom.board.location,
+                        Expressions.stringTemplate("CASE WHEN {0} = {1} THEN {2} ELSE {3} END",
+                            memberId, chatroom.member.id,
+                            chatroom.board.member.nickname, chatroom.member.nickname).as("nickname"),
+                        chatroom.latestMessage, chatroom.modifiedDate, chatroom.unreadCount,
+                        chatroom.board.title.as("boardTitle"),
+                        Expressions.stringTemplate("CASE WHEN {0} = {1} THEN {2} ELSE {3} END",
+                            memberId, chatroom.member.id,
+                            chatroom.board.member.photo, chatroom.member.photo).as("memberPhoto")
+                    ))
+                .from(chatroom)
+                .where(chatroom.board.member.id.eq(memberId).or(chatroom.member.id.eq(memberId))));
     }
 
     @Override
