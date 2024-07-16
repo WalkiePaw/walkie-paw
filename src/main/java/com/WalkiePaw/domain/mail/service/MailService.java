@@ -2,6 +2,7 @@ package com.WalkiePaw.domain.mail.service;
 
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
+import com.WalkiePaw.global.exception.BadRequestException;
 import com.WalkiePaw.presentation.domain.mail.dto.EmailAuthResponse;
 import com.WalkiePaw.utils.RedisUtil;
 import jakarta.mail.MessagingException;
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Random;
+
+import static com.WalkiePaw.global.exception.ExceptionCode.DUPLICATED_EMAIL;
+import static com.WalkiePaw.global.exception.ExceptionCode.NOT_FOUND_EMAIL;
 
 @Service
 @RequiredArgsConstructor
@@ -59,6 +63,10 @@ public class MailService {
 
     // mail을 어디서, 어디로 보내는지, 인증 번호를 html 형식으로 어떻게 보내는지 작성
     public String joinEmail(String email) {
+        memberRepository.findByEmail(email)
+                .ifPresent(member -> {
+                    throw new BadRequestException(DUPLICATED_EMAIL);
+                });
         makeRandomNumber();
         String setFrom = "no.reply.walkiepaw@gmail.com"; // email-config에 설정한 자신의 이메일 주소를 입력
         String toMail = email;
@@ -72,7 +80,7 @@ public class MailService {
     }
 
     //임의의 6자리 양수를 반환
-    public void makeRandomNumber() {
+    public Integer makeRandomNumber() {
         Random r = new Random();
         String randomNumber = "";
         for (int i = 0; i < 6; i++) {
@@ -80,6 +88,7 @@ public class MailService {
         }
 
         authNumber = Integer.parseInt(randomNumber);
+        return authNumber;
     }
 
     /**
