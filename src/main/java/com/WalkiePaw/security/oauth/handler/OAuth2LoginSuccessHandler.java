@@ -64,7 +64,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     Map<String, Object> data = new HashMap<>();
     data.put("account status", oAuth2User.getRole() == Role.GUEST ? "New Account" : "Existing Account");
-    data.put("token", "your_generated_token_here");
+    data.put("token", jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname(), oAuth2User.getPhotoUrl()));
     data.put("name", oAuth2User.getName());
     data.put("email", oAuth2User.getEmail());
 
