@@ -66,7 +66,10 @@ public class ChatroomService {
     ) {
         Chatroom chatroom = chatroomRepository.findChatroomAndBoardById(chatroomId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_CHATROOM_ID));
+        // BoardStatus 업데이트
         chatroom.getBoard().updateStatus(status);
-        chatroom.updateStatus(ChatroomStatus.valueOf(String.valueOf(status)));
+        // ChatroomStatus 업데이트
+        ChatroomStatus chatroomStatus = ChatroomStatus.valueOf(status.name());
+        chatroom.updateStatus(chatroomStatus);
     }
 }
