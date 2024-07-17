@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class MemberListResponse {
     private String name;

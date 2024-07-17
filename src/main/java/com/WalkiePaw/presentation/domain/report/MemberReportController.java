@@ -6,6 +6,8 @@ import com.WalkiePaw.presentation.domain.report.memberReportDto.MemberReportGetR
 import com.WalkiePaw.presentation.domain.report.memberReportDto.MemberReportListResponse;
 import com.WalkiePaw.presentation.domain.report.memberReportDto.MemberReportUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -58,11 +60,12 @@ public class MemberReportController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("list")
-    ResponseEntity<List<MemberReportListResponse>> list(
-            @RequestParam(required = false) final String status // RESOLVED, UNRESOLVED
+    @GetMapping("/list")
+    ResponseEntity<Page<MemberReportListResponse>> list(
+            @RequestParam(required = false) final String status, // RESOLVED, UNRESOLVED
+            Pageable pageable
     ) {
-        List<MemberReportListResponse> list = memberReportService.findAllByCond(status);
+        Page<MemberReportListResponse> list = memberReportService.findAllByCond(status, pageable);
         return ResponseEntity.ok(list);
     }
 
