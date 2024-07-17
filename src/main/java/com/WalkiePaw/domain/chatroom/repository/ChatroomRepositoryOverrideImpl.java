@@ -43,6 +43,7 @@ public class ChatroomRepositoryOverrideImpl extends Querydsl4RepositorySupport i
                                         Expressions.stringTemplate("CASE WHEN {0} = {1} THEN {2} ELSE {3} END",
                                                 memberId, chatroom.member.id,
                                                 chatroom.board.member.photo, chatroom.member.photo).as("memberPhoto"),
+                                        chatroom.board.status,
                                         Expressions.asBoolean(chatroom.status.eq(COMPLETED))
                                 ))
                         .from(chatroom)

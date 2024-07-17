@@ -1,6 +1,8 @@
 package com.WalkiePaw.presentation.domain.chatroom.dto;
 
+import com.WalkiePaw.domain.board.entity.BoardStatus;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
+import com.WalkiePaw.domain.chatroom.entity.ChatroomStatus;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,10 +22,11 @@ public class ChatroomListResponse {
     private int unreadCount;
     private String boardTitle;
     private String memberPhoto;
-    private boolean isCompleted;
+    private BoardStatus boardStatus;
+    private boolean isTransaction;
 
     public ChatroomListResponse(
-        Integer id, String location, String nickname, String latestMessage, LocalDateTime modifiedDate, int unreadCount, String boardTitle, String memberPhoto, boolean isCompleted
+        Integer id, String location, String nickname, String latestMessage, LocalDateTime modifiedDate, int unreadCount, String boardTitle, String memberPhoto, BoardStatus boardStatus, boolean isTransaction
     ) {
         this.id = id;
         this.location = location;
@@ -33,7 +36,8 @@ public class ChatroomListResponse {
         this.unreadCount = unreadCount;
         this.boardTitle = boardTitle;
         this.memberPhoto = memberPhoto;
-        this.isCompleted = isCompleted;
+        this.boardStatus = boardStatus;
+        this.isTransaction = isTransaction;
     }
 
     public ChatroomListResponse(

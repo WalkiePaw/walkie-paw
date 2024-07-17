@@ -1,21 +1,18 @@
 package com.WalkiePaw.domain.chatroom.service;
 
 import com.WalkiePaw.domain.board.entity.Board;
+import com.WalkiePaw.domain.board.entity.BoardStatus;
 import com.WalkiePaw.domain.board.repository.BoardRepository;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.domain.chatroom.entity.ChatroomStatus;
 import com.WalkiePaw.domain.chatroom.repository.ChatroomRepository;
-import com.WalkiePaw.domain.review.entity.Review;
-import com.WalkiePaw.domain.review.repository.ReviewRepository;
 import com.WalkiePaw.global.exception.BadRequestException;
-import com.WalkiePaw.global.exception.ExceptionCode;
 import com.WalkiePaw.presentation.domain.chatroom.dto.TransactionResponse;
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.domain.member.entity.Member;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomAddRequest;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomListResponse;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomRespnose;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,9 +21,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
+import static com.WalkiePaw.global.exception.ExceptionCode.INVALID_REQUEST;
 import static com.WalkiePaw.global.exception.ExceptionCode.NOT_FOUND_CHATROOM_ID;
 
 @Service
@@ -61,31 +56,21 @@ public class ChatroomService {
     }
 
     public Page<TransactionResponse> findTransaction(final Integer memberId, final Pageable pageable) {
-        //        List<Chatroom> content = page.getContent();
-//        for (Chatroom chatroom : content) {
-//            TransactionResponse response = new TransactionResponse();
-//            Integer bId = chatroom.getBoard().getId();
-//            Integer mId = chatroom.getMember().getId();
-//            if (bId.equals(memberId)) {
-//                boolean hasNoReview  = reviewRepository.findByReviewerIdAndChatroomId(bId, chatroom.getId()).isEmpty();
-//                response.setHasReview(!hasNoReview);
-//                response.setMemberNickName(chatroom.getMember().getNickname());
-//            } else {
-//                boolean hasNoReview = reviewRepository.findByReviewerIdAndChatroomId(mId, chatroom.getId()).isEmpty();
-//                response.setHasReview(!hasNoReview);
-//                response.setMemberNickName(chatroom.getBoard().getMember().getNickname());
-//            }
-//            response.setChatroomId(chatroom.getId());
-//            response.setTitle(chatroom.getBoard().getTitle());
-//            response.setCategory(chatroom.getBoard().getCategory());
-//            response.setCreatedDate(chatroom.getCompletedDate());
-//        }
         return chatroomRepository.findTransaction(memberId, pageable);
     }
 
-    public void updateChatroomStatus(final Integer chatroomId) {
-        Chatroom chatroom = chatroomRepository.findById(chatroomId)
+    @Transactional
+    public void updateChatroomStatus(
+            final Integer memberId,
+            final Integer chatroomId,
+            final ChatroomStatus status
+    ) {
+        Chatroom chatroom = chatroomRepository.findChatroomAndBoardById(chatroomId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_CHATROOM_ID));
-        chatroom.updateStatus(ChatroomStatus.COMPLETED);
+        if (chatroom.getBoard().getMember().getId() != memberId) {
+            throw new BadRequestException(INVALID_REQUEST);
+        }
+        chatroom.updateStatus(status);
+        chatroom.getBoard().updateStatus(BoardStatus.valueOf(status.toString()));
     }
 }
