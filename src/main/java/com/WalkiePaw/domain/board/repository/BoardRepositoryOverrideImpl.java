@@ -69,6 +69,35 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
                         .orderBy(board.createdDate.desc()));
     }
 
+    @Override
+    public Slice<BoardListResponse> findAllNotDeleted(final Integer memberId, final BoardCategory category, final String dong, Pageable pageable) {
+        return slice(pageable,
+                slice -> slice
+                        .select(Projections.constructor(BoardListResponse.class,
+                                board.id,
+                                board.title,
+                                board.content,
+                                board.location,
+                                board.price,
+                                board.priceType,
+                                board.endTime,
+                                board.startTime,
+                                board.likeCount,
+                                board.member.nickname.as("memberNickName"),
+                                board.status,
+                                board.category,
+                                board.priceProposal,
+                                getBoardPhoto(),
+                                board.member.photo.as("memberPhoto"),
+                                boardLikeQuery(memberId)
+                        ))
+                        .from(board)
+                        .join(board.member)
+                        .where(board.status.ne(BoardStatus.DELETED).and(board.category.eq(category)),
+                                dongCond(dong))
+                        .orderBy(board.createdDate.desc()));
+    }
+
     private static JPQLQuery<String> getBoardPhoto() {
         return JPAExpressions
                 .select(boardPhoto.url.min().as("photoUrls"))
@@ -130,6 +159,10 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
 
     private BooleanExpression titleCond(final String title) {
         return hasText(title) ? board.title.like("%" + title + "%") : null;
+    }
+
+    private BooleanExpression dongCond(final String address) {
+      return  hasText(address) ? board.member.memberAddress.like("%" + address + "%") : null;
     }
 
     @Override

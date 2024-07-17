@@ -93,11 +93,11 @@ public class BoardService {
 
     public Slice<BoardListResponse> findBySearchCond(
             final Integer memberId,
-            final String title, final String content, final BoardCategory category, Pageable pageable) {
+            final String title, final String content, final BoardCategory category, String dong, Pageable pageable) {
         if (memberId == null) {
             return boardRepository.findAllNotDeleted(category, pageable);
         } else {
-            return boardRepository.findAllNotDeleted(memberId, category, pageable);
+            return boardRepository.findAllNotDeleted(memberId, category, dong, pageable);
         }
     }
 

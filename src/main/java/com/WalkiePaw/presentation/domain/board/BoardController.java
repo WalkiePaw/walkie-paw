@@ -79,9 +79,10 @@ public class BoardController {
             final @RequestParam(required = false) String title,
             final @RequestParam(required = false) String content,
             final @RequestParam(required = false) BoardCategory category,
+            final @RequestParam(required = false) String dong,
             Pageable pageable
     ) {
-        Slice<BoardListResponse> list = boardService.findBySearchCond(memberId, title, content, category, pageable);
+        Slice<BoardListResponse> list = boardService.findBySearchCond(memberId, title, content, category, dong, pageable);
         return ResponseEntity.ok(list);
     }
 }
