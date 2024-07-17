@@ -56,6 +56,7 @@ public class BoardLikeService {
                 ));
         Set<Integer> batch = new HashSet<>();
         Set<Board> boards = new HashSet<>();
+
         for (Integer i : counts.keySet()) {
             batch.add(i);
             if (batch.size() == 50) {
@@ -63,10 +64,15 @@ public class BoardLikeService {
                 batch.clear();
             }
         }
+
+        if (!batch.isEmpty()) {
+            boards.addAll(boardRepository.findAllByIdIn(batch));
+        }
+
         boards.forEach( b ->
                 {
                     Integer likes = counts.get(b.getId());
-                    b.updateBoardLike(likes);
+                    boardRepository.updateLikeCountById(likes, b.getId());
                 }
         );
     }
