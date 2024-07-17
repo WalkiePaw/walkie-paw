@@ -114,6 +114,10 @@ public class Board extends BaseEntity {
                 .toList();
     }
 
+    public void updateBoardLike(final int likeCount) {
+        this.likeCount = likeCount;
+    }
+
 
     /**
      * TODO : update 메서드 만들기

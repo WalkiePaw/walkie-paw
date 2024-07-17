@@ -1,5 +1,6 @@
 package com.WalkiePaw.domain.chatroom.repository;
 
+import com.WalkiePaw.domain.board.entity.BoardStatus;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.domain.chatroom.entity.ChatroomStatus;
 import com.WalkiePaw.global.util.Querydsl4RepositorySupport;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 import static com.WalkiePaw.domain.board.entity.QBoard.board;
+import static com.WalkiePaw.domain.chatroom.entity.ChatroomStatus.COMPLETED;
 import static com.WalkiePaw.domain.chatroom.entity.QChatroom.*;
 import static com.WalkiePaw.domain.member.entity.QMember.member;
 import static com.WalkiePaw.domain.review.entity.QReview.*;
@@ -30,20 +32,24 @@ public class ChatroomRepositoryOverrideImpl extends Querydsl4RepositorySupport i
     @Override
     public Slice<ChatroomListResponse> findByMemberId(final Integer memberId, Pageable pageable) {
         return slice(pageable,
-            query -> query.select(
-                    Projections.constructor(ChatroomListResponse.class,
-                        chatroom.id, chatroom.board.location,
-                        Expressions.stringTemplate("CASE WHEN {0} = {1} THEN {2} ELSE {3} END",
-                            memberId, chatroom.member.id,
-                            chatroom.board.member.nickname, chatroom.member.nickname).as("nickname"),
-                        chatroom.latestMessage, chatroom.modifiedDate, chatroom.unreadCount,
-                        chatroom.board.title.as("boardTitle"),
-                        Expressions.stringTemplate("CASE WHEN {0} = {1} THEN {2} ELSE {3} END",
-                            memberId, chatroom.member.id,
-                            chatroom.board.member.photo, chatroom.member.photo).as("memberPhoto")
-                    ))
-                .from(chatroom)
-                .where(chatroom.board.member.id.eq(memberId).or(chatroom.member.id.eq(memberId))));
+                query -> query.select(
+                                Projections.constructor(ChatroomListResponse.class,
+                                        chatroom.id, chatroom.board.location,
+                                        Expressions.stringTemplate("CASE WHEN {0} = {1} THEN {2} ELSE {3} END",
+                                                memberId, chatroom.member.id,
+                                                chatroom.board.member.nickname, chatroom.member.nickname).as("nickname"),
+                                        chatroom.latestMessage, chatroom.modifiedDate, chatroom.unreadCount,
+                                        chatroom.board.title.as("boardTitle"),
+                                        Expressions.stringTemplate("CASE WHEN {0} = {1} THEN {2} ELSE {3} END",
+                                                memberId, chatroom.member.id,
+                                                chatroom.board.member.photo, chatroom.member.photo).as("memberPhoto"),
+                                        chatroom.board.status,
+                                        Expressions.asBoolean(chatroom.status.eq(COMPLETED)),
+                                        Expressions.asBoolean(chatroom.board.member.id.eq(memberId)),
+                                        chatroom.board.category
+                                ))
+                        .from(chatroom)
+                        .where(chatroom.board.member.id.eq(memberId).or(chatroom.member.id.eq(memberId))));
     }
 
     @Override
@@ -69,7 +75,7 @@ public class ChatroomRepositoryOverrideImpl extends Querydsl4RepositorySupport i
                         .from(chatroom)
                         .join(chatroom.member, member)
                         .join(chatroom.board, board)
-                        .where(chatroom.status.eq(ChatroomStatus.COMPLETED)
+                        .where(chatroom.status.eq(COMPLETED)
                                 .and(chatroom.board.member.id.eq(memberId).or(chatroom.member.id.eq(memberId)))));
     }
 

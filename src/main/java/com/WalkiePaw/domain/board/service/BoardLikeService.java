@@ -11,9 +11,16 @@ import com.WalkiePaw.presentation.domain.board.dto.BoardListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,5 +45,35 @@ public class BoardLikeService {
     public void cancelBoardLike(final BoardLikeRequest request) {
         BoardLike boardLike = boardLikeRepository.findByMemberIdAndBoardId(request.getLoginUserId(), request.getBoardId());
         boardLikeRepository.delete(boardLike);
+    }
+
+    @Scheduled(fixedDelay = 600000)
+    public void countBoardLike() {
+        Map<Integer, Integer> counts = boardLikeRepository.countAllBoardLike().stream()
+                .collect(Collectors.toMap(
+                        c -> (Integer) c[0],
+                        c -> ((Long) c[1]).intValue() // Long을 Integer로 안전하게 변환
+                ));
+        Set<Integer> batch = new HashSet<>();
+        Set<Board> boards = new HashSet<>();
+
+        for (Integer i : counts.keySet()) {
+            batch.add(i);
+            if (batch.size() == 50) {
+                boards.addAll(boardRepository.findAllByIdIn(batch));
+                batch.clear();
+            }
+        }
+
+        if (!batch.isEmpty()) {
+            boards.addAll(boardRepository.findAllByIdIn(batch));
+        }
+
+        boards.forEach( b ->
+                {
+                    Integer likes = counts.get(b.getId());
+                    boardRepository.updateLikeCountById(likes, b.getId());
+                }
+        );
     }
 }

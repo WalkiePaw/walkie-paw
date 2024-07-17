@@ -41,11 +41,16 @@ public class Chatroom extends BaseEntity {
     public Chatroom(Board board, Member member) {
         this.board = board;
         this.member = member;
-        this.status = ChatroomStatus.GENERAL;
+        this.status = ChatroomStatus.RECRUITING;
     }
 
     public void updateLatestMessage(final String latestMessage) {
         this.latestMessage = latestMessage;
+    }
+
+    public void updateStatus(final ChatroomStatus chatroomStatus) {
+        this.status = chatroomStatus;
+        this.completedDate = LocalDateTime.now();
     }
 
 //    /**
