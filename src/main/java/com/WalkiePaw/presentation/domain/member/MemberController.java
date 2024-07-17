@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -111,13 +113,14 @@ public class MemberController {
 
     @Operation(summary = "멤버 검색")
     @GetMapping("/search")
-    public ResponseEntity<List<MemberListResponse>> search(
+    public ResponseEntity<Page<MemberListResponse>> search(
             @RequestParam(required = false) final String name,
             @RequestParam(required = false) final String nickname,
             @RequestParam(required = false) final String email,
-            @RequestParam(required = false) final Integer reportedCnt
+            @RequestParam(required = false) final Integer reportedCnt,
+            Pageable pageable
     ) {
-        List<MemberListResponse> list = memberService.findBySearchCond(name, nickname, email, reportedCnt);
+        Page<MemberListResponse> list = memberService.findBySearchCond(name, nickname, email, reportedCnt, pageable);
         return ResponseEntity.ok(list);
     }
 

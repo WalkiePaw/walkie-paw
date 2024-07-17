@@ -15,11 +15,13 @@ public interface BoardRepositoryOverride {
 
     Slice<BoardListResponse> findAllNotDeleted(BoardCategory category, Pageable pageable);
 
-    Slice<BoardListResponse> findBySearchCond(String title, String content, BoardCategory category, Pageable pageable);
+    Slice<BoardListResponse> findBySearchCond(Integer memberId, String title, String content, BoardCategory category, Pageable pageable);
 
     Page<BoardMypageListResponse> findMyBoardsBy(Integer memberId, BoardCategory category, Pageable pageable);
 
     Slice<BoardListResponse> findLikeBoardList(Integer memberId, Pageable pageable);
 
     Optional<Board> findWithPhotoBy(Integer boardId);
+
+    Slice<BoardListResponse> findAllNotDeleted(Integer memberId, BoardCategory category, Pageable pageable);
 }

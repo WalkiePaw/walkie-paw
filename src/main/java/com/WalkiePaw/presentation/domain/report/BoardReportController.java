@@ -3,6 +3,8 @@ package com.WalkiePaw.presentation.domain.report;
 import com.WalkiePaw.domain.report.service.BoardReportService;
 import com.WalkiePaw.presentation.domain.report.boardReportDto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -58,10 +60,11 @@ public class BoardReportController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<BoardReportListResponse>> list(
-            @RequestParam(required = false) final String status // RESOLVED, UNRESOLVED
+    public ResponseEntity<Page<BoardReportListResponse>> list(
+            @RequestParam(required = false) final String status, // RESOLVED, UNRESOLVED
+        Pageable pageable
     ) {
-        List<BoardReportListResponse> list = boardReportService.findAllByResolvedCond(status);
+        Page<BoardReportListResponse> list = boardReportService.findAllByResolvedCond(status, pageable);
         return ResponseEntity.ok(list);
     }
 }

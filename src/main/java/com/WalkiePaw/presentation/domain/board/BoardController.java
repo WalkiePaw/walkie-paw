@@ -3,6 +3,7 @@ package com.WalkiePaw.presentation.domain.board;
 import com.WalkiePaw.domain.board.entity.BoardCategory;
 import com.WalkiePaw.domain.board.service.BoardService;
 import com.WalkiePaw.presentation.domain.board.dto.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,8 +27,9 @@ public class BoardController {
     @GetMapping("/list/{category}")
     public ResponseEntity<Slice<BoardListResponse>> getBoardList(
             final @PathVariable BoardCategory category,
+            final @RequestParam(required = false) Integer memberId,
             Pageable pageable) {
-        Slice<BoardListResponse> boardListResponses = boardService.findAllBoardAndMember(category, pageable);
+        Slice<BoardListResponse> boardListResponses = boardService.findAllBoardAndMember(memberId, category, pageable);
         return ResponseEntity.ok(boardListResponses);
     }
 
@@ -42,8 +44,7 @@ public class BoardController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addBoard(final @RequestBody BoardAddRequest request) {
-        System.out.println("request = " + request);
+    public ResponseEntity<Void> addBoard(final @Valid @RequestBody BoardAddRequest request) {
         Integer saveId = boardService.save(request);
         return ResponseEntity.created(URI.create(BOARD_URL + saveId)).build();
     }
@@ -74,12 +75,13 @@ public class BoardController {
 
     @GetMapping("/search")
     public ResponseEntity<Slice<BoardListResponse>> searchBoard(
+            final @RequestParam(required = false) Integer memberId,
             final @RequestParam(required = false) String title,
             final @RequestParam(required = false) String content,
             final @RequestParam(required = false) BoardCategory category,
             Pageable pageable
     ) {
-        Slice<BoardListResponse> list = boardService.findBySearchCond(title, content, category, pageable);
+        Slice<BoardListResponse> list = boardService.findBySearchCond(memberId, title, content, category, pageable);
         return ResponseEntity.ok(list);
     }
 }
