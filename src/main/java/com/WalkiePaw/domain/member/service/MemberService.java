@@ -39,7 +39,9 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public MemberGetResponse findById(final Integer memberId) {
-        return MemberGetResponse.from(memberRepository.findById(memberId).orElseThrow());
+        return MemberGetResponse.from(memberRepository.findById(memberId).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        ));
     }
 
     public Integer save(final MemberAddRequest request) {
@@ -49,43 +51,59 @@ public class MemberService {
     }
 
     public void update(final Integer id, final MemberUpdateRequest request) {
-        Member member = memberRepository.findById(id).orElseThrow();
+        Member member = memberRepository.findById(id).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        );
         member.updateMember(request);
     }
 
     @Transactional(readOnly = true)
     public MemberScoreResponse getMemberScore(final Integer memberId) {
-        return MemberScoreResponse.from(memberRepository.findById(memberId).orElseThrow());
+        return MemberScoreResponse.from(memberRepository.findById(memberId).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        ));
     }
 
     @Transactional(readOnly = true)
     public MemberRRCountResponse getMemberRRCount(final Integer memberId) {
-        return MemberRRCountResponse.from(memberRepository.findById(memberId).orElseThrow());
+        return MemberRRCountResponse.from(memberRepository.findById(memberId).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        ));
     }
 
     public void updatePasswd(final Integer memberId, final MemberPasswdUpdateRequest request) {
-        Member member = memberRepository.findById(memberId).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        );
         member.updatePasswd(request.getPassword());
         passwordEncoder.encodePassword(member);
     }
 
     @Transactional(readOnly = true)
-    public Optional<Member> findByEmail(final String email) {
-        return memberRepository.findByEmail(email);
+    public Member findByEmail(final String email) {
+        return memberRepository.findByEmail(email).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_EMAIL)
+        );
     }
 
     public void draw(final Integer memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        );
         member.withdraw();
     }
 
     public void ban(final Integer memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        );
         member.ban();
     }
 
     public void general(final Integer memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        );
         member.general();
     }
 
@@ -94,17 +112,16 @@ public class MemberService {
     }
 
     public NicknameCheckResponse NicknameCheck(final String nickname) {
-        Optional<Member> member = memberRepository.findByNickname(nickname);
-        if (member.isEmpty()) {
-            return new NicknameCheckResponse(NCheckResult.AVAILABLE);
-        } else {
-            return new NicknameCheckResponse(NCheckResult.DUPLICATED);
-        }
+        return memberRepository.findByNickname(nickname)
+                .map(m -> new NicknameCheckResponse(NCheckResult.DUPLICATED))
+                .orElse(new NicknameCheckResponse(NCheckResult.AVAILABLE));
     }
 
 
     public FindEmailResponse findEmail(final FindEmailRequest request) {
-        Member member = memberRepository.findByNameAndPhoneNumber(request.getName(), request.getPhoneNumber()).orElseThrow();
+        Member member = memberRepository.findByNameAndPhoneNumber(request.getName(), request.getPhoneNumber()).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_MEMBER)
+        );
         return new FindEmailResponse(maskedMail(member.getEmail()));
     }
 

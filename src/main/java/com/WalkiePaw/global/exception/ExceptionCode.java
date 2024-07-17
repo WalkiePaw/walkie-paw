@@ -16,7 +16,16 @@ public enum ExceptionCode {
     NOT_FOUND_EMAIL(1005, "요청한 EMAIL의 회원이 존재하지 않습니다."),
     DUPLICATED_EMAIL(1006, "요청한 EMAIL의 회원이 이미 존재합니다."),
 
-    NOT_FOUND_NICKNAME(1007, "요청한 NICKNAME의 회원이 존재하지 않습니다.");
+    NOT_FOUND_NICKNAME(1007, "요청한 NICKNAME의 회원이 존재하지 않습니다."),
+
+    NOT_FOUND_QNA_ID(1008, "요쳥한 ID의 문의가 존재하지 않습니다."),
+
+    NOT_FOUND_BOARD_REPORT_ID(1009, "요청한 ID의 게시글 신고가 존재하지 않습니다."),
+    NOT_FOUND_MEMBER_REPORT_ID(1010, "요청한 ID의 회원 신고가 존재하지 않습니다."),
+
+    NOT_FOUND_MEMBER(2001, "회원을 찾을 수 없습니다."),
+
+    MAIL_SEND_FAIL(5001, "메일 전송에 실패하였습니다.");
 
 
     private final int code;

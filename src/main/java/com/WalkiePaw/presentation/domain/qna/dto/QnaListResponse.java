@@ -4,11 +4,13 @@ import com.WalkiePaw.domain.qna.entity.Qna;
 import com.WalkiePaw.domain.qna.entity.QnaStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class QnaListResponse {
 
     private Integer qnaId;
