@@ -11,9 +11,12 @@ import com.WalkiePaw.presentation.domain.board.dto.BoardListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,5 +41,11 @@ public class BoardLikeService {
     public void cancelBoardLike(final BoardLikeRequest request) {
         BoardLike boardLike = boardLikeRepository.findByMemberIdAndBoardId(request.getLoginUserId(), request.getBoardId());
         boardLikeRepository.delete(boardLike);
+    }
+
+    @Scheduled(fixedDelay = 600000)
+    public void countBoardLike() {
+        List<Board> boards = boardRepository.findAll();
+        boards.forEach(b -> b.updateBoardLike(boardLikeRepository.countByBoardId(b.getId())));
     }
 }

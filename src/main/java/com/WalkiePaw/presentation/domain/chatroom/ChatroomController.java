@@ -59,7 +59,7 @@ public class ChatroomController {
     public ResponseEntity<Void> updateChatroomStatus(
             final @RequestBody ChatroomUpdateStatusRequest request
             ) {
-        chatroomService.updateChatroomStatus(request.getMemberId(), request.getChatroomId(), request.getStatus());
+        chatroomService.updateChatroomStatus(request.getChatroomId(), request.getStatus());
         return ResponseEntity.noContent().build();
     }
 }

@@ -13,7 +13,7 @@ public interface ChatroomRepository extends JpaRepository<Chatroom, Integer>, Ch
 
     List<Chatroom> findByMemberId(final Integer memberId);
 
-    @EntityGraph(attributePaths = {"board", "member"})
+    @EntityGraph(attributePaths = {"board"})
     Optional<Chatroom> findChatroomAndBoardById(Integer chatroomId);
 
 }

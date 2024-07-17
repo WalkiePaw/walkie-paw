@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BoardLikeRepository extends JpaRepository<BoardLike, Integer> {
     BoardLike findByMemberIdAndBoardId(Integer memberId, Integer boardId);
+
+    Integer countByBoardId(Integer id);
 }
