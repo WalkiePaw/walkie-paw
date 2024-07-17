@@ -7,6 +7,7 @@ import com.WalkiePaw.global.exception.BadRequestException;
 import com.WalkiePaw.presentation.domain.member.dto.*;
 import com.WalkiePaw.security.CustomPasswordEncoder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import static com.WalkiePaw.global.exception.ExceptionCode.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -172,6 +174,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow(
             () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
         );
+        log.info("member: {}", member);
         return AddressesGetResponse.from(member);
     }
 

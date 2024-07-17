@@ -95,9 +95,9 @@ public class BoardService {
             final Integer memberId,
             final String title, final String content, final BoardCategory category, Pageable pageable) {
         if (memberId == null) {
-            return boardRepository.findAllNotDeleted(category, pageable);
+            return boardRepository.findBySearchCond(title, content, category, pageable);
         } else {
-            return boardRepository.findAllNotDeleted(memberId, category, pageable);
+            return boardRepository.findBySearchCond(memberId, title, content, category, pageable);
         }
     }
 

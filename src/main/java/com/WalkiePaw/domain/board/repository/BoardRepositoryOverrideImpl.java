@@ -87,6 +87,22 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
         return boardLike.board.id.eq(board.id).and(boardLike.member.id.eq(memberId));
     }
 
+    @Override
+    public Slice<BoardListResponse> findBySearchCond(String title, String content, BoardCategory category, Pageable pageable) {
+        return slice(pageable,
+                slice -> slice
+                        .select(board)
+                        .from(board)
+                        .join(board.member).fetchJoin()
+                        .where(board.status.ne(BoardStatus.DELETED).and(board.category.eq(category)))
+                        .where(
+                                titleCond(title),
+                                contentCond(content),
+                                categoryCond(category))
+                        .orderBy(board.createdDate.desc()),
+                b -> BoardListResponse.from(b, false)
+        );
+    }
 
     @Override
     public Slice<BoardListResponse> findBySearchCond(final Integer memberId, final String title, final String content, final BoardCategory category, Pageable pageable) {
@@ -110,7 +126,7 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
                         boardLikeQuery(memberId)
                 ))
                 .from(board)
-                .join(board.member).fetchJoin()
+                .join(board.member)
                 .where(
                         titleCond(title),
                         contentCond(content),
