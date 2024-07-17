@@ -3,6 +3,7 @@ package com.WalkiePaw.domain.chatroom.service;
 import com.WalkiePaw.domain.board.entity.Board;
 import com.WalkiePaw.domain.board.repository.BoardRepository;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
+import com.WalkiePaw.domain.chatroom.entity.ChatroomStatus;
 import com.WalkiePaw.domain.chatroom.repository.ChatroomRepository;
 import com.WalkiePaw.domain.review.entity.Review;
 import com.WalkiePaw.domain.review.repository.ReviewRepository;
@@ -80,5 +81,11 @@ public class ChatroomService {
 //            response.setCreatedDate(chatroom.getCompletedDate());
 //        }
         return chatroomRepository.findTransaction(memberId, pageable);
+    }
+
+    public void updateChatroomStatus(final Integer chatroomId) {
+        Chatroom chatroom = chatroomRepository.findById(chatroomId)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_CHATROOM_ID));
+        chatroom.updateStatus(ChatroomStatus.COMPLETED);
     }
 }

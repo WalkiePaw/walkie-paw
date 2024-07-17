@@ -48,6 +48,11 @@ public class Chatroom extends BaseEntity {
         this.latestMessage = latestMessage;
     }
 
+    public void updateStatus(final ChatroomStatus chatroomStatus) {
+        this.status = chatroomStatus;
+        this.completedDate = LocalDateTime.now();
+    }
+
 //    /**
 //     * Chatroom 생성 메서드
 //     * @param board 어떤 게시물과 연결된 채팅인지, board의 작성자가 채팅을 받는 member가 된다.
