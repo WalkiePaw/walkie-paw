@@ -1,5 +1,6 @@
 package com.WalkiePaw.presentation.domain.chatroom.dto;
 
+import com.WalkiePaw.domain.board.entity.BoardCategory;
 import com.WalkiePaw.domain.board.entity.BoardStatus;
 import com.WalkiePaw.domain.chatroom.entity.Chatroom;
 import com.WalkiePaw.domain.chatroom.entity.ChatroomStatus;
@@ -25,11 +26,12 @@ public class ChatroomListResponse {
     private BoardStatus boardStatus;
     private boolean isTransactionCompleted;
     private boolean isBoardWriter;
+    private BoardCategory category;
 
     public ChatroomListResponse(
         Integer id, String location, String nickname, String latestMessage, LocalDateTime modifiedDate,
         int unreadCount, String boardTitle, String memberPhoto, BoardStatus boardStatus, boolean isTransactionCompleted
-        , boolean isBoardWriter
+        , boolean isBoardWriter, BoardCategory category
     ) {
         this.id = id;
         this.location = location;
@@ -42,6 +44,7 @@ public class ChatroomListResponse {
         this.boardStatus = boardStatus;
         this.isTransactionCompleted = isTransactionCompleted;
         this.isBoardWriter = isBoardWriter;
+        this.category = category;
     }
 
     public ChatroomListResponse(

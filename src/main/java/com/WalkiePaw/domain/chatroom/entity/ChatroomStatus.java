@@ -6,5 +6,5 @@ package com.WalkiePaw.domain.chatroom.entity;
  * COMPLETED = "완료"
  */
 public enum ChatroomStatus {
-    RECRUITING, RESERVED, COMPLETED
+    GENERAL, RECRUITING, RESERVED, COMPLETED
 }

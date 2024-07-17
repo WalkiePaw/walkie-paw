@@ -16,8 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,8 +49,25 @@ public class BoardLikeService {
 
     @Scheduled(fixedDelay = 600000)
     public void countBoardLike() {
-        Map<Integer, Integer> counts = boardLikeRepository.countAllBoardLike().stream().collect(Collectors.toMap(c -> (Integer) c[0], c -> (int) c[1]));
-
-        boardRepository.findAllById(counts.keySet());
+        Map<Integer, Integer> counts = boardLikeRepository.countAllBoardLike().stream()
+                .collect(Collectors.toMap(
+                        c -> (Integer) c[0],
+                        c -> ((Long) c[1]).intValue() // Long을 Integer로 안전하게 변환
+                ));
+        Set<Integer> batch = new HashSet<>();
+        Set<Board> boards = new HashSet<>();
+        for (Integer i : counts.keySet()) {
+            batch.add(i);
+            if (batch.size() == 50) {
+                boards.addAll(boardRepository.findAllByIdIn(batch));
+                batch.clear();
+            }
+        }
+        boards.forEach( b ->
+                {
+                    Integer likes = counts.get(b.getId());
+                    b.updateBoardLike(likes);
+                }
+        );
     }
 }

@@ -45,7 +45,8 @@ public class ChatroomRepositoryOverrideImpl extends Querydsl4RepositorySupport i
                                                 chatroom.board.member.photo, chatroom.member.photo).as("memberPhoto"),
                                         chatroom.board.status,
                                         Expressions.asBoolean(chatroom.status.eq(COMPLETED)),
-                                        Expressions.asBoolean(chatroom.board.member.id.eq(memberId))
+                                        Expressions.asBoolean(chatroom.board.member.id.eq(memberId)),
+                                        chatroom.board.category
                                 ))
                         .from(chatroom)
                         .where(chatroom.board.member.id.eq(memberId).or(chatroom.member.id.eq(memberId))));
