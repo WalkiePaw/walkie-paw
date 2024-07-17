@@ -7,6 +7,7 @@ import com.WalkiePaw.global.util.Querydsl4RepositorySupport;
 import com.WalkiePaw.presentation.domain.chatroom.dto.ChatroomListResponse;
 import com.WalkiePaw.presentation.domain.chatroom.dto.TransactionResponse;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import org.springframework.data.domain.Page;
@@ -46,7 +47,12 @@ public class ChatroomRepositoryOverrideImpl extends Querydsl4RepositorySupport i
                                         chatroom.board.status,
                                         Expressions.asBoolean(chatroom.status.eq(COMPLETED)),
                                         Expressions.asBoolean(chatroom.board.member.id.eq(memberId)),
-                                        chatroom.board.category
+                                        chatroom.board.category,
+                                        new CaseBuilder()
+                                                .when(Expressions.asNumber(memberId).eq(chatroom.member.id))
+                                                .then(chatroom.board.member.id)
+                                                .otherwise(chatroom.member.id)
+                                                .as("memberId")
                                 ))
                         .from(chatroom)
                         .where(chatroom.board.member.id.eq(memberId).or(chatroom.member.id.eq(memberId))));

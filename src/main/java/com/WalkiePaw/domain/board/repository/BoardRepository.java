@@ -23,7 +23,7 @@ public interface BoardRepository extends JpaRepository<Board, Integer>, BoardRep
 
     Set<Board> findAllByIdIn(Set<Integer> integers);
 
-    @Modifying(clearAutomatically = true)
+    @Modifying
     @Query("UPDATE Board b SET b.likeCount = :likeCount WHERE b.id = :id")
     int updateLikeCountById(@Param("likeCount") Integer likes, @Param("id") Integer id);
 }
