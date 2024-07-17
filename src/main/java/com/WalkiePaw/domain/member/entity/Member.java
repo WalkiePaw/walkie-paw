@@ -5,7 +5,9 @@ import static com.WalkiePaw.domain.member.entity.Role.USER;
 import com.WalkiePaw.domain.common.BaseEntity;
 import com.WalkiePaw.presentation.domain.member.dto.MemberUpdateRequest;
 import com.WalkiePaw.presentation.domain.member.dto.SocialSignUpRequest;
+import com.WalkiePaw.presentation.domain.member.dto.UpdateSelectedAddrRequest;
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
@@ -29,8 +31,10 @@ public class Member extends BaseEntity {
     @JsonIgnore
     private String password;
     private String phoneNumber;
-    @Column(name = "addr")
-    private String address;
+    @Column(name = "member_address")
+    private String memberAddress;
+    @Column(name = "selected_addresses")
+    private String selectedAddresses;
     private LocalDate birth;
     private String profile;
     private double rating;
@@ -49,14 +53,14 @@ public class Member extends BaseEntity {
 
     @Builder
     public Member(String name, String nickname, String email, String password, String phoneNumber,
-                  String address, LocalDate birth, String profile, double rating,
+                  String memberAddress, LocalDate birth, String profile, double rating,
                   String photo, SocialType socialType, String socialId) {
         this.name = name;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
-        this.address = address;
+        this.memberAddress = memberAddress;
         this.birth = birth;
         this.profile = profile;
         this.rating = rating;
@@ -74,7 +78,7 @@ public class Member extends BaseEntity {
         this.name = request.getName();
         this.nickname = request.getNickname();
         this.phoneNumber = request.getPhoneNumber();
-        this.address = request.getAddress();
+        this.memberAddress = request.getAddress();
         this.birth = request.getBirth();
         this.profile = request.getProfile();
         this.rating = request.getRating();
@@ -129,11 +133,15 @@ public class Member extends BaseEntity {
         this.nickname = request.getNickname();
         this.phoneNumber = request.getPhoneNumber();
         this.birth = request.getBirth();
-        this.address = request.getAddress();
+        this.memberAddress = request.getAddress();
         this.profile = request.getProfile();
         this.photo = request.getPhoto();
         this.role = USER;
         return this.id;
+    }
+
+    public void updateSelectedAdrrs(UpdateSelectedAddrRequest request) {
+        this.selectedAddresses = request.getSelectedAddresses();
     }
 
     /**

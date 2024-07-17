@@ -1,8 +1,13 @@
 package com.WalkiePaw.domain.member.Repository;
 
 import com.WalkiePaw.domain.member.entity.Member;
+import com.WalkiePaw.domain.member.entity.Role;
 import com.WalkiePaw.global.util.Querydsl4RepositorySupport;
+import com.WalkiePaw.presentation.domain.member.dto.MemberListResponse;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,20 +22,29 @@ public class MemberRepositoryOverrideImpl extends Querydsl4RepositorySupport imp
     }
 
     @Override
-    public List<Member> findBySearchCond(final String name, final String nickname, final String email, final Integer reportedCnt) {
-        return selectFrom(member)
-                .where(
-                        nameCond(name),
-                        nicknameCond(nickname),
-                        emailCond(email),
-                        reportedCntCond(reportedCnt))
-                .fetch();
+    public Page<MemberListResponse> findBySearchCond(final String name, final String nickname, final String email, final Integer reportedCnt, final Pageable pageable) {
+        return page(pageable,
+                page -> page.select(Projections.fields(MemberListResponse.class,
+                member.name,
+                member.nickname,
+                member.email,
+                member.status,
+                member.reportedCnt,
+                member.createdDate
+                )).from(member).
+                where(
+                    nameCond(name),
+                    nicknameCond(nickname),
+                    emailCond(email),
+                    reportedCntCond(reportedCnt)
+                ));
     }
 
     @Override
     public Optional<Member> findByNameAndPhoneNumber(final String name, final String phoneNumber) {
         Member fetchedOne = selectFrom(member)
-                .where(member.name.eq(name).and(member.phoneNumber.eq(phoneNumber)))
+                .where(member.name.eq(name).and(member.phoneNumber.eq(phoneNumber)).and(member.role.eq(
+                    Role.USER)))
                 .fetchOne();
         return Optional.ofNullable(fetchedOne);
     }

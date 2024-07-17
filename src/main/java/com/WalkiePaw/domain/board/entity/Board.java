@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class Board extends BaseEntity {
     private BoardCategory category;
     private boolean priceProposal;
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @BatchSize(size = 20)
     private List<BoardPhoto> photos = new ArrayList<>();
 
     @Builder

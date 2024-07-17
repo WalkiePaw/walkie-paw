@@ -16,6 +16,7 @@ public class UserPrincipal implements UserDetails {
   private final Integer memberId;
   private final String email;
   private final String nickname;
+  private final String photoUrl;
   private final String password;
   private final Collection<? extends GrantedAuthority> authorities;
 

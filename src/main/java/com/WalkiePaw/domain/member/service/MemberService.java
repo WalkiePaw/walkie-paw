@@ -7,6 +7,8 @@ import com.WalkiePaw.global.exception.BadRequestException;
 import com.WalkiePaw.presentation.domain.member.dto.*;
 import com.WalkiePaw.security.CustomPasswordEncoder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.WalkiePaw.global.exception.ExceptionCode.NOT_FOUND_MEMBER_ID;
-import static com.WalkiePaw.global.exception.ExceptionCode.NOT_FOUND_EMAIL;
+import static com.WalkiePaw.global.exception.ExceptionCode.*;
 
 @Service
 @Transactional
@@ -86,11 +87,8 @@ public class MemberService {
         member.general();
     }
 
-    public List<MemberListResponse> findBySearchCond(final String name, final String nickname, final String email, final Integer reportedCnt) {
-        List<Member> list = memberRepository.findBySearchCond(name, nickname, email, reportedCnt);
-        return list.stream()
-                .map(MemberListResponse::from)
-                .toList();
+    public Page<MemberListResponse> findBySearchCond(final String name, final String nickname, final String email, final Integer reportedCnt, Pageable pageable) {
+        return memberRepository.findBySearchCond(name, nickname, email, reportedCnt, pageable);
     }
 
     public NicknameCheckResponse NicknameCheck(final String nickname) {
@@ -115,7 +113,19 @@ public class MemberService {
         if(member.isEmpty()) {
             return new FindPasswdResponse(FindPasswdResult.USER_NOT_FOUND);
         }
-        mailService.joinEmail(request.getEmail());
+        /**
+         * TODO
+         *  - mail 관련 기능 분리
+         */
+        Integer authNumber = mailService.makeRandomNumber();
+        String setFrom = "no.reply.walkiepaw@gmail.com"; // email-config에 설정한 자신의 이메일 주소를 입력
+        String toMail = request.getEmail();
+        String title = "인증 이메일 입니다."; // 이메일 제목
+        String content =
+                "인증 번호는 " + authNumber + "입니다." +
+                        "<br>" +
+                        "인증번호를 제대로 입력해주세요"; //이메일 내용 삽입
+        mailService.mailSend(setFrom, toMail, title, content);
         return new FindPasswdResponse(FindPasswdResult.SUCCESS);
     }
 
@@ -137,10 +147,11 @@ public class MemberService {
         }
     }
 
-    public ProfileResponse findProfile(final Integer memberId) {
-        return ProfileResponse.from(memberRepository.findById(memberId).orElseThrow(
-                () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
-        ));
+    public ProfileResponse findProfile(final String nickanme) {
+        return ProfileResponse.from(memberRepository.findByNickname(nickanme).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_NICKNAME)
+                )
+        );
     }
 
     public Integer socialSignUp(final SocialSignUpRequest request) {
@@ -148,5 +159,26 @@ public class MemberService {
                 () -> new BadRequestException(NOT_FOUND_EMAIL)
         );
         return member.updateBySocialSignUpRequest(request);
+    }
+
+    public void updateSeletedAddr(Integer memberId, UpdateSelectedAddrRequest request) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+            () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        );
+        member.updateSelectedAdrrs(request);
+    }
+
+    public AddressesGetResponse getAddressesByMemberId(Integer memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+            () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        );
+        return AddressesGetResponse.from(member);
+    }
+
+    public SideBarInfoResponse getSidebarinfoBy(Integer memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new BadRequestException(NOT_FOUND_MEMBER_ID)
+        );
+        return SideBarInfoResponse.from(member);
     }
 }

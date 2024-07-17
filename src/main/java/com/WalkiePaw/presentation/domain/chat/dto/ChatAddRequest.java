@@ -6,12 +6,16 @@ import com.WalkiePaw.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 public class ChatAddRequest {
-    private final Integer chatroomId;
     private final Integer writerId;
     private final String content;
+    private final String sentTime;
+    private final String nickname;
+    private final LocalDateTime createdDate;
 
     public ChatMessage toEntity(final ChatAddRequest request, final Member member, final Chatroom chatroom) {
         return new ChatMessage(chatroom, member, request.content);

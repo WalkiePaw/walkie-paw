@@ -75,9 +75,8 @@ public abstract class Querydsl4RepositorySupport {
      * @param <T> 반환 객체
      */
     protected <T> Slice<T> slice(Pageable pageable, Function<JPAQueryFactory, JPAQuery> sliceQuery) {
-        JPAQuery query = (JPAQuery) sliceQuery.apply(getJpaQueryFactory())
-                .offset(pageable.getOffset()).limit(pageable.getPageSize());
-        List<T> content = createContent(pageable, query);
+        List<T> content = ((JPAQuery) sliceQuery.apply(getJpaQueryFactory())
+                        .offset(pageable.getOffset()).limit(sliceSize(pageable))).fetch();
         boolean hasNext = isHasNext(pageable, content);
         return new SliceImpl<>(content, pageable, hasNext);
     }
@@ -103,25 +102,13 @@ public abstract class Querydsl4RepositorySupport {
     protected <T, R> Slice<R> slice(Pageable pageable,
                                     Function<JPAQueryFactory, JPAQuery<T>> sliceQuery,
                                     Function<T, R> transformer) {
-        JPAQuery<T> query = sliceQuery.apply(getJpaQueryFactory())
-                .offset(pageable.getOffset()).limit(pageable.getPageSize());
-        List<T> content = createContent(pageable, query);
+        List<T> content = sliceQuery.apply(getJpaQueryFactory())
+                .offset(pageable.getOffset()).limit(sliceSize(pageable)).fetch();
         boolean hasNext = isHasNext(pageable, content);
         List<R> transformedContent = content.stream()
                 .map(transformer)
                 .toList();
         return new SliceImpl<>(transformedContent, pageable, hasNext);
-    }
-
-
-    protected <T> List<T> createContent(final Pageable pageable, final JPAQuery query) {
-        List<T> content = null;
-        if (pageable.getSort() == null) {
-            content = getQuerydsl().applyPagination(sliceWithoutSort(pageable), query).fetch();
-        } else {
-            content = getQuerydsl().applyPagination(sliceWithSort(pageable), query).fetch();
-        }
-        return content;
     }
 
     private static PageRequest sliceWithSort(final Pageable pageable) {

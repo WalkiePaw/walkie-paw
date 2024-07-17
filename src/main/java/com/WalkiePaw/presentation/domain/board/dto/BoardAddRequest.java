@@ -4,6 +4,9 @@ import com.WalkiePaw.domain.board.entity.BoardCategory;
 import com.WalkiePaw.domain.board.entity.BoardPhoto;
 import com.WalkiePaw.domain.board.entity.PriceType;
 import com.WalkiePaw.domain.member.entity.Member;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,16 +18,25 @@ import java.util.List;
 @Data
 public class BoardAddRequest {
 
+    @NotNull
     private final Integer memberId;
+    @NotBlank
     private final String title;
+    @NotBlank
     private final String content;
+    // min max 정하기
     private final int price;
+    @NotNull
     private final BoardCategory category;
+    @NotNull
     private final PriceType priceType;
+    // start < end
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
+
     private final String location;
     private final String detailedLocation;
+    @NotNull
     private final boolean priceProposal;
     private List<ImageDto> photoUrls;
 

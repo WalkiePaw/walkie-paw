@@ -9,6 +9,8 @@ import com.WalkiePaw.domain.report.repository.BoardReport.BoardReportRepository;
 import com.WalkiePaw.presentation.domain.report.boardReportDto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,10 +63,8 @@ public class BoardReportService {
         boardReport.ignore();
     }
 
-    public List<BoardReportListResponse> findAllByResolvedCond(final String status) {
-        List<BoardReport> list = boardReportRepository.findAllByResolvedCond(status);
-        return list.stream()
-                .map(BoardReportListResponse::from)
-                .toList();
+    public Page<BoardReportListResponse> findAllByResolvedCond(final String status, Pageable pageable) {
+        return boardReportRepository.findAllByResolvedCond(status, pageable);
+
     }
 }

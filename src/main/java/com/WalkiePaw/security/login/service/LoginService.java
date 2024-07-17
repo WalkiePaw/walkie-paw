@@ -27,6 +27,7 @@ public class LoginService implements UserDetailsService {
         .email(member.getEmail())
         .memberId(member.getId())
         .nickname(member.getNickname())
+        .photoUrl(member.getPhoto())
         .password(member.getPassword())
         .authorities(List.of(new SimpleGrantedAuthority(member.getRole().name())))
         .build();

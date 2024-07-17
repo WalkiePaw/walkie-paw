@@ -7,6 +7,8 @@ import com.WalkiePaw.domain.report.repository.MemberReport.MemberReportRepositor
 import com.WalkiePaw.domain.report.repository.MemberReport.MemberReportRepositoryOverride;
 import com.WalkiePaw.presentation.domain.report.memberReportDto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,10 +58,7 @@ public class MemberReportService {
         memberReport.ignore();
     }
 
-    public List<MemberReportListResponse> findAllByCond(final String status) {
-        List<MemberReport> list = memberReportRepository.findAllByCond(status);
-        return list.stream()
-                .map(MemberReportListResponse::from)
-                .toList();
+    public Page<MemberReportListResponse> findAllByCond(final String status, Pageable pageable) {
+        return memberReportRepository.findAllByCond(status, pageable);
     }
 }

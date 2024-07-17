@@ -68,7 +68,7 @@ dependencies {
 
 	// WebSocket
 	implementation 'org.springframework:spring-websocket'
-
+	implementation 'org.springframework:spring-messaging'
 
 }
 
