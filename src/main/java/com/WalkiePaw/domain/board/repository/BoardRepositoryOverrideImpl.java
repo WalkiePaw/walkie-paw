@@ -1,6 +1,7 @@
 package com.WalkiePaw.domain.board.repository;
 
 import com.WalkiePaw.domain.board.entity.*;
+import com.WalkiePaw.domain.member.entity.QMember;
 import com.WalkiePaw.global.util.Querydsl4RepositorySupport;
 import com.WalkiePaw.presentation.domain.board.dto.BoardListResponse;
 import com.WalkiePaw.presentation.domain.board.dto.BoardMypageListResponse;
@@ -18,6 +19,7 @@ import java.util.Optional;
 import static com.WalkiePaw.domain.board.entity.QBoard.board;
 import static com.WalkiePaw.domain.board.entity.QBoardLike.boardLike;
 import static com.WalkiePaw.domain.board.entity.QBoardPhoto.*;
+import static com.WalkiePaw.domain.member.entity.QMember.*;
 import static org.springframework.util.StringUtils.hasText;
 
 @Repository
@@ -163,8 +165,8 @@ public class BoardRepositoryOverrideImpl extends Querydsl4RepositorySupport impl
                         boardLikeQuery(memberId)
                 ))
                 .from(boardLike)
-                .leftJoin(boardLike.board)
-                .leftJoin(boardLike.member)
+                .leftJoin(boardLike.board, board)
+                .leftJoin(boardLike.member, member)
                 .where(boardLike.member.id.eq(memberId).and(boardLike.board.status.ne(BoardStatus.DELETED)))
                 .orderBy(board.createdDate.desc()));
     }

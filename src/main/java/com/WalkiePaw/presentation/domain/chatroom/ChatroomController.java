@@ -54,4 +54,10 @@ public class ChatroomController {
         Page<TransactionResponse> transaction = chatroomService.findTransaction(memberId, pageable);
         return ResponseEntity.ok(transaction);
     }
+
+    @PatchMapping("/{id}/transaction-completed")
+    public ResponseEntity<Void> updateChatroomStatus(final @PathVariable("id") Integer chatroomId) {
+        chatroomService.updateChatroomStatus(chatroomId);
+        return ResponseEntity.noContent().build();
+    }
 }
