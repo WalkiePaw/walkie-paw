@@ -62,4 +62,6 @@ public class ChatroomController {
         chatroomService.updateChatroomStatus(request.getChatroomId(), request.getStatus());
         return ResponseEntity.noContent().build();
     }
+
+
 }
