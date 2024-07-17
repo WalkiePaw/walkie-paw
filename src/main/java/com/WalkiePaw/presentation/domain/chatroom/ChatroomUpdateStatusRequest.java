@@ -6,6 +6,5 @@ import lombok.Data;
 @Data
 public class ChatroomUpdateStatusRequest {
     private final Integer chatroomId;
-    private final Integer memberId;
     private final ChatroomStatus status;
 }

@@ -61,15 +61,11 @@ public class ChatroomService {
 
     @Transactional
     public void updateChatroomStatus(
-            final Integer memberId,
             final Integer chatroomId,
             final ChatroomStatus status
     ) {
         Chatroom chatroom = chatroomRepository.findChatroomAndBoardById(chatroomId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_CHATROOM_ID));
-        if (chatroom.getBoard().getMember().getId() != memberId) {
-            throw new BadRequestException(INVALID_REQUEST);
-        }
         chatroom.updateStatus(status);
         chatroom.getBoard().updateStatus(BoardStatus.valueOf(status.toString()));
     }
