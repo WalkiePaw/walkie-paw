@@ -1,21 +1,21 @@
 package com.WalkiePaw.security.jwt.service;
 
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
+import com.WalkiePaw.domain.member.entity.Role;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class JwtService {
 
+  public static final String ROLE_CLAIM = "role";
   @Value("${jwt.secretKey}")
   private String secretKey;
 
@@ -51,7 +52,7 @@ public class JwtService {
   /**
    * AccessToken 생성 메소드
    */
-  public String createAccessToken(String email, Integer memberId, String nickname, String photoUrl) {
+  public String createAccessToken(String email, Integer memberId, String nickname, String photoUrl, String role) {
     Date now = new Date();
     log.info("nickname = {}", nickname);
     return JWT.create() // JWT 토큰을 생성하는 빌더 반환
@@ -61,6 +62,7 @@ public class JwtService {
         //클레임으로는 저희는 email 하나만 사용합니다.
         //추가적으로 식별자나, 이름 등의 정보를 더 추가하셔도 됩니다.
         //추가하실 경우 .withClaim(클래임 이름, 클래임 값) 으로 설정해주시면 됩니다
+        .withClaim(ROLE_CLAIM, role)
         .withClaim(EMAIL_CLAIM, email)
         .withClaim(ID_CLAIM, memberId)
         .withClaim(NICKNAME_CLAIM, nickname)
