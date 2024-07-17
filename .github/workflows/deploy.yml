@@ -35,14 +35,14 @@ jobs:
         run: echo ${{ github.ref }}
 
       # gradle build
-#      - name: Build with Gradle
-#        run: |
-#          echo pwd
-#          pwd
-#          echo ls
-#          ls
-#          chmod +x ./gradlew
-#          ./gradlew clean build -x test
+      - name: Build with Gradle
+        run: |
+          echo pwd
+          pwd
+          echo ls
+          ls
+          chmod +x ./gradlew
+          ./gradlew clean build -x test
 
       # docker build & push to production
       #      - name: Docker build & push to prod
@@ -64,14 +64,14 @@ jobs:
       #          docker build -t ${{ secrets.DOCKER_USERNAME }}/docker-test-dev .
       #          docker push ${{ secrets.DOCKER_USERNAME }}/docker-test-dev
 
-      # docker build & push
-#      - name: Docker build & push
-#        if: contains(github.ref, 'main')
-#        run: |
-#          echo $(ls)
-#          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-#          docker build -t ${{ secrets.DOCKER_USERNAME }}/bitcamp .
-#          docker push ${{ secrets.DOCKER_USERNAME }}/bitcamp
+      #docker build & push
+      - name: Docker build & push
+        if: contains(github.ref, '215-배포-main에-적용하기')
+        run: |
+          echo $(ls)
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/bitcamp .
+          docker push ${{ secrets.DOCKER_USERNAME }}/bitcamp
 
       # check directory
       - name: check directory
@@ -111,21 +111,21 @@ jobs:
       #       sudo docker image prune -f
 
       ## deploy to develop
-#      - name: Deploy to dev
-#        uses: appleboy/ssh-action@master
-#        id: deploy
-#        if: contains(github.ref, 'main')
-#        with:
-#          host: ${{ secrets.HOST }}
-#          username: ${{ secrets.USER_NAME }}
-#          key: ${{ secrets.PRIVATE_KEY }}
-#          port: 22
-#          script: |
-#            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-#            docker ps -aq --filter name=walkiepaw_api | grep -q . && docker rm -f $(docker ps -aq --filter name=walkiepaw_api)
-#            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bitcamp
-#            sudo docker run -d --name walkiepaw_api -p 8000:8080 -v /home/ubuntu/config:/root/config ${{ secrets.DOCKER_USERNAME }}/bitcamp
-#            sudo docker image prune -f
+      - name: Deploy to dev
+        uses: appleboy/ssh-action@master
+        id: deploy
+        if: contains(github.ref, '215-배포-main에-적용하기')
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER_NAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: 22
+          script: |
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            docker ps -aq --filter name=walkiepaw_api | grep -q . && docker rm -f $(docker ps -aq --filter name=walkiepaw_api)
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bitcamp
+            sudo docker run -d --name walkiepaw_api -p 8000:8080 -v /home/ubuntu/config:/root/config ${{ secrets.DOCKER_USERNAME }}/bitcamp
+            sudo docker image prune -f
 
       # slack으로 메시지 발송
 #      - name: send message to slack
