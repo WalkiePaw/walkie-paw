@@ -23,10 +23,13 @@ public class ChatroomListResponse {
     private String boardTitle;
     private String memberPhoto;
     private BoardStatus boardStatus;
-    private boolean isTransaction;
+    private boolean isTransactionCompleted;
+    private boolean isBoardWriter;
 
     public ChatroomListResponse(
-        Integer id, String location, String nickname, String latestMessage, LocalDateTime modifiedDate, int unreadCount, String boardTitle, String memberPhoto, BoardStatus boardStatus, boolean isTransaction
+        Integer id, String location, String nickname, String latestMessage, LocalDateTime modifiedDate,
+        int unreadCount, String boardTitle, String memberPhoto, BoardStatus boardStatus, boolean isTransactionCompleted
+        , boolean isBoardWriter
     ) {
         this.id = id;
         this.location = location;
@@ -37,7 +40,8 @@ public class ChatroomListResponse {
         this.boardTitle = boardTitle;
         this.memberPhoto = memberPhoto;
         this.boardStatus = boardStatus;
-        this.isTransaction = isTransaction;
+        this.isTransactionCompleted = isTransactionCompleted;
+        this.isBoardWriter = isBoardWriter;
     }
 
     public ChatroomListResponse(
