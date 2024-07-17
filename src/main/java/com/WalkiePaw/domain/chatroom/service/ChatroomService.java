@@ -67,6 +67,6 @@ public class ChatroomService {
         Chatroom chatroom = chatroomRepository.findChatroomAndBoardById(chatroomId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_CHATROOM_ID));
         chatroom.updateStatus(status);
-        chatroom.getBoard().updateStatus(BoardStatus.valueOf(status.toString()));
+        chatroom.getBoard().updateStatus(BoardStatus.valueOf(String.valueOf(status)));
     }
 }

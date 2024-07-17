@@ -1,10 +1,10 @@
 package com.WalkiePaw.domain.chatroom.entity;
 
 /**
- * GENERAL = "일반"
- * RESERVED = "예약"
- * COMPLETED = "거래완료"
+ * RECRUITING = "모집 중"
+ * RESERVED = "예약 중"
+ * COMPLETED = "완료"
  */
 public enum ChatroomStatus {
-    GENERAL, RESERVED, COMPLETED
+    RECRUITING, RESERVED, COMPLETED
 }

@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +47,8 @@ public class BoardLikeService {
 
     @Scheduled(fixedDelay = 600000)
     public void countBoardLike() {
-        List<Board> boards = boardRepository.findAll();
-        boards.forEach(b -> b.updateBoardLike(boardLikeRepository.countByBoardId(b.getId())));
+        Map<Integer, Integer> counts = boardLikeRepository.countAllBoardLike().stream().collect(Collectors.toMap(c -> (Integer) c[0], c -> (int) c[1]));
+
+        boardRepository.findAllById(counts.keySet());
     }
 }
