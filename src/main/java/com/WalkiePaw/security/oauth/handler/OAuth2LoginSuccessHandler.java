@@ -14,10 +14,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,10 +32,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
   private final MemberRepository memberRepository;
   private final ObjectMapper objectMapper;
 
-  private static final String ACCOUNT_STATUS_KEY = "Account Status";
-  private static final String TOKEN_KEY = "Token";
-  private static final String NAME_KEY = "Name";
-  private static final String EMAIL_KEY = "Email";
+  private static final String ACCOUNT_STATUS_KEY = "account Status";
+  private static final String TOKEN_KEY = "token";
+  private static final String NAME_KEY = "name";
+  private static final String EMAIL_KEY = "email";
 
 //  @Override
 //  public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -63,10 +65,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
     Map<String, Object> data = new HashMap<>();
-    data.put("account status", oAuth2User.getRole() == Role.GUEST ? "New Account" : "Existing Account");
-    data.put("token", jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname(), oAuth2User.getPhotoUrl()));
-    data.put("name", oAuth2User.getName());
-    data.put("email", oAuth2User.getEmail());
+    data.put(ACCOUNT_STATUS_KEY, oAuth2User.getRole() == Role.GUEST ? "New Account" : "Existing Account");
+    data.put(TOKEN_KEY, jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname(), oAuth2User.getPhotoUrl(), extractFirstRoleName(oAuth2User)));
+    data.put(NAME_KEY, oAuth2User.getName());
+    data.put(EMAIL_KEY, oAuth2User.getEmail());
 
     String jsonData = new ObjectMapper().writeValueAsString(data);
     String encodedData = URLEncoder.encode(jsonData, StandardCharsets.UTF_8.toString());
@@ -78,10 +80,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
   }
 
   private void userLoginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
-    String accessToken = jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname(), oAuth2User.getPhotoUrl());
+    String accessToken = jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname(), oAuth2User.getPhotoUrl(), extractFirstRoleName(oAuth2User));
 
     Map<String, Object> responseBody = new HashMap<>();
-    responseBody.put(TOKEN_KEY, jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname(), oAuth2User.getPhotoUrl()));
+    responseBody.put(TOKEN_KEY, jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname(), oAuth2User.getPhotoUrl(), extractFirstRoleName(oAuth2User)));
     responseBody.put(ACCOUNT_STATUS_KEY, "Exist Account");
     responseBody.put(NAME_KEY, null);
     responseBody.put(EMAIL_KEY, null);
@@ -96,7 +98,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
   private void guestLoginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
     Map<String, Object> responseBody = new HashMap<>();
-    responseBody.put(TOKEN_KEY, jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname(), oAuth2User.getPhotoUrl()));
+    responseBody.put(TOKEN_KEY, jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getMemberId(), oAuth2User.getNickname(), oAuth2User.getPhotoUrl(), extractFirstRoleName(oAuth2User)));
     responseBody.put(ACCOUNT_STATUS_KEY, "New Account");
     responseBody.put(NAME_KEY, oAuth2User.getName());
     responseBody.put(EMAIL_KEY, oAuth2User.getEmail());
@@ -105,6 +107,18 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     response.setStatus(HttpServletResponse.SC_OK);
 
     objectMapper.writeValue(response.getWriter(), responseBody);
+  }
+
+  private String extractFirstRoleName(CustomOAuth2User oAuth2User) {
+    return oAuth2User.getAuthorities().stream()
+            .findFirst()
+            .map(GrantedAuthority::getAuthority)
+            .map(this::removeRolePrefix)
+            .orElse(null);
+  }
+
+  private String removeRolePrefix(String role) {
+    return role.startsWith("ROLE_") ? role.substring(5) : role;
   }
 
 
