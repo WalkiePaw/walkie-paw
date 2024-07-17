@@ -2,7 +2,7 @@ name: CI/CD using github actions & docker
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "215-배포-main에-적용하기" ]
   workflow_dispatch:
 
 permissions:
