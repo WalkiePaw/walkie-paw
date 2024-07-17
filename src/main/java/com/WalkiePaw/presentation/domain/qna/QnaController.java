@@ -3,6 +3,8 @@ package com.WalkiePaw.presentation.domain.qna;
 import com.WalkiePaw.domain.qna.service.QnaService;
 import com.WalkiePaw.presentation.domain.qna.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -51,16 +53,19 @@ public class QnaController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<QnaListResponse>> list(
-            @RequestParam(required = false) final String status // RESOLVED, UNRESOLVED
+    public ResponseEntity<Page<QnaListResponse>> list(
+            @RequestParam(required = false) final String status, // RESOLVED, UNRESOLVED
+            Pageable pageable
     ) {
-        List<QnaListResponse> list = qnaService.findAllByCond(status);
+        Page<QnaListResponse> list = qnaService.findAllByCond(status, pageable);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping("/{id}/list")
-    public ResponseEntity<List<QnaListResponse>> mypageList(@PathVariable("id") final Integer memberId) {
-        List<QnaListResponse> list = qnaService.findByMemberId(memberId);
+    public ResponseEntity<Page<QnaListResponse>> mypageList(
+            @PathVariable("id") final Integer memberId,
+            Pageable pageable) {
+        Page<QnaListResponse> list = qnaService.findByMemberId(memberId, pageable);
         return ResponseEntity.ok(list);
     }
 

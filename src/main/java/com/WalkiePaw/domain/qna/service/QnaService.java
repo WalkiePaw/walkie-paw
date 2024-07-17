@@ -6,6 +6,8 @@ import com.WalkiePaw.domain.qna.entity.Qna;
 import com.WalkiePaw.domain.qna.repository.QnaRepository;
 import com.WalkiePaw.presentation.domain.qna.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,17 +48,11 @@ public class QnaService {
         qna.updateReply(request);
     }
 
-    public List<QnaListResponse> findAllByCond(final String status) {
-        List<Qna> list = qnaRepository.findAllByCond(status);
-        return list.stream()
-                .map(QnaListResponse::from)
-                .toList();
+    public Page<QnaListResponse> findAllByCond(final String status, Pageable pageable) {
+        return qnaRepository.findAllByCond(status, pageable);
     }
 
-    public List<QnaListResponse> findByMemberId(final Integer memberId) {
-        List<Qna> myQnaByMemberId = qnaRepository.findByMemberId(memberId);
-        return myQnaByMemberId.stream()
-                .map(QnaListResponse::from)
-                .toList();
+    public Page<QnaListResponse> findByMemberId(final Integer memberId, Pageable pageable) {
+        return qnaRepository.findByMemberId(memberId, pageable);
     }
 }
