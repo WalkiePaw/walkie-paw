@@ -54,4 +54,14 @@ public class ChatroomController {
         Page<TransactionResponse> transaction = chatroomService.findTransaction(memberId, pageable);
         return ResponseEntity.ok(transaction);
     }
+
+    @PatchMapping("/change-status")
+    public ResponseEntity<Void> updateChatroomStatus(
+            final @RequestBody ChatroomUpdateStatusRequest request
+            ) {
+        chatroomService.updateChatroomStatus(request.getChatroomId(), request.getStatus());
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

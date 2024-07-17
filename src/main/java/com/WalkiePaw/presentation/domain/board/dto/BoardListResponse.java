@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-    @NoArgsConstructor
+@NoArgsConstructor
 public class BoardListResponse {
     private Integer id;
     private String title;
