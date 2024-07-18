@@ -32,7 +32,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
   private final MemberRepository memberRepository;
   private final ObjectMapper objectMapper;
 
-  private static final String ACCOUNT_STATUS_KEY = "account Status";
+  private static final String ACCOUNT_STATUS_KEY = "accountStatus";
   private static final String TOKEN_KEY = "token";
   private static final String NAME_KEY = "name";
   private static final String EMAIL_KEY = "email";
