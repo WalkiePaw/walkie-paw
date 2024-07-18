@@ -14,10 +14,9 @@ import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,6 +26,9 @@ import java.util.stream.Collectors;
 @Transactional
 public class BoardLikeService {
 
+    public static final int BOARD_ID_INDEX = 0;
+    public static final int LIKE_COUNT = 1;
+    public static final int BATCH_SIZE = 50;
     private final BoardLikeRepository boardLikeRepository;
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
@@ -51,29 +53,26 @@ public class BoardLikeService {
     public void countBoardLike() {
         Map<Integer, Integer> counts = boardLikeRepository.countAllBoardLike().stream()
                 .collect(Collectors.toMap(
-                        c -> (Integer) c[0],
-                        c -> ((Long) c[1]).intValue() // Long을 Integer로 안전하게 변환
+                        c -> c[BOARD_ID_INDEX],
+                        c -> c[LIKE_COUNT]
                 ));
-        Set<Integer> batch = new HashSet<>();
+        Set<Integer> batchBoardId = new HashSet<>();
         Set<Board> boards = new HashSet<>();
 
-        for (Integer i : counts.keySet()) {
-            batch.add(i);
-            if (batch.size() == 50) {
-                boards.addAll(boardRepository.findAllByIdIn(batch));
-                batch.clear();
+        for (Integer boardId : counts.keySet()) {
+            batchBoardId.add(boardId);
+            if (batchBoardId.size() == BATCH_SIZE) {
+                boards.addAll(boardRepository.findAllByIdIn(batchBoardId));
+                batchBoardId.clear();
             }
         }
 
-        if (!batch.isEmpty()) {
-            boards.addAll(boardRepository.findAllByIdIn(batch));
+        if (!batchBoardId.isEmpty()) {
+            boards.addAll(boardRepository.findAllByIdIn(batchBoardId));
         }
 
-        boards.forEach( b ->
-                {
-                    Integer likes = counts.get(b.getId());
-                    boardRepository.updateLikeCountById(likes, b.getId());
-                }
-        );
+        boards.forEach(
+                b -> b.updateBoardLike(counts.get(b.getId())));
+
     }
 }

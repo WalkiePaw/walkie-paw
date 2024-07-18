@@ -10,5 +10,5 @@ public interface BoardLikeRepository extends JpaRepository<BoardLike, Integer> {
     BoardLike findByMemberIdAndBoardId(Integer memberId, Integer boardId);
 
     @Query("select bl.board.id, count(bl) from BoardLike bl group by bl.board.id")
-    List<Object[]> countAllBoardLike();
+    List<Integer[]> countAllBoardLike();
 }
