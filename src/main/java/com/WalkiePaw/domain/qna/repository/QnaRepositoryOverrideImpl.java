@@ -48,6 +48,7 @@ public class QnaRepositoryOverrideImpl extends Querydsl4RepositorySupport implem
                 qna.createdDate,
                 qna.modifiedDate
                 )).from(qna)
+                .where(qna.member.id.eq(memberId))
                 .orderBy(qna.createdDate.desc()));
     }
 
