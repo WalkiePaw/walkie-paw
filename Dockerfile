@@ -1,7 +1,7 @@
-# FROM openjdk:21
-# ARG JAR_FILE=build/libs/*.jar
-# COPY ${JAR_FILE} app.jar
-# ENTRYPOINT ["java","-jar","-Dspring.profiles.active=prod, spring-data-jpa","/app.jar"]\
+FROM openjdk:21
+ARG JAR_FILE=build/libs/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","-Dspring.profiles.active=prod, spring-data-jpa","/app.jar"]\
 
 # 기본 이미지로 OpenJDK 21을 사용
 FROM openjdk:21
