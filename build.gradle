@@ -70,6 +70,8 @@ dependencies {
 	implementation 'org.springframework:spring-websocket'
 	implementation 'org.springframework:spring-messaging'
 
+	// slf4j를 common loggin으로 넘겨주는???
+	implementation 'org.slf4j:jcl-over-slf4j'
 }
 
 clean {
