@@ -2,7 +2,7 @@ name: CI/CD using github actions & docker
 
 on:
   push:
-    branches: [ "215-배포-main에-적용하기" ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:
@@ -66,7 +66,7 @@ jobs:
 
       #docker build & push
       - name: Docker build & push
-        if: contains(github.ref, '215-배포-main에-적용하기')
+        if: contains(github.ref, 'main')
         run: |
           echo $(ls)
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
@@ -114,7 +114,7 @@ jobs:
       - name: Deploy to dev
         uses: appleboy/ssh-action@master
         id: deploy
-        if: contains(github.ref, '215-배포-main에-적용하기')
+        if: contains(github.ref, 'main')
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER_NAME }}
