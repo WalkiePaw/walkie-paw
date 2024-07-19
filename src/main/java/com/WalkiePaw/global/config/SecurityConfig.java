@@ -1,4 +1,4 @@
-package com.WalkiePaw.config;
+package com.WalkiePaw.global.config;
 
 import com.WalkiePaw.domain.member.Repository.MemberRepository;
 import com.WalkiePaw.security.CustomPasswordEncoder;

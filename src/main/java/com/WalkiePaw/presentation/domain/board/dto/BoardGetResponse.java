@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -46,7 +45,7 @@ public class BoardGetResponse {
             board.getContent(), board.isPriceProposal(),
             board.getPrice(), board.getPriceType(), board.getEndTime(),
             board.getStartTime(), board.getMember().getNickname(),
-            board.getPhotoUrls(board), board.getMember().getPhoto(), board.getMember().getId()
+                (List<String>) board.getPhotoUrls(), board.getMember().getPhoto(), board.getMember().getId()
         );
     }
 }

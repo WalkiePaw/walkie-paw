@@ -1,9 +1,6 @@
 package com.WalkiePaw.presentation.domain.board.dto;
 
 import com.WalkiePaw.domain.board.entity.*;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -75,15 +72,11 @@ public class BoardListResponse {
     }
 
     public static BoardListResponse from(final Board board, final boolean isLiked) {
-        String photoUrls = null;
-        if (!board.getPhotos().isEmpty()) {
-            photoUrls = board.getPhotoUrls(board).getFirst();
-        }
         return new BoardListResponse(
                 board.getId(), board.getTitle(), board.getContent(), board.getLocation(),
                 board.getPrice(), board.getPriceType(), board.getEndTime(), board.getStartTime(), board.getLikeCount(),
                 board.getMember().getNickname(), board.getStatus(),
-                board.getCategory(), board.isPriceProposal(), photoUrls, board.getMember().getPhoto(), isLiked);
+                board.getCategory(), board.isPriceProposal(), board.getMember().getPhoto(), isLiked);
     }
 
 }

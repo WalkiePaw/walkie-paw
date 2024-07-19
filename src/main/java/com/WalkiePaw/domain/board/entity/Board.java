@@ -11,7 +11,9 @@ import org.hibernate.annotations.BatchSize;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -74,11 +76,11 @@ public class Board extends BaseEntity {
         this.content = content;
     }
 
-    public void updateBoard(final String title, final String content, final int price,
+    public void update(final String title, final String content, final int price,
                        final LocalDateTime startTime,
                        final LocalDateTime endTime, final PriceType priceType,
-                            final String location, final String detailedLocation,
-                            final boolean priceProposal) {
+                       final String location, final String detailedLocation,
+                       final boolean priceProposal) {
 
         this.title = title;
         this.content = content;
@@ -108,10 +110,10 @@ public class Board extends BaseEntity {
                 .forEach(p -> p.addPhoto(this));
     }
 
-    public List<String> getPhotoUrls(final Board board) {
-        return board.getPhotos().stream()
+    public Collection<String> getPhotoUrls() {
+        return this.getPhotos().stream()
                 .map(BoardPhoto::getUrl)
-                .toList();
+                .collect(Collectors.toCollection(this::getPhotoUrls));
     }
 
     public void updateBoardLike(final int likeCount) {
@@ -124,3 +126,4 @@ public class Board extends BaseEntity {
      *  - validation 추가
      */
 }
+

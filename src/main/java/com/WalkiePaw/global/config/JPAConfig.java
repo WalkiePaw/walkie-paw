@@ -1,4 +1,4 @@
-package com.WalkiePaw.domain.config;
+package com.WalkiePaw.global.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

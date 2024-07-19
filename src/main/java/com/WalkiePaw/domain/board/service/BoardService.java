@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.WalkiePaw.global.exception.ExceptionCode.*;
 
@@ -59,22 +61,37 @@ public class BoardService {
     public BoardGetResponse getBoard(Integer boardId) {
         Board board = boardRepository.getBoardDetail(boardId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
-        List<String> photoUrls = board.getPhotoUrls(board);
         return BoardGetResponse.from(board);
     }
 
     @Transactional
     public void updateBoard(final Integer boardId, final BoardUpdateRequest request) {
-        Board board = boardRepository.findWithPhotoBy(boardId)
+        Board findBoard = boardRepository.findWithPhotoBy(boardId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_BOARD_ID));
-        board.updateBoard(request.getTitle(), request.getContent(), request.getPrice(), request.getStartTime(),
+        updateFindBoardDetails(request, findBoard);
+
+        Set<String> existingPhotos = (Set<String>) findBoard.getPhotoUrls();
+        Set<String> newPhotos = request.getPhotoUrls().stream().map(ImageDto::getUrl).collect(Collectors.toSet());
+
+        updatePhotosOnBoard(existingPhotos, newPhotos, findBoard);
+    }
+
+    private void updatePhotosOnBoard(Set<String> existingPhotos, Set<String> newPhotos, Board findBoard) {
+        existingPhotos.removeIf(
+                p -> !newPhotos.contains(p));
+
+        List<BoardPhoto> photosToAdd = newPhotos.stream()
+                .filter(url -> !existingPhotos.contains(url))
+                .map(BoardPhoto::new)
+                .toList();
+
+        photosToAdd.forEach(bp -> bp.addPhoto(findBoard));
+        boardPhotoRepository.saveAll(photosToAdd);
+    }
+
+    private static void updateFindBoardDetails(BoardUpdateRequest request, Board findBoard) {
+        findBoard.update(request.getTitle(), request.getContent(), request.getPrice(), request.getStartTime(),
                 request.getEndTime(), request.getPriceType(), request.getLocation(), request.getDetailedLocation(), request.isPriceProposal());
-        List<String> urls = request.getPhotoUrls().stream().map(ImageDto::getUrl).toList();
-        board.getPhotos().forEach(BoardPhoto::deletePhoto);
-        board.getPhotos().clear();
-        List<BoardPhoto> photos = urls.stream().map(BoardPhoto::new).toList();
-        photos.forEach(bp -> bp.addPhoto(board));
-        boardPhotoRepository.saveAll(photos);
     }
 
     @Transactional
